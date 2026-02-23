@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1207 کوران1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Controls for Language and Theme -->
+    <div class="top-controls">
+        <div class="control-group">
+            <div class="custom-dropdown" id="language-dropdown">
+                <button class="dropdown-btn" onclick="toggleLanguageDropdown()">
+                    <span class="flag-icon flag-ku" id="current-flag"></span>
+                    <span id="current-lang-text">کوردی</span>
+                    <i class="fas fa-chevron-down chevron"></i>
+                </button>
+                <div class="dropdown-content" id="dropdown-options">
+                    <div class="dropdown-item" onclick="selectLanguage('ku')"><span class="flag-icon flag-ku"></span> کوردی</div>
+                    <div class="dropdown-item" onclick="selectLanguage('ar')"><span class="flag-icon flag-ar"></span> عربي</div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <button id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="login-icon">
+                <img src="assests/icon.png" alt="Logo">
+            </div>
+            <h2 data-lang-key="login_title">بەخێربێیتەوە</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label data-lang-key="username_label" for="username">ئیمەیڵ</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="username" data-lang-key="username_placeholder" placeholder="ئیمەیڵەکەت بنووسە...">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-lang-key="password_label" for="password">وشەی تێپەڕ</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" data-lang-key="password_placeholder" placeholder="وشەی تێپەڕ...">
+                        <i class="fas fa-lock"></i>
+                        <i class="fas fa-eye-slash toggle-password-icon" id="toggle-password"></i>
+                    </div>
+                </div>
+                <div class="forgot-password-container">
+                    <a href="#" id="forgot-password-link" class="forgot-password-link" data-lang-key="forgot_password">وشەی نهێنیت لەبیرچووە؟</a>
+                </div>
+                <div id="error-msg" class="error-message"></div>
+                <button type="submit">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span data-lang-key="login_btn">چوونە ژوورەوە</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Reset Password -->
+    <div id="reset-password-modal" class="modal">
+        <div class="card modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-step-1">
+                <h3 data-lang-key="reset_password_title" class="modal-step-title">گۆڕینی وشەی نهێنی</h3>
+                <form onsubmit="handleSendOtp(event)">
+                    <div class="form-group">
+                        <label data-lang-key="username_label">ئیمەیڵ</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="reset-email" data-lang-key="email_type" placeholder="ئیمەیڵی تایبەت بەخۆت ننوسە" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                    <button type="submit" data-lang-key="next_btn">دواتر</button>
+                </form>
+            </div>
+
+            <div id="modal-step-2" class="modal-step-hidden">
+                <h3 data-lang-key="otp_input_title" class="modal-step-title">کۆدی OTP</h3>
+                <p id="otp-timer" class="otp-timer">60</p>
+                <form onsubmit="handleVerifyOtp(event)">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="text" id="otp-code" placeholder="123456" required class="otp-input">
+                        </div>
+                    </div>
+                    <button type="submit" data-lang-key="verify_btn">پشکنین</button>
+                </form>
+            </div>
+
+            <div id="modal-step-3" class="modal-step-hidden">
+                <h3 data-lang-key="new_password_label" class="modal-step-title">ووشەی نهێنی نوێ</h3>
+                <form onsubmit="handleUpdatePassword(event)">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="password" id="new-password" data-lang-key="new_password" placeholder="نوێ ..." required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div id="password-strength-meter">
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                        </div>
+                        <span id="password-strength-text"></span>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang-key="confirm_password_label">دووپاتکردنەوەی ووشەی نهێنی</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="confirm-password" data-lang-key="renew_password" placeholder="دووپاتکردنەوە" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <button type="submit" data-lang-key="save_password_btn">تۆمارکردن</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

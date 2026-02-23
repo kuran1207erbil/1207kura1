@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پڕۆفایلی فەرمانبەر | 1207</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="farmanbar.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+
+
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left-section">
+            <button class="action-btn" id="sidebar-toggle" title="Open Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Logo in Header -->
+            <div class="header-logo-display">
+                <img src="../assests/icon.png" class="header-logo-img" alt="Logo">
+                <h2>1207 کوران1</h2>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <!-- Theme Toggle -->
+            <button class="action-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fas fa-sun"></i>
+            </button>
+            
+            <!-- Language Dropdown -->
+            <div class="custom-dropdown">
+                <button class="lang-btn dropdown-btn" onclick="toggleLanguageDropdown()">
+                    <span class="flag-icon flag-ku" id="current-flag"></span>
+                    <span id="current-lang-text">کوردی</span>
+                    <i class="fas fa-chevron-down chevron"></i>
+                </button>
+                <div class="dropdown-content header-lang-dropdown" id="dropdown-options">
+                    <div class="dropdown-item" onclick="selectLanguage('ku')">
+                        <span class="flag-icon flag-ku"></span> کوردی
+                    </div>
+                    <div class="dropdown-item" onclick="selectLanguage('ar')">
+                        <span class="flag-icon flag-ar"></span> عربي
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile Display -->
+            <div class="user-profile-display">
+                <div class="profile-icon-wrapper">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="online-dot" id="online-indicator"></span>
+                </div>
+                <span class="user-email-text" id="user-email">...</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <ul class="nav-links">
+                <li><a href="../home.html"><i class="fas fa-th-large"></i><span data-lang-key="menu_dashboard">داشبۆرد</span></a></li>
+                <li><a href="#" class="active"><i class="fas fa-users"></i><span data-lang-key="menu_staff">فەرمانبەرانی بنکە</span></a></li>
+                <li><a href="../molat/molat.html"><i class="fas fa-calendar-minus"></i><span data-lang-key="menu_leaves">مۆڵەتەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-file-alt"></i><span data-lang-key="menu_letters">نوسراوەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-receipt"></i><span data-lang-key="menu_receipts">پسوولەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-folder-open"></i><span data-lang-key="menu_files">فایلی پێویست</span></a></li>
+                <li><a href="#"><i class="fas fa-boxes"></i><span data-lang-key="menu_assets">کەرەستە بەردەستەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-chart-pie"></i><span data-lang-key="menu_reports">ڕاپۆرتی گشتی</span></a></li>
+                <li class="sidebar-footer-item">
+                    <a href="../settings.html"><i class="fas fa-cog"></i><span data-lang-key="settings_link">ڕێکخستنەکان</span></a>
+                </li>
+                <!-- Mobile Language Selector -->
+                <li class="sidebar-lang-section">
+                    <div class="sidebar-lang-title">
+                        <i class="fas fa-globe"></i>
+                        <span data-lang-key="language">زمان</span>
+                    </div>
+                    <div class="sidebar-lang-grid">
+                        <button onclick="selectLanguage('ku')" class="sidebar-lang-btn" id="sidebar-lang-ku">
+                            <span class="flag-icon flag-ku"></span> کوردی
+                        </button>
+                        <button onclick="selectLanguage('ar')" class="sidebar-lang-btn" id="sidebar-lang-ar">
+                            <span class="flag-icon flag-ar"></span> عربي
+                        </button>
+                    </div>
+                </li>
+                <li>
+                    <a href="../index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i><span data-lang-key="logout">چوونە دەرەوە</span></a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="sidebar-overlay"></div>
+
+
+        <!-- Main Content -->
+        <main class="main-content employee-page">
+            <div class="profile-container" id="profile-content">
+                <div class="content-loader">
+                    <div class="spinner"></div>
+                    <p>...Loading</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal (Same as farmanbar.html) -->
+    <div id="employee-modal" class="modal custom-modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3 id="modal-title" data-lang-key="dastkari_farmanbar">دەستکاریکردنی فەرمانبەر</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="employee-form" onsubmit="handleEmployeeSubmit(event)">
+                    <input type="hidden" id="emp-id">
+                    <div class="photo-upload-section">
+                        <div class="photo-preview" onclick="document.getElementById('photo-input').click()">
+                            <img id="photo-display" src="../assests/default-avatar.png" alt="Profile">
+                            <div class="photo-overlay"><i class="fas fa-camera"></i></div>
+                        </div>
+                        <input type="file" id="photo-input" accept="image/*" hidden onchange="previewPhoto(event)">
+                    </div>
+                    <div class="form-grid">
+                        <!-- Personal Info -->
+                        <div class="form-section">
+                            <h4 data-lang-key="zaniary_kasi"><i class="fas fa-user"></i> زانیاری کەسی</h4>
+                            <div class="form-row">
+                                <div class="input-group"><label data-lang-key="full_name_label">ناوی چواری</label><input type="text" id="full_name" required aria-label="ناوی چواری"></div>
+                                <div class="input-group"><label data-lang-key="gender_label">ڕەگەز</label><select id="gender" title="ڕەگەز" aria-label="ڕەگەز"><option value="male" data-lang-key="male">نێر</option><option value="female" data-lang-key="female">مێ</option></select></div>
+                                <div class="input-group"><label data-lang-key="dob_label">مێژووی لەدایکبوون</label><input type="date" id="dob" required aria-label="مێژووی لەدایکبوون"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="input-group"><label data-lang-key="mother_name_label">ناوی سیانی دایک</label><input type="text" id="mother_name" required aria-label="ناوی دایک"></div>
+                                <div class="input-group">
+                                    <label data-lang-key="asti_xwendn">ئاستی خوێندن</label>
+                                    <select id="education_level" title="ئاستی خوێندن">
+                                        <option value="naxwendawar" data-lang-key="naxwendawar">نەخوێندەوار</option>
+                                        <option value="sarataiy" data-lang-key="sarataiy">سەرەتایی</option>
+                                        <option value="nawandi" data-lang-key="nawandi">ناوەندی</option>
+                                        <option value="amadaiy" data-lang-key="amadaiy">ئامادەیی</option>
+                                        <option value="dblom" data-lang-key="dblom">دبلۆم</option>
+                                        <option value="bakaloryos" data-lang-key="bakaloryos">بەکالۆریۆس</option>
+                                        <option value="mastar" data-lang-key="mastar">ماستەر</option>
+                                        <option value="doctor" data-lang-key="doctor">دکتۆرا</option>
+                                    </select>
+                                </div>
+                                <div class="input-group"><label data-lang-key="exact_specialization_label">پسپۆڕیی وورد</label><input type="text" id="exact_specialization" aria-label="پسپۆڕی وورد"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label data-lang-key="job_title_label" data-lang-key="nawnishani_farmanbar">ناونیشانی فەرمانبەری</label>
+                                    <select id="job_title" title="ناونیشانی فەرمانبەری" aria-label="ناونیشانی فەرمانبەری">
+                                        <option value="farmanbar" data-lang-key="farmanbar">فەرمانبەر</option>
+                                        <option value="yaridadar" data-lang-key="yaridadar">یاریدەدەری بەڕێوەبەری بنکە</option>
+                                        <option value="barewabar" data-lang-key="barewabar">بەڕێوەبەری بنکە</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Official IDs -->
+                        <div class="form-section">
+                            <h4 data-lang-key="balganamayfarmi"><i class="fas fa-id-card"></i> بەڵگەنامە فەرمییەکان</h4>
+                            <div class="form-row">
+                                <div class="input-group"><label data-lang-key="national_card_no_label">ژ. کارتی نیشتیمانی</label><input type="text" id="national_card_no"  aria-label="ژ. کارتی نیشتیمانی"></div>
+                                
+                                <div class="input-group"><label data-lang-key="darchwn">بەرواری دەرچوون</label><input type="date" id="national_card_date" title="بەرواری دەرچوون" aria-label="بەرواری دەرچوون"></div>
+                                <div class="input-group"><label data-lang-key="basarchwn">بەرواری بەسەرچوون</label><input type="date" id="national_card_expiry_date" title="بەرواری بەسەرچوون" aria-label="بەرواری بەسەرچوون"></div>
+                           </div>
+                           <div class="form-row">
+                                <div class="input-group"><label data-lang-key="nasnamayfarmanbar">ژ. ناسنامەی فەرمانبەری</label><input type="text" id="employee_id"  aria-label="ژ. ناسنامەی فەرمانبەری"></div>
+                                <div class="input-group"><label data-lang-key="darchwn">بەرواری دەرچوون</label><input type="date" id="employee_id_date"  title="بەرواری دەرچوون" aria-label="بەرواری دەرچوون"></div>
+                                <div class="input-group"><label data-lang-key="basarchwn">بەرواری بەسەرچوون</label><input type="date" id="employee_id_expiry_date" title="بەرواری بەسەرچوون" aria-label="بەرواری بەسەرچوون"></div>
+                           </div>
+
+                            <div class="form-row">
+                                <div class="input-group"><label data-lang-key="raqamnaxb">ژمارەی دەنگدەر</label><input type="text" id="voter_id" required  aria-label="ژمارەی دەنگدەر"></div>
+                                <div class="input-group"><label data-lang-key="bashaxorak">ژ. بەشەخۆراکی ئەلیکترۆنی</label><input type="text" id="ration_card_no" required  aria-label="ژ. بەشەخۆراک"></div>
+                                <div class="input-group"><label data-lang-key="passaport">ژمارەی پاسپۆرت (ئەگەر هەیە)</label><input type="text" id="passport_no"  aria-label="ژمارەی پاسپۆڕت"></div>
+                                </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-address-book"></i> <span data-lang-key="contact_info">پەیوەندی و ناونیشان</span></h4>
+                            <div class="form-row">
+                                <div class="input-group"><label data-lang-key="mobile1">ژمارەی مۆبایل</label><input type="tel" id="mobile" required  aria-label="ژمارەی مۆبایل"></div>
+                                <div class="input-group"><label data-lang-key="mobile2">ژمارەی مۆبایلی کەسی نزیک</label><input type="tel" id="relative_mobile" title="ژمارەی مۆبایلی کەسی نزیک" aria-label="ژمارەی مۆبایلی کەسی نزیک"></div>
+                                <div class="input-group"><label data-lang-key="email">ئیمەیڵ</label><input type="email" id="email"  aria-label="ئیمەیڵ"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="input-group"><label data-lang-key="parezga">پارێزگا</label><input type="text" id="governorate" required  aria-label="پارێزگا"></div>
+                                <div class="input-group"><label data-lang-key="garak">گەڕەک</label><input type="text" id="neighborhood" required  aria-label="گەڕەك"></div>
+                                <div class="input-group"><label data-lang-key="xanw">ژ. خانوو</label><input type="text" id="house_no" required  aria-label="خانوو"></div>
+                            </div>
+                        </div>
+
+                        <!-- Documents -->
+                        <div class="form-section full-width">
+                            <h4><i class="fas fa-file-pdf"></i> <span data-lang-key="documents_pdf">بەڵگەنامەکان (PDF)</span></h4>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="documents-input"  aria-label="بەڵگەنامە" accept="application/pdf" multiple>
+                                <div class="file-upload-box">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p data-lang-key="lera">فایلەکان لێرە دابنێ یان کلیک بکە</p>
+                                </div>
+                            </div>
+                            <ul id="file-list" class="file-list"></ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                          <button type="button" class="cancel-btn" onclick="closeModal()" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                          <button type="submit" class="save-btn" data-lang-key="save">تۆمارکردن</button>
+                       </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="modal custom-modal">
+        <div class="modal-content small-modal">
+            <div class="modal-body">
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <h3 data-lang-key="delete_confirm">دڵنیایت لە سڕینەوە؟</h3>
+                <p class="delete-confirm-text">
+                    ئەم کردارە پاشگەزبوونەوەی نییە و هەموو زانیارییەکان دەسڕدرێنەوە.
+                </p>
+                <div class="modal-footer modal-footer-centered">
+                    <button type="button" class="cancel-btn" onclick="closeDeleteModal()" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                    <button type="button" class="save-btn danger" id="confirm-delete-btn" data-lang-key="delete_button">بیسڕەوە</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../translations.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        let currentEmployee = null;
+        let currentPhotoFile = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentLang = localStorage.getItem('language') || 'ku';
+            const t = translations[currentLang];
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const empId = urlParams.get('id');
+            
+            if(empId) {
+                fetchEmployeeDetails(empId);
+            } else {
+                document.getElementById('profile-content').innerHTML = `<div class="error-msg">${t.no_employee_selected}</div>`;
+            }
+
+            // Show selected PDF file names
+            document.getElementById('documents-input').addEventListener('change', (e) => {
+                const list = document.getElementById('file-list');
+                list.innerHTML = '';
+                Array.from(e.target.files).forEach(file => {
+                    const li = document.createElement('li');
+                    li.textContent = `📄 ${file.name}`;
+                    list.appendChild(li);
+                });
+            });
+
+            // Close delete modal when clicking outside
+            window.addEventListener('click', (event) => {
+                const deleteModal = document.getElementById('delete-confirm-modal');
+                if (event.target === deleteModal) {
+                    deleteModal.style.display = 'none';
+                }
+            });
+        });
+
+        async function fetchEmployeeDetails(id) {
+            const currentLang = localStorage.getItem('language') || 'ku';
+            const t = translations[currentLang];
+
+            const { data, error } = await supabaseClient
+                .from('employees')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                showToast(t.error_label + error.message, 'error');
+                return;
+            }
+
+            currentEmployee = data;
+            renderProfile(data);
+        }
+
+        function renderProfile(emp) {
+            const container = document.getElementById('profile-content');
+            const currentLang = localStorage.getItem('language') || 'ku';
+            const t = translations[currentLang];
+
+            const jobTitleKey = emp.job_title || 'farmanbar';
+            const educationLevelKey = emp.education_level;
+            const genderKey = emp.gender;
+            
+            container.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-main-info">
+                        <img src="${emp.photo_url || '../assests/icon.png'}" alt="${emp.full_name}" class="profile-image" onerror="this.src='../assests/icon.png'">
+                        <div class="profile-title">
+                            <h2>${emp.full_name}</h2>
+                            <span class="badge" data-lang-key="${jobTitleKey}">${t[jobTitleKey] || jobTitleKey}</span>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="action-button btn-back" onclick="window.location.href='farmanbar.html'"><i class="fas fa-arrow-right"></i> <span data-lang-key="back_button">${t.back_button}</span></button>
+                        <button class="action-button btn-print" onclick="window.print()"><i class="fas fa-print"></i> <span data-lang-key="print_button">${t.print_button}</span></button>
+                        <button class="action-button btn-edit" onclick="openEditModal()"><i class="fas fa-edit"></i> <span data-lang-key="edit_button">${t.edit_button}</span></button>
+                        <button class="action-button btn-delete" onclick="deleteCurrentEmployee()"><i class="fas fa-trash"></i> <span data-lang-key="delete_button">${t.delete_button}</span></button>
+                    </div>
+                </div>
+
+                <div class="info-card unified-card">
+                    <!-- Personal Info -->
+                    <div class="section-block">
+                        <h3 data-lang-key="zaniary_kasi"><i class="fas fa-user"></i> ${t.zaniary_kasi}</h3>
+                        <div class="info-row row-3">
+                            <div class="info-box"><span class="label" data-lang-key="full_name_label">${t.full_name_label}</span> <span class="value">${emp.full_name}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="gender_label">${t.gender_label}</span> <span class="value" data-lang-key="${genderKey}">${t[genderKey] || genderKey}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="dob_label">${t.dob_label}</span> <span class="value">${emp.dob || '-'}</span></div>
+                        </div>
+                        <div class="info-row row-3">
+                            <div class="info-box"><span class="label" data-lang-key="mother_name_label">${t.mother_name_label}</span> <span class="value">${emp.mother_name || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="asti_xwendn">${t.asti_xwendn}</span> <span class="value" data-lang-key="${educationLevelKey}">${educationLevelKey ? (t[educationLevelKey] || educationLevelKey) : '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="exact_specialization_label">${t.exact_specialization_label}</span> <span class="value">${emp.exact_specialization || '-'}</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="section-block">
+                        <h3 data-lang-key="contact_info"><i class="fas fa-address-book"></i> ${t.contact_info}</h3>
+                        <div class="info-row row-2">
+                            <div class="info-box"><span class="label" data-lang-key="mobile1">${t.mobile1}</span> <span class="value">${emp.mobile}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="mobile2">${t.mobile2}</span> <span class="value">${emp.relative_mobile || '-'}</span></div>
+                        </div>
+                        <div class="info-row row-2">
+                            <div class="info-box"><span class="label" data-lang-key="email">${t.email}</span> <span class="value">${emp.email || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="address_label">${t.address_label}</span> <span class="value">${emp.governorate || '-'} / ${emp.neighborhood || '-'} / ${emp.house_no || '-'}</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Official IDs -->
+                    <div class="section-block">
+                        <h3 data-lang-key="balganamayfarmi"><i class="fas fa-id-card"></i> ${t.balganamayfarmi}</h3>
+                        <div class="info-row row-3">
+                            <div class="info-box"><span class="label" data-lang-key="national_card_no_label">${t.national_card_no_label}</span> <span class="value">${emp.national_card_no || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="darchwn">${t.darchwn}</span> <span class="value">${emp.national_card_date || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="basarchwn">${t.basarchwn}</span> <span class="value">${emp.national_card_expiry_date || '-'}</span></div>
+                        </div>
+                        <div class="info-row row-3">
+                            <div class="info-box"><span class="label" data-lang-key="nasnamayfarmanbar">${t.nasnamayfarmanbar}</span> <span class="value">${emp.employee_id || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="darchwn">${t.darchwn}</span> <span class="value">${emp.employee_id_date || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="basarchwn">${t.basarchwn}</span> <span class="value">${emp.employee_id_expiry_date || '-'}</span></div>
+                        </div>
+                        <div class="info-row row-3">
+                            <div class="info-box"><span class="label" data-lang-key="raqamnaxb">${t.raqamnaxb}</span> <span class="value">${emp.voter_id || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="bashaxorak">${t.bashaxorak}</span> <span class="value">${emp.ration_card_no || '-'}</span></div>
+                            <div class="info-box"><span class="label" data-lang-key="passaport">${t.passaport}</span> <span class="value">${emp.passport_no || '-'}</span></div>
+                        </div>
+                    </div>
+
+                    <div class="documents-section">
+                        <h3 data-lang-key="menu_files"><i class="fas fa-file-pdf"></i> ${t.menu_files}</h3>
+                        <div class="doc-grid">
+                            ${emp.documents_urls && emp.documents_urls.length > 0
+                                ? emp.documents_urls.map(url => `
+                                    <a href="${url}" target="_blank" class="doc-item">
+                                        <i class="fas fa-file-pdf doc-icon"></i>
+                                        <span data-lang-key="document_label">${t.document_label}</span>
+                                    </a>
+                                `).join('')
+                                : `<p class="no-files-text" data-lang-key="no_files_found">${t.no_files_found}</p>`}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Edit Logic
+        function openEditModal() {
+            const emp = currentEmployee;
+            const modal = document.getElementById('employee-modal');
+            modal.style.display = 'flex';
+            
+            document.getElementById('emp-id').value = emp.id;
+            document.getElementById('full_name').value = emp.full_name;
+            document.getElementById('mother_name').value = emp.mother_name || '';
+            document.getElementById('gender').value = emp.gender || 'male';
+            document.getElementById('dob').value = emp.dob || '';
+            document.getElementById('job_title').value = emp.job_title || 'farmanbar';
+            document.getElementById('education_level').value = emp.education_level || 'bakaloryos';
+            document.getElementById('exact_specialization').value = emp.exact_specialization || '';
+            document.getElementById('national_card_no').value = emp.national_card_no || '';
+            document.getElementById('national_card_date').value = emp.national_card_date || '';
+            document.getElementById('national_card_expiry_date').value = emp.national_card_expiry_date || '';
+            document.getElementById('voter_id').value = emp.voter_id || '';
+            document.getElementById('employee_id').value = emp.employee_id || '';
+            document.getElementById('employee_id_date').value = emp.employee_id_date || '';
+            document.getElementById('employee_id_expiry_date').value = emp.employee_id_expiry_date || '';
+            document.getElementById('ration_card_no').value = emp.ration_card_no || '';
+            document.getElementById('passport_no').value = emp.passport_no || '';
+            document.getElementById('mobile').value = emp.mobile || '';
+            document.getElementById('relative_mobile').value = emp.relative_mobile || '';
+            document.getElementById('email').value = emp.email || '';
+            document.getElementById('governorate').value = emp.governorate || '';
+            document.getElementById('neighborhood').value = emp.neighborhood || '';
+            document.getElementById('house_no').value = emp.house_no || '';
+            
+            document.getElementById('file-list').innerHTML = '';
+            document.getElementById('documents-input').value = '';
+
+            if (emp.photo_url) {
+                document.getElementById('photo-display').src = emp.photo_url;
+            } else {
+                document.getElementById('photo-display').src = '../assests/default-avatar.png';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('employee-modal').style.display = 'none';
+        }
+
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                currentPhotoFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photo-display').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function handleEmployeeSubmit(event) {
+            event.preventDefault();
+            const currentLang = localStorage.getItem('language') || 'ku';
+            const t = translations[currentLang];
+
+            const submitBtn = event.target.querySelector('.save-btn');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = '...';
+
+            try {
+                const empId = document.getElementById('emp-id').value;
+                let photoUrl = document.getElementById('photo-display').src;
+
+                if (currentPhotoFile) {
+                    const fileName = `avatar_${Date.now()}_${currentPhotoFile.name}`;
+                    const { data, error } = await supabaseClient.storage
+                        .from('avatars')
+                        .upload(fileName, currentPhotoFile);
+                    
+                    if (error) throw error;
+                    
+                    const { data: publicUrlData } = supabaseClient.storage
+                        .from('avatars')
+                        .getPublicUrl(fileName);
+                        
+                    photoUrl = publicUrlData.publicUrl;
+                } else if (photoUrl.includes('default-avatar') || photoUrl.includes('icon.png')) {
+                    photoUrl = null;
+                }
+
+                // Upload Documents Logic
+                const docInput = document.getElementById('documents-input');
+                let finalDocUrls = currentEmployee ? (currentEmployee.documents_urls || []) : [];
+
+                if (docInput.files.length > 0) {
+                    for (const file of docInput.files) {
+                        const fileName = `doc_${Date.now()}_${Math.random().toString(36).substring(7)}_${file.name}`;
+                        const { error: uploadError } = await supabaseClient.storage
+                            .from('documents')
+                            .upload(fileName, file);
+                        
+                        if (uploadError) throw uploadError;
+                        
+                        const { data: { publicUrl } } = supabaseClient.storage
+                            .from('documents')
+                            .getPublicUrl(fileName);
+                            
+                        finalDocUrls.push(publicUrl);
+                    }
+                }
+
+                const employeeData = {
+                    full_name: document.getElementById('full_name').value,
+                    mother_name: document.getElementById('mother_name').value,
+                    gender: document.getElementById('gender').value,
+                    job_title: document.getElementById('job_title').value,
+                    education_level: document.getElementById('education_level').value,
+                    exact_specialization: document.getElementById('exact_specialization').value,
+                    dob: document.getElementById('dob').value || null,
+                    national_card_no: document.getElementById('national_card_no').value,
+                    national_card_date: document.getElementById('national_card_date').value || null,
+                    national_card_expiry_date: document.getElementById('national_card_expiry_date').value || null,
+                    voter_id: document.getElementById('voter_id').value,
+                    employee_id: document.getElementById('employee_id').value,
+                    employee_id_date: document.getElementById('employee_id_date').value || null,
+                    employee_id_expiry_date: document.getElementById('employee_id_expiry_date').value || null,
+                    ration_card_no: document.getElementById('ration_card_no').value,
+                    passport_no: document.getElementById('passport_no').value,
+                    mobile: document.getElementById('mobile').value,
+                    relative_mobile: document.getElementById('relative_mobile').value,
+                    email: document.getElementById('email').value,
+                    governorate: document.getElementById('governorate').value,
+                    neighborhood: document.getElementById('neighborhood').value,
+                    house_no: document.getElementById('house_no').value,
+                    photo_url: photoUrl,
+                    documents_urls: finalDocUrls
+                };
+
+                const { error } = await supabaseClient
+                    .from('employees')
+                    .update(employeeData)
+                    .eq('id', empId);
+
+                if (error) throw error;
+
+                showToast(t.info_updated, 'success');
+                closeModal();
+                fetchEmployeeDetails(empId);
+
+            } catch (err) {
+                console.error(err);
+                showToast(t.error_label + err.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        }
+
+        function deleteCurrentEmployee() {
+            const modal = document.getElementById('delete-confirm-modal');
+            modal.style.display = 'flex';
+            
+            // Setup confirm button action
+            const confirmBtn = document.getElementById('confirm-delete-btn');
+            confirmBtn.onclick = executeDelete;
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-confirm-modal').style.display = 'none';
+        }
+
+        async function executeDelete() {
+            closeDeleteModal();
+            const currentLang = localStorage.getItem('language') || 'ku';
+            const t = translations[currentLang];
+
+            try {
+                // --- File Deletion Logic ---
+                const fileDeletionPromises = [];
+
+                // 1. Prepare to delete documents
+                if (currentEmployee.documents_urls && currentEmployee.documents_urls.length > 0) {
+                    const documentPaths = currentEmployee.documents_urls.map(url => {
+                        try {
+                            const path = new URL(url).pathname;
+                            return path.substring(path.indexOf('/documents/') + '/documents/'.length);
+                        } catch { return null; }
+                    }).filter(Boolean);
+
+                    if (documentPaths.length > 0) {
+                        fileDeletionPromises.push(supabaseClient.storage.from('documents').remove(documentPaths));
+                    }
+                }
+
+                // 2. Prepare to delete avatar
+                if (currentEmployee.photo_url) {
+                    try {
+                        const path = new URL(currentEmployee.photo_url).pathname;
+                        const avatarPath = path.substring(path.indexOf('/avatars/') + '/avatars/'.length);
+                        fileDeletionPromises.push(supabaseClient.storage.from('avatars').remove([avatarPath]));
+                    } catch { /* Invalid URL, do nothing */ }
+                }
+                
+                await Promise.allSettled(fileDeletionPromises);
+
+                // --- Employee Record Deletion ---
+                const { error: dbError } = await supabaseClient.from('employees').delete().eq('id', currentEmployee.id);
+                if (dbError) throw dbError;
+
+                showToast(t.employee_deleted || 'فەرمانبەر سڕایەوە', 'success');
+                setTimeout(() => { window.location.href = 'farmanbar.html'; }, 1500);
+            } catch (error) {
+                console.error('Deletion process failed:', error);
+                showToast((t.error_deleting_employee || 'هەڵە لە سڕینەوەی فەرمانبەر: ') + error.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

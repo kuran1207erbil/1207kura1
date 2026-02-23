@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | 1207</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h2 data-lang-key="settings_title">ڕێکخستنەکان</h2>
+
+            <div class="setting-item">
+                <span id="theme-label" data-lang-key="dark_mode">دۆخی تاریک</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle" onchange="toggleTheme()" aria-labelledby="theme-label">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-item">
+                <label data-lang-key="language" for="language-select" style="margin-left: 10px;">زمان</label>
+                <select id="language-select" onchange="changeLanguage(this.value)" style="width: 120px;">
+                    <option value="ku">کوردی</option>
+                    <option value="ar">عەرەبی</option>
+                </select>
+            </div>
+
+            <div class="setting-item">
+                <span id="notif-label" data-lang-key="notifications">وەرگرتنی ئاگادارکردنەوەکان</span>
+                <label class="switch">
+                    <input type="checkbox" id="notif-toggle" onchange="toggleNotifications()" aria-labelledby="notif-label">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <a href="index.html" class="link" data-lang-key="back_home">گەڕانەوە بۆ سەرەتا</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

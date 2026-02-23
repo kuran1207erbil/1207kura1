@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بەڕێوەبردنی مۆڵەتەکان</title>
+    <!-- فایلی ستایلی گشتی -->
+    <link rel="stylesheet" href="../style.css">
+    <!-- فایلی ستایلی تایبەت بە فەرمانبەران (بۆ بەکارهێنانی هەندێک ستایلی هاوبەش) -->
+    <link rel="stylesheet" href="../farmanbar/farmanbar.css">
+    <!-- فایلی ستایلی تایبەت بەم لاپەڕەیە -->
+    <link rel="stylesheet" href="molat.css">
+    <!-- کتێبخانەی ئایکۆنەکان -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ئەمە پێکهاتەی سەرەکی داشبۆردەکەیە -->
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <ul class="nav-links">
+                <li><a href="../home.html"><i class="fas fa-th-large"></i><span data-lang-key="menu_dashboard">داشبۆرد</span></a></li>
+                <li><a href="../farmanbar/farmanbar.html"><i class="fas fa-users"></i><span data-lang-key="menu_staff">فەرمانبەرانی بنکە</span></a></li>
+                <li><a href="#" class="active"><i class="fas fa-calendar-minus"></i><span data-lang-key="menu_leaves">مۆڵەتەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-file-alt"></i><span data-lang-key="menu_letters">نوسراوەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-receipt"></i><span data-lang-key="menu_receipts">پسوولەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-folder-open"></i><span data-lang-key="menu_files">فایلی پێویست</span></a></li>
+                <li><a href="#"><i class="fas fa-boxes"></i><span data-lang-key="menu_assets">کەرەستە بەردەستەکان</span></a></li>
+                <li><a href="#"><i class="fas fa-chart-pie"></i><span data-lang-key="menu_reports">ڕاپۆرتی گشتی</span></a></li>
+                <li class="sidebar-footer-item">
+                    <a href="../settings.html"><i class="fas fa-cog"></i><span data-lang-key="settings_link">ڕێکخستنەکان</span></a>
+                </li>
+                <!-- Mobile Language Selector -->
+                <li class="sidebar-lang-section">
+                    <div class="sidebar-lang-title">
+                        <i class="fas fa-globe"></i>
+                        <span data-lang-key="language">زمان</span>
+                    </div>
+                    <div class="sidebar-lang-grid">
+                        <button onclick="selectLanguage('ku')" class="sidebar-lang-btn" id="sidebar-lang-ku">
+                            <span class="flag-icon flag-ku"></span> کوردی
+                        </button>
+                        <button onclick="selectLanguage('ar')" class="sidebar-lang-btn" id="sidebar-lang-ar">
+                            <span class="flag-icon flag-ar"></span> عربي
+                        </button>
+                    </div>
+                </li>
+                <li>
+                    <a href="../index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i><span data-lang-key="logout">چوونە دەرەوە</span></a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="sidebar-overlay"></div>
+
+        <!-- ناوەڕۆکی سەرەکی -->
+        <main class="main-content">
+            <!-- سەروتار (Header) - لێرە دانراوە بۆ ئەوەی شێوەی گشتی وەک لاپەڕەکانی تر بێت -->
+            <header class="top-header">
+        <div class="header-left-section">
+            <button class="action-btn" id="sidebar-toggle" title="Open Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Logo in Header -->
+            <div class="header-logo-display">
+                <img src="../assests/icon.png" class="header-logo-img" alt="Logo">
+                <h2>1207 کوران1</h2>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <!-- Theme Toggle -->
+            <button class="action-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fas fa-sun"></i>
+            </button>
+            
+            <!-- Language Dropdown -->
+            <div class="custom-dropdown">
+                <button class="lang-btn dropdown-btn" onclick="toggleLanguageDropdown()">
+                    <span class="flag-icon flag-ku" id="current-flag"></span>
+                    <span id="current-lang-text">کوردی</span>
+                    <i class="fas fa-chevron-down chevron"></i>
+                </button>
+                <div class="dropdown-content header-lang-dropdown" id="dropdown-options">
+                    <div class="dropdown-item" onclick="selectLanguage('ku')">
+                        <span class="flag-icon flag-ku"></span> کوردی
+                    </div>
+                    <div class="dropdown-item" onclick="selectLanguage('ar')">
+                        <span class="flag-icon flag-ar"></span> عربي
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile Display -->
+            <div class="user-profile-display">
+                <div class="profile-icon-wrapper">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="online-dot" id="online-indicator"></span>
+                </div>
+                <span class="user-email-text" id="user-email">...</span>
+            </div>
+        </div>
+    </header>
+
+            <!-- بەشی ناوەڕۆکی لاپەڕەی مۆڵەتەکان -->
+            <div class="leaves-page-content">
+                <!-- تووڵامرازی سەرەوە (Toolbar) -->
+                <div class="page-toolbar">
+                    <div class="toolbar-left">
+                        <div class="search-box">
+                            <input type="text" id="search-leaves-input" placeholder="گەڕان بەدوای مۆڵەت...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button class="filter-btn" id="open-filter-modal-btn" title="فلتەر">
+                            <i class="fas fa-filter"></i>
+                            <span>فلتەر</span>
+                        </button>
+                    </div>
+                    <button class="add-btn" id="add-leave-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>زیادکردنی مۆڵەت</span>
+                    </button>
+                </div>
+
+                <!-- شوێنی پیشاندانی کارتی مۆڵەتەکان -->
+                <div class="leaves-grid" id="leaves-grid">
+                    <!-- کارتی مۆڵەتەکان لێرە بە شێوەی داینامیکی زیاد دەبن -->
+                    <!-- نموونەی کارتێک (بۆ ڕوونکردنەوەی پێکهاتەی نوێ)
+                    <div class="leave-card">
+                        <div class="card-header">
+                            <h3>مەبەست وریا قادر صابر</h3>
+                        </div>
+                        <span class="leave-type daily">ڕۆژانە</span>
+                        <div class="card-body">
+                            <p><i class="fas fa-calendar-alt"></i> 2024-07-15</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <!-- پەیامی "هیچ مۆڵەتێک نەدۆزرایەوە" -->
+                <div id="no-leaves-message" class="no-data-message">
+                    <i class="fas fa-folder-open"></i>
+                    <p>هیچ مۆڵەتێک تۆمار نەکراوە.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- مۆداڵ بۆ زیادکردن و دەستکاریکردنی مۆڵەت -->
+    <div id="leave-modal" class="modal custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">زیادکردنی مۆڵەت</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="leave-form">
+                    <!-- ئەم ئینپوتە شاراوەیە بۆ هەڵگرتنی IDی مۆڵەت لە کاتی دەستکاریکردن -->
+                    <input type="hidden" id="leave-id">
+                    
+                    <div class="compact-grid">
+                        <!-- ناوی فەرمانبەر - هەموو پانییەکە دەگرێت -->
+                        <div class="input-group span-full">
+                            <label for="employee-select">ناوی فەرمانبەر</label>
+                            <select id="employee-select" required>
+                                <option value="" disabled selected>فەرمانبەرێک هەڵبژێرە...</option>
+                                <!-- ناوی فەرمانبەران لێرە لە داتابەیسەوە پڕ دەکرێتەوە -->
+                            </select>
+                        </div>
+
+                        <!-- جۆری مۆڵەت -->
+                        <div class="input-group">
+                            <label for="leave-type-select">جۆری مۆڵەت</label>
+                            <select id="leave-type-select" required>
+                                <option value="daily">ڕۆژانە</option>
+                                <option value="hourly">کاتی</option>
+                                <option value="disease">نەخۆشیی</option>
+                                <option value="motherhood">دایکایەتی</option>
+                                <option value="long-term">درێژخایەن</option>
+                                <option value="travel">گەشت</option>
+                            </select>
+                        </div>
+
+                        <!-- مێژووی مۆڵەت -->
+                        <div class="input-group">
+                            <label for="leave-date">مێژووی مۆڵەت</label>
+                            <input type="date" id="leave-date" required>
+                        </div>
+
+                        <!-- بەشی بارکردنی فایل (PDF) -->
+                        <div class="input-group span-full">
+                            <label for="leave-document">وێنەی مۆڵەت (PDF)</label>
+                            <div class="file-upload-wrapper compact" id="file-upload-area">
+                                <input type="file" id="leave-document" accept=".pdf">
+                                <div class="file-upload-box">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>فایلەکە لێرە دابنێ</p>
+                                    <span id="file-name-display"></span>
+                                </div>
+                            </div>
+                            <!-- لینکی پیشاندانی فایلی ئێستا لە کاتی دەستکاریکردن -->
+                            <a href="#" id="current-file-link" target="_blank" class="current-file-link">سەیرکردنی فایلی ئێستا</a>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn">پاشگەزبوونەوە</button>
+                        <button type="submit" class="save-btn" id="save-leave-btn">تۆمارکردن</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- مۆداڵی فلتەرکردن -->
+    <div id="filter-modal" class="modal custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="filter-modal-title">فلتەرکردنی مۆڵەتەکان</h3>
+                <span class="close-modal" id="close-filter-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="filter-form">
+                    <div class="compact-grid">
+                        <!-- ناوی فەرمانبەر -->
+                        <div class="input-group span-full">
+                            <label for="filter-employee-select">ناوی فەرمانبەر</label>
+                            <select id="filter-employee-select">
+                                <option value="">هەموو فەرمانبەران</option>
+                                <!-- لێرە بە داینامیکی پڕ دەکرێتەوە -->
+                            </select>
+                        </div>
+
+                        <!-- جۆری مۆڵەت -->
+                        <div class="input-group span-full">
+                            <label for="filter-leave-type-select">جۆری مۆڵەت</label>
+                            <select id="filter-leave-type-select">
+                                <option value="">هەموو جۆرەکان</option>
+                                <option value="daily">ڕۆژانە</option>
+                                <option value="hourly">کاتی</option>
+                                <option value="disease">نەخۆشیی</option>
+                                <option value="motherhood">دایکایەتی</option>
+                                <option value="long-term">درێژخایەن</option>
+                                <option value="travel">گەشت</option>
+                            </select>
+                        </div>
+
+                        <!-- بەرواری دەستپێک -->
+                        <div class="input-group"><label for="filter-start-date">لەم بەروارەوە</label><input type="date" id="filter-start-date"></div>
+                        <!-- بەرواری کۆتایی -->
+                        <div class="input-group"><label for="filter-end-date">تا ئەم بەروارە</label><input type="date" id="filter-end-date"></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" id="reset-filter-btn">سڕینەوەی فلتەر</button>
+                        <button type="submit" class="save-btn">جێبەجێکردن</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- مۆداڵی دڵنیابوونەوەی سڕینەوە -->
+    <div id="confirm-delete-modal" class="modal custom-modal">
+        <div class="modal-content small-modal">
+            <div class="modal-body modal-body-center">
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <h3>دڵنیایت لە سڕینەوە؟</h3>
+                <p class="delete-confirmation-text">
+                    ئەم کردارە پاشگەزبوونەوەی نییە و فایلەکەش لە گوگڵ درایڤ دەسڕێتەوە.
+                </p>
+                <div class="modal-footer modal-footer-center">
+                    <button type="button" class="cancel-btn" id="cancel-delete-btn">پاشگەزبوونەوە</button>
+                    <button type="button" class="save-btn danger" id="confirm-delete-action-btn">بەڵێ، بیسڕەوە</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شوێنی پیشاندانی پەیامەکان (Toast) -->
+    <div id="toast-container"></div>
+
+    <!-- کتێبخانەی سوپابەیس -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- فایلی سکریپتی گشتی -->
+    <script src="../script.js"></script>
+    <!-- فایلی سکریپتی تایبەت بەم لاپەڕەیە -->
+    <script src="molat.js"></script>
+    <script src="../translations.js"></script>
+</body>
+</html>
