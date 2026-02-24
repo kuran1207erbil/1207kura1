@@ -1,4 +1,4 @@
-const CACHE_NAME = '1207-app-v9'; // وەشانی کاشەکەمان بەرزکردەوە
+const CACHE_NAME = '1207-app-v12'; // وەشانی کاشەکەمان بەرزکردەوە
 const urlsToCache = [
   './',
   'home.html',
@@ -9,6 +9,8 @@ const urlsToCache = [
   // زیادکردنی لاپەڕە و فایلە گرنگەکانی تر
   'farmanbar/farmanbar.html',
   'farmanbar/farmanbar.css',
+  'farmanbar/profile.html',
+  'farmanbar/profile.css',
   'molat/molat.html',
   'molat/molat.css',
   'molat/molat.js',
@@ -47,10 +49,31 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // ئەم ستراتیجییە پێی دەوترێت "Stale-While-Revalidate"
+  // واتا: "کۆنەکە بەکاربهێنە لەکاتێکدا نوێکە دادەبەزێنیت"
+  // ئەمە وا دەکات ئەپەکە زۆر خێرا بێت و لە هەمان کاتدا داتاکانی نوێ بن.
+
+  // تەنها داواکارییەکانی GET کاش دەکەین، بۆ ئەوەی داتاکانی سوپابەیسیش پاشەکەوت بکرێن
+  if (event.request.method !== 'GET') {
+    return; // با وەک خۆی کار بکات و کاش نەکرێت
+  }
+
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        return response || fetch(event.request);
-      })
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(event.request).then((cachedResponse) => {
+        // لە هەمان کاتدا، داواکارییەک بۆ نێتۆرک دەنێرین بۆ هێنانی وەشانی نوێ
+        const fetchPromise = fetch(event.request).then((networkResponse) => {
+          // ئەگەر وەڵامێکی دروستمان وەرگرت، کاشەکە نوێ دەکەینەوە
+          if (networkResponse && networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        });
+
+        // وەشانی کاشکراو دەگەڕێنینەوە ئەگەر هەبوو (بۆ خێرایی)
+        // ئەگەر نەبوو، چاوەڕێی وەڵامی نێتۆرکەکە دەکەین
+        return cachedResponse || fetchPromise;
+      });
+    })
   );
 });
