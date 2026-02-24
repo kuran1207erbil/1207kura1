@@ -1,4 +1,4 @@
-const CACHE_NAME = '1207-app-v8'; // وەشانی کاشەکەمان بەرزکردەوە
+const CACHE_NAME = '1207-app-v9'; // وەشانی کاشەکەمان بەرزکردەوە
 const urlsToCache = [
   './',
   'home.html',
