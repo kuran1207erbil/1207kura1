@@ -4,6 +4,12 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPwWdNC1lNYZ
 
 // ئەم فایلە لۆجیکی تایبەت بە لاپەڕەی نوسراوەکان (Nwsraw)ی تێدایە
 
+// Helper function to get translation
+function getTrans(key) {
+    const lang = localStorage.getItem('language') || 'ku';
+    return translations[lang][key] || key;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // پشکنینی دۆخی چوونەژوورەوەی بەکارهێنەر
     const { data: { user } } = await supabaseClient.auth.getUser();
@@ -128,12 +134,12 @@ function setupRealtimeSubscription() {
 function openModalForAdd() {
     const modal = document.getElementById('letter-dialog');
     document.getElementById('letter-dialog-form').reset();
-    document.getElementById('dialog-title').innerText = 'زیادکردنی نوسراو';
+    document.getElementById('dialog-title').innerText = getTrans('add_letter_title');
     document.getElementById('letter-id').value = '';
     document.getElementById('dialog-header-icon').className = 'fas fa-plus';
     document.getElementById('file-name-display').textContent = '';
     document.getElementById('current-file-link').style.display = 'none';
-    document.getElementById('save-dialog-btn').innerHTML = 'تۆمارکردن';
+    document.getElementById('save-dialog-btn').innerHTML = getTrans('save_btn');
     modal.style.display = 'flex';
 }
 
@@ -142,7 +148,7 @@ function openModalForEdit(letter) {
     document.getElementById('letter-dialog-form').reset();
     
     // نوێکردنەوەی سەردێڕ و ئایکۆن
-    document.getElementById('dialog-title').innerText = 'دەستکاریکردنی نوسراو';
+    document.getElementById('dialog-title').innerText = getTrans('edit_letter_title');
     document.getElementById('dialog-header-icon').className = 'fas fa-pen';
     
     document.getElementById('letter-id').value = letter.id;
@@ -161,7 +167,7 @@ function openModalForEdit(letter) {
     }
 
     document.getElementById('file-name-display').textContent = '';
-    document.getElementById('save-dialog-btn').innerHTML = 'نوێکردنەوە';
+    document.getElementById('save-dialog-btn').innerHTML = getTrans('update_btn');
     modal.style.display = 'flex';
 }
 
@@ -212,8 +218,8 @@ function createLetterCard(letter) {
     card.dataset.id = letter.id;
 
     const typeConfig = {
-        'incoming': { text: 'وەرگرتە', icon: 'fa-arrow-down', class: 'incoming' },
-        'outgoing': { text: 'دەرکردە', icon: 'fa-arrow-up', class: 'outgoing' }
+        'incoming': { text: getTrans('letter_type_incoming'), icon: 'fa-arrow-down', class: 'incoming' },
+        'outgoing': { text: getTrans('letter_type_outgoing'), icon: 'fa-arrow-up', class: 'outgoing' }
     };
     const config = typeConfig[letter.letter_type] || { text: 'نادیار', icon: 'fa-question', class: '' };
 
@@ -260,7 +266,7 @@ function openViewModal(letter) {
     // Set styles based on type
     const isIncoming = letter.letter_type === 'incoming';
     const typeClass = isIncoming ? 'incoming' : 'outgoing';
-    const typeText = isIncoming ? 'وەرگرتە' : 'دەرکردە';
+    const typeText = isIncoming ? getTrans('letter_type_incoming') : getTrans('letter_type_outgoing');
     const iconClass = isIncoming ? 'fa-arrow-down' : 'fa-arrow-up';
 
     // Header
@@ -283,7 +289,7 @@ function openViewModal(letter) {
         notesElement.textContent = letter.notes;
         notesElement.style.color = 'var(--text-color)';
     } else {
-        notesElement.textContent = 'هیچ تێبینییەک نییە';
+        notesElement.textContent = getTrans('no_notes');
         notesElement.style.color = 'var(--text-color-light)';
     }
 
@@ -352,11 +358,11 @@ async function handleFormSubmit(e) {
         if (isEditing) {
             const { error } = await supabaseClient.from('letters').update(letterData).eq('id', letterId);
             if (error) throw error;
-            showToast('نوسراو نوێکرایەوە', 'success');
+            showToast(getTrans('letter_updated_success'), 'success');
         } else {
             const { error } = await supabaseClient.from('letters').insert([letterData]);
             if (error) throw error;
-            showToast('نوسراو زیادکرا', 'success');
+            showToast(getTrans('letter_added_success'), 'success');
         }
 
         document.getElementById('letter-dialog').style.display = 'none';
@@ -393,7 +399,7 @@ async function deleteLetter(id, fileId) {
             const { error } = await supabaseClient.from('letters').delete().eq('id', id);
             if (error) throw error;
 
-            showToast('نوسراو سڕایەوە', 'success');
+            showToast(getTrans('letter_deleted_success'), 'success');
             const cardToRemove = document.querySelector(`.letter-card[data-id='${id}']`);
             if (cardToRemove) {
                 cardToRemove.classList.add('fading-out');
@@ -415,7 +421,7 @@ async function deleteLetter(id, fileId) {
 
 function viewDocument(fileId) {
     if (!fileId) {
-        showToast('هیچ فایلێک نییە', 'info');
+        showToast(getTrans('no_file_attached'), 'info');
         return;
     }
     window.open(`https://drive.google.com/file/d/${fileId}/view`, '_blank');

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بەڕێوەبردنی نوسراوەکان</title>
+    <title data-lang-key="letters_page_title">بەڕێوەبردنی نوسراوەکان</title>
     <!-- فایلی ستایلی گشتی -->
     <link rel="stylesheet" href="../style.css">
     <!-- فایلی ستایلی تایبەت بە فەرمانبەران (بۆ بەکارهێنانی هەندێک ستایلی هاوبەش) -->
@@ -97,17 +97,17 @@
                 <div class="page-toolbar">
                     <div class="toolbar-left">
                         <div class="search-box">
-                            <input type="text" id="search-letters-input" placeholder="گەڕان بەدوای نوسراو...">
+                            <input type="text" id="search-letters-input" placeholder="گەڕان بەدوای نوسراو..." data-lang-key="search_letters_placeholder">
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="filter-btn" id="open-filter-modal-btn" title="فلتەر">
                             <i class="fas fa-filter"></i>
-                            <span>فلتەر</span>
+                            <span data-lang-key="filter_btn">فلتەر</span>
                         </button>
                     </div>
                     <button class="add-btn" id="add-letter-btn">
                         <i class="fas fa-plus"></i>
-                        <span>زیادکردنی نوسراو</span>
+                        <span data-lang-key="add_letter_btn">زیادکردنی نوسراو</span>
                     </button>
                 </div>
 
@@ -116,7 +116,7 @@
                 </div>
                 <div id="no-letters-message" class="no-data-message">
                     <i class="fas fa-folder-open"></i>
-                    <p>هیچ نوسراوێک تۆمار نەکراوە.</p>
+                    <p data-lang-key="no_letters_found">هیچ نوسراوێک تۆمار نەکراوە.</p>
                 </div>
             </div>
         </main>
@@ -130,8 +130,8 @@
                     <i class="fas fa-plus" id="dialog-header-icon"></i>
                 </div>
                 <div class="dialog-header-text">
-                    <h3 id="dialog-title">زیادکردنی نوسراو</h3>
-                    <span class="dialog-subtitle">فۆڕمی تۆمارکردن</span>
+                    <h3 id="dialog-title" data-lang-key="add_letter_title">زیادکردنی نوسراو</h3>
+                    <span class="dialog-subtitle" data-lang-key="letter_form_subtitle">فۆڕمی تۆمارکردن</span>
                 </div>
                 <button class="dialog-close-btn" id="close-dialog-btn" title="داخستن" aria-label="داخستن">
                     <i class="fas fa-times"></i>
@@ -142,51 +142,51 @@
                     <input type="hidden" id="letter-id">
 
                     <div class="dialog-form-group">
-                        <label for="letter-title"><i class="fas fa-heading"></i> ناونیشانی نوسراو (بابەت)</label>
-                        <input type="text" id="letter-title" required placeholder="بابەتی نوسراو بنووسە...">
+                        <label for="letter-title"><i class="fas fa-heading"></i> <span data-lang-key="letter_title_label">ناونیشانی نوسراو (بابەت)</span></label>
+                        <input type="text" id="letter-title" required placeholder="بابەتی نوسراو بنووسە..." data-lang-key="letter_title_placeholder">
                     </div>
 
                     <div class="dialog-grid-2">
                         <div class="dialog-form-group">
-                            <label for="letter-number"><i class="fas fa-hashtag"></i> ژمارەی نوسراو</label>
+                            <label for="letter-number"><i class="fas fa-hashtag"></i> <span data-lang-key="letter_number_label">ژمارەی نوسراو</span></label>
                             <input type="text" id="letter-number" required>
                         </div>
                         <div class="dialog-form-group">
-                            <label for="letter-type"><i class="fas fa-info-circle"></i> جۆری نوسراو</label>
+                            <label for="letter-type"><i class="fas fa-info-circle"></i> <span data-lang-key="letter_type_label">جۆری نوسراو</span></label>
                             <select id="letter-type" required>
-                                <option value="incoming">وەرگرتە</option>
-                                <option value="outgoing">دەرکردە</option>
+                                <option value="incoming" data-lang-key="letter_type_incoming">وەرگرتە</option>
+                                <option value="outgoing" data-lang-key="letter_type_outgoing">دەرکردە</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="dialog-form-group">
-                        <label for="letter-date"><i class="far fa-calendar-alt"></i> مێژووی نوسراو</label>
+                        <label for="letter-date"><i class="far fa-calendar-alt"></i> <span data-lang-key="letter_date_label">مێژووی نوسراو</span></label>
                         <input type="date" id="letter-date" required>
                     </div>
 
                     <div class="dialog-form-group">
-                        <label for="letter-notes"><i class="fas fa-sticky-note"></i> تێبینی</label>
+                        <label for="letter-notes"><i class="fas fa-sticky-note"></i> <span data-lang-key="letter_notes_label">تێبینی</span></label>
                         <textarea id="letter-notes" rows="3"></textarea>
                     </div>
 
                     <div class="dialog-form-group">
-                        <label for="letter-document"><i class="fas fa-paperclip"></i> وێنەی نوسراو (PDF)</label>
+                        <label for="letter-document"><i class="fas fa-paperclip"></i> <span data-lang-key="letter_document_label">وێنەی نوسراو (PDF)</span></label>
                         <div class="file-upload-wrapper compact" id="file-upload-area">
                             <input type="file" id="letter-document" accept=".pdf">
                             <div class="file-upload-box">
                                 <i class="fas fa-cloud-upload-alt"></i>
-                                <p>فایلەکە لێرە دابنێ</p>
+                                <p data-lang-key="file_upload_text">فایلەکە لێرە دابنێ</p>
                                 <span id="file-name-display"></span>
                             </div>
                         </div>
-                        <a href="#" id="current-file-link" target="_blank" class="current-file-link">سەیرکردنی فایلی ئێستا</a>
+                        <a href="#" id="current-file-link" target="_blank" class="current-file-link" data-lang-key="view_current_file">سەیرکردنی فایلی ئێستا</a>
                     </div>
                 </form>
             </div>
             <div class="dialog-footer">
-                <button type="button" class="dialog-cancel-btn" id="cancel-dialog-btn">پاشگەزبوونەوە</button>
-                <button type="submit" form="letter-dialog-form" class="dialog-save-btn" id="save-dialog-btn">تۆمارکردن</button>
+                <button type="button" class="dialog-cancel-btn" id="cancel-dialog-btn" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                <button type="submit" form="letter-dialog-form" class="dialog-save-btn" id="save-dialog-btn" data-lang-key="save_btn">تۆمارکردن</button>
             </div>
         </div>
     </div>
@@ -195,7 +195,7 @@
     <div id="filter-modal" class="modal custom-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="filter-modal-title">فلتەرکردنی نوسراوەکان</h3>
+                <h3 id="filter-modal-title" data-lang-key="filter_modal_title">فلتەرکردنی نوسراوەکان</h3>
                 <span class="close-modal" id="close-filter-modal">&times;</span>
             </div>
             <div class="modal-body">
@@ -203,23 +203,23 @@
                     <div class="compact-grid">
                         <!-- جۆری نوسراو -->
                         <div class="input-group span-full">
-                            <label for="filter-letter-type">جۆری نوسراو</label>
+                            <label for="filter-letter-type" data-lang-key="letter_type_label">جۆری نوسراو</label>
                             <select id="filter-letter-type">
-                                <option value="">هەموو جۆرەکان</option>
-                                <option value="incoming">وەرگرتە</option>
-                                <option value="outgoing">دەرکردە</option>
+                                <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
+                                <option value="incoming" data-lang-key="letter_type_incoming">وەرگرتە</option>
+                                <option value="outgoing" data-lang-key="letter_type_outgoing">دەرکردە</option>
                             </select>
                         </div>
 
                         <!-- بەرواری دەستپێک -->
-                        <div class="input-group"><label for="filter-start-date">لەم بەروارەوە</label><input type="date" id="filter-start-date"></div>
+                        <div class="input-group"><label for="filter-start-date" data-lang-key="filter_start_date">لەم بەروارەوە</label><input type="date" id="filter-start-date"></div>
                         <!-- بەرواری کۆتایی -->
-                        <div class="input-group"><label for="filter-end-date">تا ئەم بەروارە</label><input type="date" id="filter-end-date"></div>
+                        <div class="input-group"><label for="filter-end-date" data-lang-key="filter_end_date">تا ئەم بەروارە</label><input type="date" id="filter-end-date"></div>
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="cancel-btn" id="reset-filter-btn">سڕینەوەی فلتەر</button>
-                        <button type="submit" class="save-btn">جێبەجێکردن</button>
+                        <button type="button" class="cancel-btn" id="reset-filter-btn" data-lang-key="reset_filter">سڕینەوەی فلتەر</button>
+                        <button type="submit" class="save-btn" data-lang-key="apply_filter">جێبەجێکردن</button>
                     </div>
                 </form>
             </div>
@@ -244,24 +244,24 @@
             <div class="modal-body-modern">
                 <div class="info-row-modern">
                     <div class="info-box-modern">
-                        <span class="label"><i class="fas fa-hashtag"></i> ژمارە</span>
+                        <span class="label"><i class="fas fa-hashtag"></i> <span data-lang-key="letter_number">ژمارە</span></span>
                         <span class="value" id="view-letter-number"></span>
                     </div>
                     <div class="info-box-modern">
-                        <span class="label"><i class="far fa-calendar-alt"></i> بەروار</span>
+                        <span class="label"><i class="far fa-calendar-alt"></i> <span data-lang-key="letter_date">بەروار</span></span>
                         <span class="value" id="view-letter-date"></span>
                     </div>
                 </div>
                 
                 <div class="notes-section-modern">
-                    <span class="label"><i class="fas fa-sticky-note"></i> تێبینی</span>
+                    <span class="label"><i class="fas fa-sticky-note"></i> <span data-lang-key="letter_notes_label">تێبینی</span></span>
                     <div class="notes-content" id="view-letter-notes"></div>
                 </div>
             </div>
             <div class="modal-footer-modern">
                 <button type="button" class="view-file-btn" id="view-pdf-btn">
                     <i class="fas fa-file-pdf"></i>
-                    <span>بینینی فایل</span>
+                    <span data-lang-key="view_file_btn">بینینی فایل</span>
                 </button>
             </div>
             </div>
@@ -273,13 +273,13 @@
         <div class="modal-content small-modal">
             <div class="modal-body modal-body-center">
                 <i class="fas fa-exclamation-triangle warning-icon"></i>
-                <h3>دڵنیایت لە سڕینەوە؟</h3>
-                <p class="delete-confirmation-text">
+                <h3 data-lang-key="delete_confirmation_title">دڵنیایت لە سڕینەوە؟</h3>
+                <p class="delete-confirmation-text" data-lang-key="delete_confirmation_text">
                     ئەم کردارە پاشگەزبوونەوەی نییە و فایلەکەش لە گوگڵ درایڤ دەسڕێتەوە.
                 </p>
                 <div class="modal-footer modal-footer-center">
-                    <button type="button" class="cancel-btn" id="cancel-delete-btn">پاشگەزبوونەوە</button>
-                    <button type="button" class="save-btn danger" id="confirm-delete-action-btn">بەڵێ، بیسڕەوە</button>
+                    <button type="button" class="cancel-btn" id="cancel-delete-btn" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                    <button type="button" class="save-btn danger" id="confirm-delete-action-btn" data-lang-key="confirm_delete_btn">بەڵێ، بیسڕەوە</button>
                 </div>
             </div>
         </div>
