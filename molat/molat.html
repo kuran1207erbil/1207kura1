@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بەڕێوەبردنی مۆڵەتەکان</title>
+    <title data-lang-key="leaves_page_title">بەڕێوەبردنی مۆڵەتەکان</title>
     <!-- فایلی ستایلی گشتی -->
     <link rel="stylesheet" href="../style.css">
     <!-- فایلی ستایلی تایبەت بە فەرمانبەران (بۆ بەکارهێنانی هەندێک ستایلی هاوبەش) -->
@@ -109,17 +109,17 @@
                 <div class="page-toolbar">
                     <div class="toolbar-left">
                         <div class="search-box">
-                            <input type="text" id="search-leaves-input" placeholder="گەڕان بەدوای مۆڵەت...">
+                            <input type="text" id="search-leaves-input" placeholder="گەڕان بەدوای مۆڵەت..." data-lang-key="search_leaves_placeholder">
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="filter-btn" id="open-filter-modal-btn" title="فلتەر">
                             <i class="fas fa-filter"></i>
-                            <span>فلتەر</span>
+                            <span data-lang-key="filter_btn">فلتەر</span>
                         </button>
                     </div>
                     <button class="add-btn" id="add-leave-btn">
                         <i class="fas fa-plus"></i>
-                        <span>زیادکردنی مۆڵەت</span>
+                        <span data-lang-key="add_leave_btn">زیادکردنی مۆڵەت</span>
                     </button>
                 </div>
 
@@ -146,7 +146,7 @@
                 <!-- پەیامی "هیچ مۆڵەتێک نەدۆزرایەوە" -->
                 <div id="no-leaves-message" class="no-data-message">
                     <i class="fas fa-folder-open"></i>
-                    <p>هیچ مۆڵەتێک تۆمار نەکراوە.</p>
+                    <p data-lang-key="no_leaves_found">هیچ مۆڵەتێک تۆمار نەکراوە.</p>
                 </div>
             </div>
         </main>
@@ -156,7 +156,7 @@
     <div id="leave-modal" class="modal custom-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-title">زیادکردنی مۆڵەت</h3>
+                <h3 id="modal-title" data-lang-key="add_leave_title">زیادکردنی مۆڵەت</h3>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
@@ -167,51 +167,51 @@
                     <div class="compact-grid">
                         <!-- ناوی فەرمانبەر - هەموو پانییەکە دەگرێت -->
                         <div class="input-group span-full">
-                            <label for="employee-select">ناوی فەرمانبەر</label>
+                            <label for="employee-select" data-lang-key="employee_name_label">ناوی فەرمانبەر</label>
                             <select id="employee-select" required>
-                                <option value="" disabled selected>فەرمانبەرێک هەڵبژێرە...</option>
+                                <option value="" disabled selected data-lang-key="select_employee_placeholder">فەرمانبەرێک هەڵبژێرە...</option>
                                 <!-- ناوی فەرمانبەران لێرە لە داتابەیسەوە پڕ دەکرێتەوە -->
                             </select>
                         </div>
 
                         <!-- جۆری مۆڵەت -->
                         <div class="input-group">
-                            <label for="leave-type-select">جۆری مۆڵەت</label>
+                            <label for="leave-type-select" data-lang-key="leave_type_label">جۆری مۆڵەت</label>
                             <select id="leave-type-select" required>
-                                <option value="daily">ڕۆژانە</option>
-                                <option value="hourly">کاتی</option>
-                                <option value="disease">نەخۆشیی</option>
-                                <option value="motherhood">دایکایەتی</option>
-                                <option value="long-term">درێژخایەن</option>
-                                <option value="travel">گەشت</option>
+                                <option value="daily" data-lang-key="leave_type_daily">ڕۆژانە</option>
+                                <option value="hourly" data-lang-key="leave_type_hourly">کاتی</option>
+                                <option value="disease" data-lang-key="leave_type_disease">نەخۆشیی</option>
+                                <option value="motherhood" data-lang-key="leave_type_motherhood">دایکایەتی</option>
+                                <option value="long-term" data-lang-key="leave_type_long_term">درێژخایەن</option>
+                                <option value="travel" data-lang-key="leave_type_travel">گەشت</option>
                             </select>
                         </div>
 
                         <!-- مێژووی مۆڵەت -->
                         <div class="input-group">
-                            <label for="leave-date">مێژووی مۆڵەت</label>
+                            <label for="leave-date" data-lang-key="leave_date_label">مێژووی مۆڵەت</label>
                             <input type="date" id="leave-date" required>
                         </div>
 
                         <!-- بەشی بارکردنی فایل (PDF) -->
                         <div class="input-group span-full">
-                            <label for="leave-document">وێنەی مۆڵەت (PDF)</label>
+                            <label for="leave-document" data-lang-key="leave_document_label">وێنەی مۆڵەت (PDF)</label>
                             <div class="file-upload-wrapper compact" id="file-upload-area">
                                 <input type="file" id="leave-document" accept=".pdf">
                                 <div class="file-upload-box">
                                     <i class="fas fa-cloud-upload-alt"></i>
-                                    <p>فایلەکە لێرە دابنێ</p>
+                                    <p data-lang-key="file_upload_text">فایلەکە لێرە دابنێ</p>
                                     <span id="file-name-display"></span>
                                 </div>
                             </div>
                             <!-- لینکی پیشاندانی فایلی ئێستا لە کاتی دەستکاریکردن -->
-                            <a href="#" id="current-file-link" target="_blank" class="current-file-link">سەیرکردنی فایلی ئێستا</a>
+                            <a href="#" id="current-file-link" target="_blank" class="current-file-link" data-lang-key="view_current_file">سەیرکردنی فایلی ئێستا</a>
                         </div>
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="cancel-btn">پاشگەزبوونەوە</button>
-                        <button type="submit" class="save-btn" id="save-leave-btn">تۆمارکردن</button>
+                        <button type="button" class="cancel-btn" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                        <button type="submit" class="save-btn" id="save-leave-btn" data-lang-key="save_btn">تۆمارکردن</button>
                     </div>
                 </form>
             </div>
@@ -222,7 +222,7 @@
     <div id="filter-modal" class="modal custom-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="filter-modal-title">فلتەرکردنی مۆڵەتەکان</h3>
+                <h3 id="filter-modal-title" data-lang-key="filter_leaves_title">فلتەرکردنی مۆڵەتەکان</h3>
                 <span class="close-modal" id="close-filter-modal">&times;</span>
             </div>
             <div class="modal-body">
@@ -230,36 +230,36 @@
                     <div class="compact-grid">
                         <!-- ناوی فەرمانبەر -->
                         <div class="input-group span-full">
-                            <label for="filter-employee-select">ناوی فەرمانبەر</label>
+                            <label for="filter-employee-select" data-lang-key="employee_name_label">ناوی فەرمانبەر</label>
                             <select id="filter-employee-select">
-                                <option value="">هەموو فەرمانبەران</option>
+                                <option value="" data-lang-key="filter_all_employees">هەموو فەرمانبەران</option>
                                 <!-- لێرە بە داینامیکی پڕ دەکرێتەوە -->
                             </select>
                         </div>
 
                         <!-- جۆری مۆڵەت -->
                         <div class="input-group span-full">
-                            <label for="filter-leave-type-select">جۆری مۆڵەت</label>
+                            <label for="filter-leave-type-select" data-lang-key="leave_type_label">جۆری مۆڵەت</label>
                             <select id="filter-leave-type-select">
-                                <option value="">هەموو جۆرەکان</option>
-                                <option value="daily">ڕۆژانە</option>
-                                <option value="hourly">کاتی</option>
-                                <option value="disease">نەخۆشیی</option>
-                                <option value="motherhood">دایکایەتی</option>
-                                <option value="long-term">درێژخایەن</option>
-                                <option value="travel">گەشت</option>
+                                <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
+                                <option value="daily" data-lang-key="leave_type_daily">ڕۆژانە</option>
+                                <option value="hourly" data-lang-key="leave_type_hourly">کاتی</option>
+                                <option value="disease" data-lang-key="leave_type_disease">نەخۆشیی</option>
+                                <option value="motherhood" data-lang-key="leave_type_motherhood">دایکایەتی</option>
+                                <option value="long-term" data-lang-key="leave_type_long_term">درێژخایەن</option>
+                                <option value="travel" data-lang-key="leave_type_travel">گەشت</option>
                             </select>
                         </div>
 
                         <!-- بەرواری دەستپێک -->
-                        <div class="input-group"><label for="filter-start-date">لەم بەروارەوە</label><input type="date" id="filter-start-date"></div>
+                        <div class="input-group"><label for="filter-start-date" data-lang-key="filter_start_date">لەم بەروارەوە</label><input type="date" id="filter-start-date"></div>
                         <!-- بەرواری کۆتایی -->
-                        <div class="input-group"><label for="filter-end-date">تا ئەم بەروارە</label><input type="date" id="filter-end-date"></div>
+                        <div class="input-group"><label for="filter-end-date" data-lang-key="filter_end_date">تا ئەم بەروارە</label><input type="date" id="filter-end-date"></div>
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="cancel-btn" id="reset-filter-btn">سڕینەوەی فلتەر</button>
-                        <button type="submit" class="save-btn">جێبەجێکردن</button>
+                        <button type="button" class="cancel-btn" id="reset-filter-btn" data-lang-key="reset_filter">سڕینەوەی فلتەر</button>
+                        <button type="submit" class="save-btn" data-lang-key="apply_filter">جێبەجێکردن</button>
                     </div>
                 </form>
             </div>
@@ -271,13 +271,13 @@
         <div class="modal-content small-modal">
             <div class="modal-body modal-body-center">
                 <i class="fas fa-exclamation-triangle warning-icon"></i>
-                <h3>دڵنیایت لە سڕینەوە؟</h3>
-                <p class="delete-confirmation-text">
+                <h3 data-lang-key="delete_confirmation_title">دڵنیایت لە سڕینەوە؟</h3>
+                <p class="delete-confirmation-text" data-lang-key="delete_confirmation_text">
                     ئەم کردارە پاشگەزبوونەوەی نییە و فایلەکەش لە گوگڵ درایڤ دەسڕێتەوە.
                 </p>
                 <div class="modal-footer modal-footer-center">
-                    <button type="button" class="cancel-btn" id="cancel-delete-btn">پاشگەزبوونەوە</button>
-                    <button type="button" class="save-btn danger" id="confirm-delete-action-btn">بەڵێ، بیسڕەوە</button>
+                    <button type="button" class="cancel-btn" id="cancel-delete-btn" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                    <button type="button" class="save-btn danger" id="confirm-delete-action-btn" data-lang-key="confirm_delete_btn">بەڵێ، بیسڕەوە</button>
                 </div>
             </div>
         </div>

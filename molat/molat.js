@@ -5,6 +5,12 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7nm9h0G_5Eh
 
 // ئەم فایلە لۆجیکی تایبەت بە لاپەڕەی مۆڵەتەکانی تێدایە
 
+// Helper function to get translation
+function getTrans(key) {
+    const lang = localStorage.getItem('language') || 'ku';
+    return translations[lang][key] || key;
+}
+
 // دڵنیابوونەوە لەوەی کە DOM بە تەواوی بارکراوە
 document.addEventListener('DOMContentLoaded', async () => {
     // پشکنینی دۆخی چوونەژوورەوەی بەکارهێنەر
@@ -172,11 +178,11 @@ function setupRealtimeSubscription() {
 function openModalForAdd() {
     const modal = document.getElementById('leave-modal');
     document.getElementById('leave-form').reset(); // پاککردنەوەی فۆڕمەکە
-    document.getElementById('modal-title').innerText = 'زیادکردنی مۆڵەت';
+    document.getElementById('modal-title').innerText = getTrans('add_leave_title');
     document.getElementById('leave-id').value = ''; // دڵنیابوونەوە لەوەی ID بەتاڵە
     document.getElementById('file-name-display').textContent = '';
     document.getElementById('current-file-link').style.display = 'none';
-    document.getElementById('save-leave-btn').innerText = 'تۆمارکردن';
+    document.getElementById('save-leave-btn').innerText = getTrans('save_btn');
     modal.style.display = 'flex';
 }
 
@@ -187,7 +193,7 @@ function openModalForAdd() {
 async function openModalForEdit(leave) {
     const modal = document.getElementById('leave-modal');
     document.getElementById('leave-form').reset();
-    document.getElementById('modal-title').innerText = 'دەستکاریکردنی مۆڵەت';
+    document.getElementById('modal-title').innerText = getTrans('edit_leave_title');
     
     // پڕکردنەوەی فۆڕمەکە بە داتای مۆڵەتەکە
     document.getElementById('leave-id').value = leave.id;
@@ -208,7 +214,7 @@ async function openModalForEdit(leave) {
     }
 
     document.getElementById('file-name-display').textContent = '';
-    document.getElementById('save-leave-btn').innerText = 'نوێکردنەوە';
+    document.getElementById('save-leave-btn').innerText = getTrans('update_btn');
     modal.style.display = 'flex';
 }
 
@@ -228,8 +234,8 @@ async function fetchEmployees() {
         if (error) throw error;
 
         // پاککردنەوەی لیستەکە پێش پڕکردنەوە
-        employeeSelect.innerHTML = '<option value="" disabled selected>فەرمانبەرێک هەڵبژێرە...</option>';
-        filterEmployeeSelect.innerHTML = '<option value="">هەموو فەرمانبەران</option>';
+        employeeSelect.innerHTML = `<option value="" disabled selected>${getTrans('select_employee_placeholder')}</option>`;
+        filterEmployeeSelect.innerHTML = `<option value="">${getTrans('filter_all_employees')}</option>`;
         
         employees.forEach(emp => {
             const option = document.createElement('option');
@@ -241,8 +247,8 @@ async function fetchEmployees() {
         });
 
     } catch (error) {
-        console.error('هەڵە لە هێنانی فەرمانبەران:', error);
-        showToast('هەڵەیەک ڕوویدا لە کاتی هێنانی لیستی فەرمانبەران', 'error');
+        console.error(getTrans('error_fetching_employees'), error);
+        showToast(getTrans('error_fetching_employees'), 'error');
     }
 }
 
@@ -314,10 +320,10 @@ async function fetchLeaves() {
         leavesGrid.innerHTML = `
             <div class="content-loader">
                 <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 15px; color: var(--danger-color);"></i>
-                <p>هەڵەیەک لە هێنانی مۆڵەتەکان ڕوویدا</p>
+                <p>${getTrans('error_fetching_leaves')}</p>
             </div>
         `;
-        showToast('هەڵەیەک ڕوویدا لە کاتی هێنانی مۆڵەتەکان', 'error');
+        showToast(getTrans('error_fetching_leaves'), 'error');
     }
 }
 
@@ -333,19 +339,19 @@ function createLeaveCard(leave) {
 
     // پێناسەکردنی ئایکۆن و دەق بۆ هەر جۆرە مۆڵەتێک
     const leaveConfig = {
-        'daily': { text: 'ڕۆژانە', icon: 'fa-sun' },
-        'hourly': { text: 'کاتی', icon: 'fa-clock' },
-        'disease': { text: 'نەخۆشی', icon: 'fa-procedures' },
-        'motherhood': { text: 'دایکایەتی', icon: 'fa-baby' },
-        'long-term': { text: 'درێژخایەن', icon: 'fa-calendar-week' },
-        'travel': { text: 'گەشت', icon: 'fa-plane' }
+        'daily': { text: getTrans('leave_type_daily'), icon: 'fa-sun' },
+        'hourly': { text: getTrans('leave_type_hourly'), icon: 'fa-clock' },
+        'disease': { text: getTrans('leave_type_disease'), icon: 'fa-procedures' },
+        'motherhood': { text: getTrans('leave_type_motherhood'), icon: 'fa-baby' },
+        'long-term': { text: getTrans('leave_type_long_term'), icon: 'fa-calendar-week' },
+        'travel': { text: getTrans('leave_type_travel'), icon: 'fa-plane' }
     };
 
     const config = leaveConfig[leave.leave_type] || { text: 'نادیار', icon: 'fa-question-circle' };
 
     card.innerHTML = `
         <div class="card-header">
-            <h3>${leave.employees.full_name || 'ناوی فەرمانبەر نییە'}</h3>
+            <h3>${leave.employees.full_name || getTrans('employee_name_not_found')}</h3>
         </div>
         <span class="leave-type ${leave.leave_type}"><i class="fas ${config.icon}"></i> ${config.text}</span>
         <div class="card-body">
@@ -444,21 +450,21 @@ async function handleFormSubmit(e) {
                 .update(leaveData)
                 .eq('id', leaveId);
             if (error) throw error;
-            showToast('مۆڵەتەکە بە سەرکەوتوویی نوێکرایەوە', 'success');
+            showToast(getTrans('leave_updated_success'), 'success');
         } else {
             // زیادکردنی مۆڵەتێکی نوێ
             const { error } = await supabaseClient
                 .from('leaves')
                 .insert([leaveData]);
             if (error) throw error;
-            showToast('مۆڵەت بە سەرکەوتوویی زیادکرا', 'success');
+            showToast(getTrans('leave_added_success'), 'success');
         }
 
         document.getElementById('leave-modal').style.display = 'none';
         fetchLeaves(); // دووبارە بارکردنەوەی لیستەکە
 
     } catch (error) {
-        console.error('هەڵە لە پرۆسەی تۆمارکردن:', error);
+        console.error(getTrans('error_label') + error.message, error);
         showToast(`هەڵەیەک ڕوویدا: ${error.message}`, 'error');
     } finally {
         saveBtn.disabled = false;
@@ -514,7 +520,7 @@ async function executeDelete(id, fileId) {
 
         if (dbError) throw dbError;
 
-        showToast('مۆڵەتەکە بە سەرکەوتوویی سڕایەوە', 'success');
+        showToast(getTrans('leave_deleted_success'), 'success');
 
         // ئەنیمەیشنی سڕینەوە لەجیاتی بارکردنەوەی هەموو لاپەڕەکە
         const cardToRemove = document.querySelector(`.leave-card[data-id='${id}']`);
@@ -533,8 +539,8 @@ async function executeDelete(id, fileId) {
         }
 
     } catch (error) {
-        console.error('هەڵە لە سڕینەوەی مۆڵەت:', error);
-        showToast(`هەڵەیەک ڕوویدا: ${error.message}`, 'error');
+        console.error(getTrans('error_label') + error.message, error);
+        showToast(`${getTrans('error_label')}: ${error.message}`, 'error');
     }
 }
 
@@ -544,7 +550,7 @@ async function executeDelete(id, fileId) {
  */
 function viewDocument(fileId) {
     if (!fileId) {
-        showToast('هیچ فایلێک بۆ ئەم مۆڵەتە بارنەکراوە', 'info');
+        showToast(getTrans('no_leave_document'), 'info');
         return;
     }
     // دروستکردنی لینکی بینینی فایل و کردنەوەی لە تابێکی نوێ
