@@ -6,7 +6,15 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7nm9h0G_5Eh
 // ئەم فایلە لۆجیکی تایبەت بە لاپەڕەی مۆڵەتەکانی تێدایە
 
 // دڵنیابوونەوە لەوەی کە DOM بە تەواوی بارکراوە
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // پشکنینی دۆخی چوونەژوورەوەی بەکارهێنەر
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) {
+        // ئەگەر بەکارهێنەر لۆگین نەبووبوو، ڕەوانەی لاپەڕەی چوونەژوورەوەی بکە
+        window.location.href = '../index.html'; 
+        return; // ڕاگرتنی جێبەجێکردنی کۆدەکانی تر
+    }
+
     // ناساندنی توخمە سەرەکییەکانی UI
     const addLeaveBtn = document.getElementById('add-leave-btn');
     const modal = document.getElementById('leave-modal');

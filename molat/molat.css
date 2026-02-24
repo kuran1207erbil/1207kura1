@@ -280,6 +280,17 @@
     background: var(--input-bg);
 }
 
+.input-group textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+}
+
 /* ستایلی بەشی بارکردنی فایل */
 .file-upload-wrapper.compact {
     border: 2px dashed var(--input-border);
@@ -405,6 +416,13 @@ body.dark-mode #reset-filter-btn {
     .toolbar-left {
         width: 100%;
     }
+    /* کردنی فۆڕمەکە بە یەک ستوون لەسەر مۆبایل بۆ جوانی و گەورەیی */
+    .compact-grid {
+        grid-template-columns: 1fr;
+    }
+    .span-full {
+        grid-column: auto;
+    }
 }
 
 /* ئەنیمەیشنی کردنەوەی مۆداڵ */
@@ -434,5 +452,470 @@ body.dark-mode #reset-filter-btn {
         padding: 0;
         margin: 0;
         border: 0;
+    }
+}
+
+/* --- Modern View Modal Styles --- */
+.view-modal-modern .modal-content {
+    max-width: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+    background: var(--card-bg);
+}
+
+.modal-header-modern {
+    padding: 20px 20px 10px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
+}
+
+.header-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.header-icon-wrapper.incoming { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+.header-icon-wrapper.outgoing { background: rgba(231, 76, 60, 0.1); color: #e74c3c; }
+
+.header-text {
+    flex: 1;
+    padding-top: 2px;
+}
+
+.header-text h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.status-badge.incoming { background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+.status-badge.outgoing { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+
+.close-btn-modern {
+    background: transparent;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.close-btn-modern:hover { color: var(--text-color); }
+
+.modal-body-modern {
+    padding: 10px 20px 20px 20px;
+}
+
+.info-row-modern {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-box-modern {
+    background: var(--input-bg);
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid var(--input-border);
+}
+
+.info-box-modern .label, .notes-section-modern .label {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.info-box-modern .value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.notes-section-modern {
+    background: var(--input-bg);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--input-border);
+}
+
+.notes-content {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    white-space: pre-wrap;
+    min-height: 40px;
+}
+
+.modal-footer-modern {
+    padding: 0 20px 20px 20px;
+}
+
+.view-file-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.view-file-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+}
+
+.view-file-btn:active {
+    transform: scale(0.98);
+}
+
+/* --- Modern Letter Card Styles --- */
+
+.leaves-grid {
+    /* Responsive grid for wider cards */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.letter-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: cardFadeIn 0.5s ease-out forwards;
+    cursor: pointer;
+    min-height: 60px;
+}
+
+@media (hover: hover) {
+    .letter-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: var(--primary-color);
+    }
+}
+
+.letter-card:active {
+    transform: scale(0.98);
+}
+
+.letter-card.fading-out {
+    animation: cardFadeOut 0.4s ease-out forwards !important;
+}
+
+.letter-status-line {
+    width: 5px;
+    flex-shrink: 0;
+}
+.letter-status-line.incoming { background-color: #2ecc71; }
+.letter-status-line.outgoing { background-color: #e74c3c; }
+
+.letter-content {
+    flex: 1;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.letter-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.letter-icon.incoming { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+.letter-icon.outgoing { background: rgba(231, 76, 60, 0.1); color: #e74c3c; }
+
+.letter-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.letter-details h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.letter-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-color-light);
+}
+
+.meta-type {
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+.meta-type.incoming { color: #2ecc71; }
+.meta-type.outgoing { color: #e74c3c; }
+
+.letter-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 2px;
+    background: rgba(0,0,0,0.02);
+    border-right: 1px solid var(--input-border);
+}
+
+.letter-actions .action-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 0.8rem;
+    background: transparent;
+    color: var(--text-color-light);
+    border-radius: 6px;
+}
+
+.letter-actions .action-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.letter-actions .action-btn.delete-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+@media (max-width: 480px) {
+    .leaves-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Letter Dialog Styles (Rewritten) --- */
+#letter-dialog .dialog-content {
+    max-width: 360px; /* کەمکردنەوەی پانی بۆ کۆمپاکت بوون */
+    max-height: 90vh; /* دیاریکردنی بەرزترین قەبارە بۆ ئەوەی لە شاشە دەرنەچێت */
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+    background: var(--card-bg);
+    animation: modalFadeIn 0.3s ease-out;
+    display: flex; /* بەکارهێنانی فلێکس بۆ ڕێکخستنی ناوەڕۆک */
+    flex-direction: column; /* ڕێکخستنی ستوونی */
+}
+
+#letter-dialog .dialog-header {
+    padding: 12px 15px 5px 15px; /* کەمکردنەوەی بۆشایی سەرەوە */
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex-shrink: 0; /* ڕێگری لە بچووکبوونەوەی هێدەر */
+    position: relative;
+}
+
+#letter-dialog .dialog-icon-wrapper {
+    width: 36px; /* بچووککردنەوەی ئایکۆن */
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    background: rgba(74, 144, 226, 0.1);
+    color: var(--primary-color);
+}
+
+#letter-dialog .dialog-header-text h3 {
+    margin: 0 0 6px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+#letter-dialog .dialog-subtitle {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: rgba(0,0,0,0.05);
+    color: var(--text-color-light);
+}
+
+body.dark-mode #letter-dialog .dialog-subtitle {
+    background: rgba(255,255,255,0.1);
+}
+
+#letter-dialog .dialog-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+#letter-dialog .dialog-close-btn:hover { color: var(--text-color); }
+
+#letter-dialog .dialog-body {
+    padding: 5px 15px 10px 15px;
+    overflow-y: auto; /* زیادکردنی سکڕۆڵ ئەگەر پێویست بوو */
+    flex-grow: 1; /* ڕێگەدان بە گەورەبوونی بۆ پڕکردنەوەی بۆشایی */
+}
+
+#letter-dialog .dialog-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; /* کەمکردنەوەی بۆشایی نێوان خانەکان */
+}
+
+/* ستایلی تایبەت و کۆمپاکت بۆ خانەکانی فۆڕم */
+#letter-dialog .dialog-form-group {
+    margin-bottom: 8px;
+}
+
+#letter-dialog .dialog-form-group label {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+#letter-dialog .dialog-form-group input,
+#letter-dialog .dialog-form-group select,
+#letter-dialog .dialog-form-group textarea {
+    width: 100%;
+    padding: 8px 10px; /* کەمکردنەوەی پادینگی ناو خانەکان */
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    font-size: 0.9rem;
+    color: var(--text-color);
+    transition: border-color 0.2s;
+}
+
+#letter-dialog .dialog-form-group textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+/* بچووککردنەوەی بەشی فایل */
+#letter-dialog .file-upload-wrapper.compact {
+    padding: 10px;
+}
+
+#letter-dialog .file-upload-wrapper.compact .file-upload-box i {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+#letter-dialog .file-upload-wrapper.compact .file-upload-box p {
+    font-size: 0.75rem;
+}
+
+#letter-dialog .dialog-footer {
+    padding: 0 15px 12px 15px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 8px;
+    flex-shrink: 0; /* ڕێگری لە بچووکبوونەوەی فووتەر */
+}
+
+#letter-dialog .dialog-cancel-btn, 
+#letter-dialog .dialog-save-btn {
+    width: 100%;
+    padding: 9px; /* کەمکردنەوەی بەرزی دوگمەکان */
+    border-radius: 10px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#letter-dialog .dialog-cancel-btn {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+}
+
+#letter-dialog .dialog-save-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+#letter-dialog .dialog-save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+}
+
+#letter-dialog .dialog-save-btn:active {
+    transform: scale(0.98);
+}
+
+/* ڕێکخستن بۆ مۆبایل */
+@media (max-width: 480px) {
+    #letter-dialog .dialog-grid-2 {
+        grid-template-columns: 1fr; /* لەسەر مۆبایل دەبنە یەک ستوون */
     }
 }

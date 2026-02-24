@@ -1,4 +1,4 @@
-const CACHE_NAME = '1207-app-v12'; // وەشانی کاشەکەمان بەرزکردەوە
+const CACHE_NAME = '1207-app-v28'; // وەشانی کاشەکەمان بەرزکردەوە بۆ زامنکردنی نوێبوونەوە
 const urlsToCache = [
   './',
   'home.html',
@@ -14,6 +14,8 @@ const urlsToCache = [
   'molat/molat.html',
   'molat/molat.css',
   'molat/molat.js',
+  'molat/nwsraw.html',
+  'molat/nwsraw.js', // ڕاستکردنەوەی ناونیشانی فایل بۆ شوێنی دروست
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' // زیادکردنی فۆنتەکان بۆ ئۆفلاین
 ];
 
@@ -49,31 +51,22 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // ئەم ستراتیجییە پێی دەوترێت "Stale-While-Revalidate"
-  // واتا: "کۆنەکە بەکاربهێنە لەکاتێکدا نوێکە دادەبەزێنیت"
-  // ئەمە وا دەکات ئەپەکە زۆر خێرا بێت و لە هەمان کاتدا داتاکانی نوێ بن.
-
-  // تەنها داواکارییەکانی GET کاش دەکەین، بۆ ئەوەی داتاکانی سوپابەیسیش پاشەکەوت بکرێن
   if (event.request.method !== 'GET') {
-    return; // با وەک خۆی کار بکات و کاش نەکرێت
+    return;
   }
 
   event.respondWith(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then((cachedResponse) => {
-        // لە هەمان کاتدا، داواکارییەک بۆ نێتۆرک دەنێرین بۆ هێنانی وەشانی نوێ
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          // ئەگەر وەڵامێکی دروستمان وەرگرت، کاشەکە نوێ دەکەینەوە
-          if (networkResponse && networkResponse.status === 200) {
-            cache.put(event.request, networkResponse.clone());
-          }
-          return networkResponse;
-        });
-
-        // وەشانی کاشکراو دەگەڕێنینەوە ئەگەر هەبوو (بۆ خێرایی)
-        // ئەگەر نەبوو، چاوەڕێی وەڵامی نێتۆرکەکە دەکەین
-        return cachedResponse || fetchPromise;
+    // ستراتیجی "Network First": سەرەتا هەوڵی هێنانی لە نێتۆرک دەدات
+    fetch(event.request).then(networkResponse => {
+      // ئەگەر سەرکەوتوو بوو، کاشەکە نوێ دەکەینەوە و وەڵامەکە دەگەڕێنینەوە
+      const responseToCache = networkResponse.clone();
+      caches.open(CACHE_NAME).then(cache => {
+        cache.put(event.request, responseToCache);
       });
+      return networkResponse;
+    }).catch(() => {
+      // ئەگەر نێتۆرک شکستی هێنا (بۆ نموونە ئۆفلاین بوو)، هەوڵدەدات لە کاش بیهێنێت
+      return caches.match(event.request);
     })
   );
 });
