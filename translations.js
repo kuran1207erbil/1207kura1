@@ -249,7 +249,9 @@ const translations = {
         filter_files_title: "فلتەرکردنی فایلەکان",
         file_added_success: "فایل زیادکرا",
         file_updated_success: "فایل نوێکرایەوە",
-        file_deleted_success: "فایل سڕایەوە"
+        file_deleted_success: "فایل سڕایەوە",
+        wargrtaradast: "وەرگرتن / ڕادەستکردن",
+        mozaf: "ناو / ناونیشان / بەڵگەنامە",
     },
     ar: {
         login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
@@ -451,7 +453,7 @@ const translations = {
         leave_deleted_success: "تم حذف الإجازة بنجاح",
         no_leave_document: "لا يوجد مستند مرفق لهذه الإجازة",
         employee_name_not_found: "اسم الموظف غير موجود",
-        leaves_subtitle: "يومية / ساعات / مرضية",
+        leaves_subtitle: "يومية / زمنیە / مرضية",
 
         // Receipts (Pswla) Translations - Arabic
         receipts_page_title: "إدارة الوصولات",
@@ -479,6 +481,8 @@ const translations = {
         receipt_updated_success: "تم تحديث الوصل",
         receipt_deleted_success: "تم حذف الوصل",
         view_receipt_details_title: "تفاصيل الوصل",
+        wargrtaradast: "تسليم / استلام",
+        mozaf: "اسم / عنوان / مستند",
 
         // Files (Pewist) Translations - Arabic
         files_page_title: "الملفات الضرورية",
