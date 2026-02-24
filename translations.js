@@ -229,7 +229,27 @@ const translations = {
         receipt_added_success: "پسوولە زیادکرا",
         receipt_updated_success: "پسوولە نوێکرایەوە",
         receipt_deleted_success: "پسوولە سڕایەوە",
-        view_receipt_details_title: "وردەکاری پسوولە"
+        view_receipt_details_title: "وردەکاری پسوولە",
+
+        // Files (Pewist) Translations - Kurdish
+        files_page_title: "فایلی پێویست",
+        search_files_placeholder: "گەڕان بەدوای فایل...",
+        add_file_btn: "زیادکردنی فایل",
+        no_files_found: "هیچ فایلێک تۆمار نەکراوە.",
+        add_file_title: "زیادکردنی فایل",
+        edit_file_title: "دەستکاریکردنی فایل",
+        file_form_subtitle: "فۆڕمی تۆمارکردن",
+        file_title_label: "ناونیشانی فایل",
+        file_type_label: "جۆری فایل",
+        file_type_excel: "Excel",
+        file_type_powerpoint: "PowerPoint",
+        file_type_pdf: "PDF",
+        file_type_word: "Word",
+        file_document_label: "فایلەکە هەڵبژێرە",
+        filter_files_title: "فلتەرکردنی فایلەکان",
+        file_added_success: "فایل زیادکرا",
+        file_updated_success: "فایل نوێکرایەوە",
+        file_deleted_success: "فایل سڕایەوە"
     },
     ar: {
         login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
@@ -458,6 +478,26 @@ const translations = {
         receipt_added_success: "تم إضافة الوصل",
         receipt_updated_success: "تم تحديث الوصل",
         receipt_deleted_success: "تم حذف الوصل",
-        view_receipt_details_title: "تفاصيل الوصل"
+        view_receipt_details_title: "تفاصيل الوصل",
+
+        // Files (Pewist) Translations - Arabic
+        files_page_title: "الملفات الضرورية",
+        search_files_placeholder: "البحث عن ملف...",
+        add_file_btn: "إضافة ملف",
+        no_files_found: "لا توجد ملفات مسجلة.",
+        add_file_title: "إضافة ملف",
+        edit_file_title: "تعديل الملف",
+        file_form_subtitle: "نموذج التسجيل",
+        file_title_label: "عنوان الملف",
+        file_type_label: "نوع الملف",
+        file_type_excel: "Excel",
+        file_type_powerpoint: "PowerPoint",
+        file_type_pdf: "PDF",
+        file_type_word: "Word",
+        file_document_label: "اختر الملف",
+        filter_files_title: "تصفية الملفات",
+        file_added_success: "تم إضافة الملف",
+        file_updated_success: "تم تحديث الملف",
+        file_deleted_success: "تم حذف الملف"
     }
 };
