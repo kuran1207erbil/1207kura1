@@ -1,16 +1,15 @@
-<!-- molat/nwsraw.html -->
 <!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-lang-key="letters_page_title">بەڕێوەبردنی نوسراوەکان</title>
+    <title data-lang-key="receipts_page_title">بەڕێوەبردنی پسوولەکان</title>
     <!-- فایلی ستایلی گشتی -->
     <link rel="stylesheet" href="../style.css">
     <!-- فایلی ستایلی تایبەت بە فەرمانبەران (بۆ بەکارهێنانی هەندێک ستایلی هاوبەش) -->
     <link rel="stylesheet" href="../farmanbar/farmanbar.css">
     <!-- فایلی ستایلی تایبەت بەم بەشە (هاوبەش لەگەڵ مۆڵەت) -->
-    <link rel="stylesheet" href="molat.css?v=28">
+    <link rel="stylesheet" href="molat.css?v=32">
     <!-- کتێبخانەی ئایکۆنەکان -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="apple-touch-icon" href="../assests/icon.png">
@@ -22,8 +21,8 @@
                 <li><a href="../home.html"><i class="fas fa-th-large"></i><span data-lang-key="menu_dashboard">داشبۆرد</span></a></li>
                 <li><a href="../farmanbar/farmanbar.html"><i class="fas fa-users"></i><span data-lang-key="menu_staff">فەرمانبەرانی بنکە</span></a></li>
                 <li><a href="molat.html"><i class="fas fa-calendar-minus"></i><span data-lang-key="menu_leaves">مۆڵەتەکان</span></a></li>
-                <li><a href="#" class="active"><i class="fas fa-file-alt"></i><span data-lang-key="menu_letters">نوسراوەکان</span></a></li>
-                <li><a href="../molat/pswla.html"><i class="fas fa-receipt"></i><span data-lang-key="menu_receipts">پسوولەکان</span></a></li>
+                <li><a href="nwsraw.html"><i class="fas fa-file-alt"></i><span data-lang-key="menu_letters">نوسراوەکان</span></a></li>
+                <li><a href="#" class="active"><i class="fas fa-receipt"></i><span data-lang-key="menu_receipts">پسوولەکان</span></a></li>
                 <li><a href="#"><i class="fas fa-folder-open"></i><span data-lang-key="menu_files">فایلی پێویست</span></a></li>
                 <li><a href="#"><i class="fas fa-boxes"></i><span data-lang-key="menu_assets">کەرەستە بەردەستەکان</span></a></li>
                 <li><a href="#"><i class="fas fa-chart-pie"></i><span data-lang-key="menu_reports">ڕاپۆرتی گشتی</span></a></li>
@@ -97,7 +96,7 @@
                 <div class="page-toolbar">
                     <div class="toolbar-left">
                         <div class="search-box">
-                            <input type="text" id="search-letters-input" placeholder="گەڕان بەدوای نوسراو..." data-lang-key="search_letters_placeholder">
+                            <input type="text" id="search-receipts-input" placeholder="گەڕان بەدوای پسوولە..." data-lang-key="search_receipts_placeholder">
                             <i class="fas fa-search"></i>
                         </div>
                         <button class="filter-btn" id="open-filter-modal-btn" title="فلتەر">
@@ -105,75 +104,84 @@
                             <span data-lang-key="filter_btn">فلتەر</span>
                         </button>
                     </div>
-                    <button class="add-btn" id="add-letter-btn">
+                    <button class="add-btn" id="add-receipt-btn">
                         <i class="fas fa-plus"></i>
-                        <span data-lang-key="add_letter_btn">زیادکردنی نوسراو</span>
+                        <span data-lang-key="add_receipt_btn">زیادکردنی پسوولە</span>
                     </button>
                 </div>
 
-                <div class="leaves-grid" id="letters-grid">
-                    <!-- کارتی نوسراوەکان لێرە زیاد دەبن -->
+                <div class="leaves-grid" id="receipts-grid">
+                    <!-- کارتی پسوولەکان لێرە زیاد دەبن -->
                 </div>
-                <div id="no-letters-message" class="no-data-message">
+                <div id="no-receipts-message" class="no-data-message">
                     <i class="fas fa-folder-open"></i>
-                    <p data-lang-key="no_letters_found">هیچ نوسراوێک تۆمار نەکراوە.</p>
+                    <p data-lang-key="no_receipts_found">هیچ پسوولەیەک تۆمار نەکراوە.</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- مۆداڵ بۆ زیادکردن و دەستکاریکردنی نوسراو -->
-    <div id="letter-dialog" class="modal custom-modal">
+    <!-- مۆداڵ بۆ زیادکردن و دەستکاریکردنی پسوولە -->
+    <div id="receipt-dialog" class="modal custom-modal">
         <div class="dialog-content">
             <div class="dialog-header">
                 <div class="dialog-icon-wrapper">
                     <i class="fas fa-plus" id="dialog-header-icon"></i>
                 </div>
                 <div class="dialog-header-text">
-                    <h3 id="dialog-title" data-lang-key="add_letter_title">زیادکردنی نوسراو</h3>
-                    <span class="dialog-subtitle" data-lang-key="letter_form_subtitle">فۆڕمی تۆمارکردن</span>
+                    <h3 id="dialog-title" data-lang-key="add_receipt_title">زیادکردنی پسوولە</h3>
+                    <span class="dialog-subtitle" data-lang-key="receipt_form_subtitle">فۆڕمی تۆمارکردن</span>
                 </div>
                 <button class="dialog-close-btn" id="close-dialog-btn" title="داخستن" aria-label="داخستن">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="dialog-body">
-                <form id="letter-dialog-form">
-                    <input type="hidden" id="letter-id">
-
-                    <div class="dialog-form-group">
-                        <label for="letter-title"><i class="fas fa-heading"></i> <span data-lang-key="letter_title_label">ناونیشانی نوسراو (بابەت)</span></label>
-                        <input type="text" id="letter-title" required placeholder="بابەتی نوسراو بنووسە..." data-lang-key="letter_title_placeholder">
-                    </div>
+                <form id="receipt-dialog-form">
+                    <input type="hidden" id="receipt-id">
 
                     <div class="dialog-grid-2">
                         <div class="dialog-form-group">
-                            <label for="letter-number"><i class="fas fa-hashtag"></i> <span data-lang-key="letter_number_label">ژمارەی نوسراو</span></label>
-                            <input type="text" id="letter-number" required>
-                        </div>
-                        <div class="dialog-form-group">
-                            <label for="letter-type"><i class="fas fa-info-circle"></i> <span data-lang-key="letter_type_label">جۆری نوسراو</span></label>
-                            <select id="letter-type" required>
-                                <option value="incoming" data-lang-key="letter_type_incoming">وەرگرتە</option>
-                                <option value="outgoing" data-lang-key="letter_type_outgoing">دەرکردە</option>
+                            <label for="receipt-type"><i class="fas fa-info-circle"></i> <span data-lang-key="receipt_type_label">جۆری پسوولە</span></label>
+                            <select id="receipt-type" required>
+                                <option value="receiving" data-lang-key="receipt_type_receiving">وەرگرتن</option>
+                                <option value="handover" data-lang-key="receipt_type_handover">ڕادەستکردن</option>
                             </select>
                         </div>
+                        <div class="dialog-form-group">
+                            <label for="receipt-date"><i class="far fa-calendar-alt"></i> <span data-lang-key="receipt_date_label">مێژووی پسوولە</span></label>
+                            <input type="date" id="receipt-date" required>
+                        </div>
                     </div>
 
                     <div class="dialog-form-group">
-                        <label for="letter-date"><i class="far fa-calendar-alt"></i> <span data-lang-key="letter_date_label">مێژووی نوسراو</span></label>
-                        <input type="date" id="letter-date" required>
+                        <label for="receiver-name"><i class="fas fa-user"></i> <span data-lang-key="receiver_handover_label">وەرگر یان ڕادەستکەر</span></label>
+                        <select id="receiver-name" required>
+                            <option value="چەتۆ حسن حسین عزیز">چەتۆ حسن حسین عزیز</option>
+                            <option value="مەبەست وریا قادر صابر">مەبەست وریا قادر صابر</option>
+                        </select>
                     </div>
 
                     <div class="dialog-form-group">
-                        <label for="letter-notes"><i class="fas fa-sticky-note"></i> <span data-lang-key="letter_notes_label">تێبینی</span></label>
-                        <textarea id="letter-notes" rows="3"></textarea>
+                        <label for="related-to"><i class="fas fa-building"></i> <span data-lang-key="related_to_label">پسوولەی تایبەت بە</span></label>
+                        <select id="related-to" required>
+                            <option value="biometric" data-lang-key="related_to_biometric">کۆگای بایۆمەتری</option>
+                            <option value="silo" data-lang-key="related_to_silo">کۆگای سایلۆ</option>
+                            <option value="office" data-lang-key="related_to_office">کۆگای ئۆفیس</option>
+                            <option value="it" data-lang-key="related_to_it">هۆبەی IT</option>
+                            <option value="finance" data-lang-key="related_to_finance">هۆبەی دارایی</option>
+                        </select>
                     </div>
 
                     <div class="dialog-form-group">
-                        <label for="letter-document"><i class="fas fa-paperclip"></i> <span data-lang-key="letter_document_label">وێنەی نوسراو (PDF)</span></label>
+                        <label for="receipt-notes"><i class="fas fa-sticky-note"></i> <span data-lang-key="receipt_notes_label">تێبینی</span></label>
+                        <textarea id="receipt-notes" rows="3"></textarea>
+                    </div>
+
+                    <div class="dialog-form-group">
+                        <label for="receipt-document"><i class="fas fa-paperclip"></i> <span data-lang-key="receipt_document_label">وێنەی پسوولە (PDF)</span></label>
                         <div class="file-upload-wrapper compact" id="file-upload-area">
-                            <input type="file" id="letter-document" accept=".pdf">
+                            <input type="file" id="receipt-document" accept=".pdf">
                             <div class="file-upload-box">
                                 <i class="fas fa-cloud-upload-alt"></i>
                                 <p data-lang-key="file_upload_text">فایلەکە لێرە دابنێ</p>
@@ -186,7 +194,44 @@
             </div>
             <div class="dialog-footer">
                 <button type="button" class="dialog-cancel-btn" id="cancel-dialog-btn" data-lang-key="cancel">پاشگەزبوونەوە</button>
-                <button type="submit" form="letter-dialog-form" class="dialog-save-btn" id="save-dialog-btn" data-lang-key="save_btn">تۆمارکردن</button>
+                <button type="submit" form="receipt-dialog-form" class="dialog-save-btn" id="save-dialog-btn" data-lang-key="save_btn">تۆمارکردن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مۆداڵ بۆ پیشاندانی وردەکاری پسوولە -->
+    <div id="view-receipt-modal" class="modal custom-modal view-modal-modern">
+        <div class="modal-content">
+            <div class="modal-header-modern">
+                <div class="header-icon-wrapper" id="view-receipt-icon-wrapper">
+                    <i class="fas fa-receipt" id="view-receipt-icon"></i>
+                </div>
+                <div class="header-text">
+                    <h3 id="view-receipt-title"></h3>
+                    <span class="status-badge" id="view-receipt-type-badge"></span>
+                </div>
+                <button class="close-btn-modern" id="close-receipt-view-modal" title="داخستن" aria-label="داخستن">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-modern">
+                <div class="info-row-modern">
+                    <div class="info-box-modern">
+                        <span class="label"><i class="far fa-calendar-alt"></i> <span data-lang-key="receipt_date_label">مێژووی پسوولە</span></span>
+                        <span class="value" id="view-receipt-date"></span>
+                    </div>
+                    <div class="info-box-modern">
+                        <span class="label"><i class="fas fa-building"></i> <span data-lang-key="related_to_label">پسوولەی تایبەت بە</span></span>
+                        <span class="value" id="view-receipt-related-to"></span>
+                    </div>
+                </div>
+                <div class="notes-section-modern">
+                    <span class="label"><i class="fas fa-sticky-note"></i> <span data-lang-key="receipt_notes_label">تێبینی</span></span>
+                    <div class="notes-content" id="view-receipt-notes"></div>
+                </div>
+            </div>
+            <div class="modal-footer-modern">
+                <button type="button" class="view-file-btn" id="view-receipt-pdf-btn"><i class="fas fa-file-pdf"></i><span data-lang-key="view_file_btn">بینینی فایل</span></button>
             </div>
         </div>
     </div>
@@ -195,19 +240,19 @@
     <div id="filter-modal" class="modal custom-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="filter-modal-title" data-lang-key="filter_modal_title">فلتەرکردنی نوسراوەکان</h3>
+                <h3 id="filter-modal-title" data-lang-key="filter_receipts_title">فلتەرکردنی پسوولەکان</h3>
                 <span class="close-modal" id="close-filter-modal">&times;</span>
             </div>
             <div class="modal-body">
                 <form id="filter-form">
                     <div class="compact-grid">
-                        <!-- جۆری نوسراو -->
+                        <!-- جۆری پسوولە -->
                         <div class="input-group span-full">
-                            <label for="filter-letter-type" data-lang-key="letter_type_label">جۆری نوسراو</label>
-                            <select id="filter-letter-type">
+                            <label for="filter-receipt-type" data-lang-key="receipt_type_label">جۆری پسوولە</label>
+                            <select id="filter-receipt-type">
                                 <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
-                                <option value="incoming" data-lang-key="letter_type_incoming">وەرگرتە</option>
-                                <option value="outgoing" data-lang-key="letter_type_outgoing">دەرکردە</option>
+                                <option value="receiving" data-lang-key="receipt_type_receiving">وەرگرتن</option>
+                                <option value="handover" data-lang-key="receipt_type_handover">ڕادەستکردن</option>
                             </select>
                         </div>
 
@@ -222,48 +267,6 @@
                         <button type="submit" class="save-btn" data-lang-key="apply_filter">جێبەجێکردن</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- مۆداڵ بۆ پیشاندانی وردەکاری نوسراو -->
-        <div id="view-letter-modal" class="modal custom-modal view-modal-modern">
-        <div class="modal-content">
-            <div class="modal-header-modern">
-                <div class="header-icon-wrapper" id="view-header-icon-wrapper">
-                    <i class="fas fa-file-alt" id="view-header-icon"></i>
-                </div>
-                <div class="header-text">
-                    <h3 id="view-letter-title"></h3>
-                    <span class="status-badge" id="view-letter-type-badge"></span>
-                </div>
-                <button class="close-btn-modern" id="close-view-modal" title="داخستن" aria-label="داخستن">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body-modern">
-                <div class="info-row-modern">
-                    <div class="info-box-modern">
-                        <span class="label"><i class="fas fa-hashtag"></i> <span data-lang-key="letter_number">ژمارە</span></span>
-                        <span class="value" id="view-letter-number"></span>
-                    </div>
-                    <div class="info-box-modern">
-                        <span class="label"><i class="far fa-calendar-alt"></i> <span data-lang-key="letter_date">بەروار</span></span>
-                        <span class="value" id="view-letter-date"></span>
-                    </div>
-                </div>
-                
-                <div class="notes-section-modern">
-                    <span class="label"><i class="fas fa-sticky-note"></i> <span data-lang-key="letter_notes_label">تێبینی</span></span>
-                    <div class="notes-content" id="view-letter-notes"></div>
-                </div>
-            </div>
-            <div class="modal-footer-modern">
-                <button type="button" class="view-file-btn" id="view-pdf-btn">
-                    <i class="fas fa-file-pdf"></i>
-                    <span data-lang-key="view_file_btn">بینینی فایل</span>
-                </button>
-            </div>
             </div>
         </div>
     </div>
@@ -289,7 +292,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../script.js"></script>
-    <script src="nwsraw.js?v=28"></script>
+    <script src="pswla.js"></script>
     <script src="../translations.js"></script>
 </body>
 </html>

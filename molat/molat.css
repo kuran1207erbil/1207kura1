@@ -742,8 +742,9 @@ body.dark-mode #reset-filter-btn {
     }
 }
 
-/* --- Letter Dialog Styles (Rewritten) --- */
-#letter-dialog .dialog-content {
+/* --- Letter & Receipt Dialog Styles (Rewritten) --- */
+#letter-dialog .dialog-content,
+#receipt-dialog .dialog-content {
     max-width: 360px; /* کەمکردنەوەی پانی بۆ کۆمپاکت بوون */
     max-height: 90vh; /* دیاریکردنی بەرزترین قەبارە بۆ ئەوەی لە شاشە دەرنەچێت */
     border-radius: 20px;
@@ -755,7 +756,8 @@ body.dark-mode #reset-filter-btn {
     flex-direction: column; /* ڕێکخستنی ستوونی */
 }
 
-#letter-dialog .dialog-header {
+#letter-dialog .dialog-header,
+#receipt-dialog .dialog-header {
     padding: 12px 15px 5px 15px; /* کەمکردنەوەی بۆشایی سەرەوە */
     display: flex;
     align-items: flex-start;
@@ -764,7 +766,8 @@ body.dark-mode #reset-filter-btn {
     position: relative;
 }
 
-#letter-dialog .dialog-icon-wrapper {
+#letter-dialog .dialog-icon-wrapper,
+#receipt-dialog .dialog-icon-wrapper {
     width: 36px; /* بچووککردنەوەی ئایکۆن */
     height: 36px;
     border-radius: 8px;
@@ -777,14 +780,16 @@ body.dark-mode #reset-filter-btn {
     color: var(--primary-color);
 }
 
-#letter-dialog .dialog-header-text h3 {
+#letter-dialog .dialog-header-text h3,
+#receipt-dialog .dialog-header-text h3 {
     margin: 0 0 6px 0;
     font-size: 0.95rem;
     line-height: 1.4;
     color: var(--text-color);
 }
 
-#letter-dialog .dialog-subtitle {
+#letter-dialog .dialog-subtitle,
+#receipt-dialog .dialog-subtitle {
     display: inline-block;
     padding: 3px 8px;
     border-radius: 6px;
@@ -794,11 +799,13 @@ body.dark-mode #reset-filter-btn {
     color: var(--text-color-light);
 }
 
-body.dark-mode #letter-dialog .dialog-subtitle {
+body.dark-mode #letter-dialog .dialog-subtitle,
+body.dark-mode #receipt-dialog .dialog-subtitle {
     background: rgba(255,255,255,0.1);
 }
 
-#letter-dialog .dialog-close-btn {
+#letter-dialog .dialog-close-btn,
+#receipt-dialog .dialog-close-btn {
     background: transparent;
     border: none;
     color: var(--text-color-light);
@@ -811,26 +818,31 @@ body.dark-mode #letter-dialog .dialog-subtitle {
     left: 12px;
 }
 
-#letter-dialog .dialog-close-btn:hover { color: var(--text-color); }
+#letter-dialog .dialog-close-btn:hover,
+#receipt-dialog .dialog-close-btn:hover { color: var(--text-color); }
 
-#letter-dialog .dialog-body {
+#letter-dialog .dialog-body,
+#receipt-dialog .dialog-body {
     padding: 5px 15px 10px 15px;
     overflow-y: auto; /* زیادکردنی سکڕۆڵ ئەگەر پێویست بوو */
     flex-grow: 1; /* ڕێگەدان بە گەورەبوونی بۆ پڕکردنەوەی بۆشایی */
 }
 
-#letter-dialog .dialog-grid-2 {
+#letter-dialog .dialog-grid-2,
+#receipt-dialog .dialog-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px; /* کەمکردنەوەی بۆشایی نێوان خانەکان */
 }
 
 /* ستایلی تایبەت و کۆمپاکت بۆ خانەکانی فۆڕم */
-#letter-dialog .dialog-form-group {
+#letter-dialog .dialog-form-group,
+#receipt-dialog .dialog-form-group {
     margin-bottom: 8px;
 }
 
-#letter-dialog .dialog-form-group label {
+#letter-dialog .dialog-form-group label,
+#receipt-dialog .dialog-form-group label {
     font-size: 0.75rem;
     margin-bottom: 4px;
     display: flex;
@@ -842,7 +854,10 @@ body.dark-mode #letter-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-form-group input,
 #letter-dialog .dialog-form-group select,
-#letter-dialog .dialog-form-group textarea {
+#letter-dialog .dialog-form-group textarea,
+#receipt-dialog .dialog-form-group input,
+#receipt-dialog .dialog-form-group select,
+#receipt-dialog .dialog-form-group textarea {
     width: 100%;
     padding: 8px 10px; /* کەمکردنەوەی پادینگی ناو خانەکان */
     border-radius: 8px;
@@ -853,26 +868,31 @@ body.dark-mode #letter-dialog .dialog-subtitle {
     transition: border-color 0.2s;
 }
 
-#letter-dialog .dialog-form-group textarea {
+#letter-dialog .dialog-form-group textarea,
+#receipt-dialog .dialog-form-group textarea {
     min-height: 60px;
     resize: vertical;
 }
 
 /* بچووککردنەوەی بەشی فایل */
-#letter-dialog .file-upload-wrapper.compact {
+#letter-dialog .file-upload-wrapper.compact,
+#receipt-dialog .file-upload-wrapper.compact {
     padding: 10px;
 }
 
-#letter-dialog .file-upload-wrapper.compact .file-upload-box i {
+#letter-dialog .file-upload-wrapper.compact .file-upload-box i,
+#receipt-dialog .file-upload-wrapper.compact .file-upload-box i {
     font-size: 1.2rem;
     margin-bottom: 2px;
 }
 
-#letter-dialog .file-upload-wrapper.compact .file-upload-box p {
+#letter-dialog .file-upload-wrapper.compact .file-upload-box p,
+#receipt-dialog .file-upload-wrapper.compact .file-upload-box p {
     font-size: 0.75rem;
 }
 
-#letter-dialog .dialog-footer {
+#letter-dialog .dialog-footer,
+#receipt-dialog .dialog-footer {
     padding: 0 15px 12px 15px;
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -881,7 +901,9 @@ body.dark-mode #letter-dialog .dialog-subtitle {
 }
 
 #letter-dialog .dialog-cancel-btn, 
-#letter-dialog .dialog-save-btn {
+#letter-dialog .dialog-save-btn,
+#receipt-dialog .dialog-cancel-btn, 
+#receipt-dialog .dialog-save-btn {
     width: 100%;
     padding: 9px; /* کەمکردنەوەی بەرزی دوگمەکان */
     border-radius: 10px;
@@ -892,30 +914,35 @@ body.dark-mode #letter-dialog .dialog-subtitle {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-#letter-dialog .dialog-cancel-btn {
+#letter-dialog .dialog-cancel-btn,
+#receipt-dialog .dialog-cancel-btn {
     background: var(--input-bg);
     color: var(--text-color);
     border: 1px solid var(--input-border);
 }
 
-#letter-dialog .dialog-save-btn {
+#letter-dialog .dialog-save-btn,
+#receipt-dialog .dialog-save-btn {
     background: var(--primary-color);
     color: white;
     box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
 }
 
-#letter-dialog .dialog-save-btn:hover {
+#letter-dialog .dialog-save-btn:hover,
+#receipt-dialog .dialog-save-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
 }
 
-#letter-dialog .dialog-save-btn:active {
+#letter-dialog .dialog-save-btn:active,
+#receipt-dialog .dialog-save-btn:active {
     transform: scale(0.98);
 }
 
 /* ڕێکخستن بۆ مۆبایل */
 @media (max-width: 480px) {
-    #letter-dialog .dialog-grid-2 {
+    #letter-dialog .dialog-grid-2,
+    #receipt-dialog .dialog-grid-2 {
         grid-template-columns: 1fr; /* لەسەر مۆبایل دەبنە یەک ستوون */
     }
 }
