@@ -6,6 +6,8 @@
     <title>Dashboard | 1207</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assests/icon.png">
 </head>
 <body>
 
@@ -234,6 +236,65 @@
                 </a>
             </div>
         </main>
+    </div>
+
+    <!-- PWA Install Overlay -->
+    <div id="pwa-install-overlay" class="pwa-overlay"></div>
+
+    <!-- PWA Install Card (Custom Design) -->
+    <div id="pwa-install-card" class="pwa-card">
+        <div class="pwa-content">
+            <div class="pwa-icon-wrapper">
+                <img src="assests/icon.png" alt="App Icon">
+            </div>
+            <div class="pwa-text">
+                <h3 data-lang-key="titleinstall">دابەزاندنی ئەپڵیکەیشن</h3>
+                <p data-lang-key="paragraph">بۆ ئەزموونێکی باشتر و خێراتر، ئەپەکە دابەزێنە ناو مۆبایلەکەت.</p>
+            </div>
+        </div>
+        <div class="pwa-actions">
+            <button id="pwa-dismiss-btn" class="pwa-btn dismiss" data-lang-key="labrdn">دواتر</button>
+            <button id="pwa-install-btn" class="pwa-btn install" data-lang-key="install">دابەزاندن</button>
+        </div>
+    </div>
+
+    <!-- Update Notification Card -->
+    <div id="update-notification" class="update-card">
+        <div class="update-content">
+            <div class="update-icon">
+                <i class="fas fa-sync-alt fa-spin"></i>
+            </div>
+            <div class="update-text">
+                <h3 data-lang-key="update_available">وەشانێکی نوێ بەردەستە</h3>
+                <p data-lang-key="update_desc">گۆڕانکاری نوێ کراوە. تکایە نوێی بکەرەوە.</p>
+            </div>
+        </div>
+        <button id="update-now-btn" class="update-btn" data-lang-key="update_now">نوێکردنەوە</button>
+    </div>
+
+    <!-- iOS Install Instructions Modal -->
+    <div id="ios-install-modal" class="modal custom-modal">
+        <div class="modal-content small-modal">
+            <div class="modal-header">
+                <h3>چۆنیەتی دابەزاندن لەسەر ئایفۆن</h3>
+                <span class="close-modal" id="close-ios-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- تکایە وێنەیەکی ڕێنمایی بەم ناوەوە دروست بکە: assests/ios-install-guide.png -->
+                <img src="assests/ios-install-guide.png" alt="iOS Install Guide" class="ios-install-guide-img" onerror="this.style.display='none'">
+                <ol class="ios-instructions">
+                    <li>
+                        <i class="fas fa-share-square"></i>
+                        <span>دوگمەی <strong>Share</strong> لە خوارەوەی Safari دابگرە.</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-plus-square"></i>
+                        <span>لە لیستەکەدا <strong>Add to Home Screen</strong> هەڵبژێرە.</span>
+                    </li>
+                    <li><span>پاشان <strong>Add</strong> لە گۆشەی سەرەوەی ڕاست دابگرە.</span></li>
+                </ol>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

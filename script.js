@@ -82,6 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load User Info & Online Status
     checkUserSession();
     setupOnlineStatus();
+
+    // Initialize PWA Logic
+    initPWA();
 });
 
 function loadSettings() {
@@ -485,4 +488,147 @@ function setupOnlineStatus() {
     
     // Initial check
     updateStatus();
+}
+
+// --- PWA Installation Logic ---
+let deferredPrompt;
+
+function initPWA() {
+    // 1. Register Service Worker (This should always run for offline functionality)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                console.log('Service Worker Registered');
+
+                // Check if there's an update waiting
+                if (reg.waiting) {
+                    showUpdateNotification(reg.waiting);
+                    return;
+                }
+
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New update available
+                            showUpdateNotification(newWorker);
+                        }
+                    });
+                });
+            }).catch(err => console.log('Service Worker Error:', err));
+        });
+
+        let refreshing;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            window.location.reload();
+            refreshing = true;
+        });
+    }
+
+    // Check if the app is already installed (running in standalone mode)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone) {
+        console.log('App is running in standalone mode. No install prompt needed.');
+        return; // Exit before setting up any install prompt logic.
+    }
+
+    // --- From here on, the code only runs if the app is NOT installed ---
+
+    // iOS Install Modal Logic (Setup listeners)
+    const iosInstallModal = document.getElementById('ios-install-modal');
+    if (iosInstallModal) {
+        const closeIosModalBtn = document.getElementById('close-ios-modal');
+        closeIosModalBtn.addEventListener('click', () => {
+            iosInstallModal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === iosInstallModal) {
+                iosInstallModal.style.display = 'none';
+            }
+        });
+    }
+
+    // 2. Handle Install Prompt for Android/Desktop
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent Chrome 67+ from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        
+        // Check if we are on the home page by looking for the card element
+        const installCard = document.getElementById('pwa-install-card');
+        const installOverlay = document.getElementById('pwa-install-overlay');
+        
+        // Only show if the element exists (which is only in home.html)
+        if (installCard) {
+            setTimeout(() => {
+                installCard.classList.add('show');
+                if (installOverlay) installOverlay.classList.add('show');
+            }, 2000); // Show after 2 seconds
+        }
+    });
+
+    // 2.1 Handle iOS (iPhone/iPad)
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIOS) {
+        // The 'beforeinstallprompt' event won't fire on iOS, so we show the prompt manually.
+        const installCard = document.getElementById('pwa-install-card');
+        const installOverlay = document.getElementById('pwa-install-overlay');
+        if (installCard) {
+            setTimeout(() => {
+                installCard.classList.add('show');
+                if (installOverlay) installOverlay.classList.add('show');
+            }, 2000);
+            
+            // Change button behavior for iOS since we can't auto-install
+            const installBtn = document.getElementById('pwa-install-btn');
+            if (installBtn) {
+                installBtn.innerText = "چۆنیەتی دابەزاندن";
+            }
+        }
+    }
+
+    // 3. Handle Button Clicks
+    const installBtn = document.getElementById('pwa-install-btn');
+    const dismissBtn = document.getElementById('pwa-dismiss-btn');
+    const installCard = document.getElementById('pwa-install-card');
+    const installOverlay = document.getElementById('pwa-install-overlay');
+
+    if (installBtn && dismissBtn && installCard) {
+        installBtn.addEventListener('click', async () => {
+            // Hide the card and overlay first
+            if (installOverlay) installOverlay.classList.remove('show');
+            installCard.classList.remove('show');
+
+            // Trigger the specific action
+            if (deferredPrompt) { // For Android/Desktop
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else if (isIOS) { // For iOS
+                // Show the custom instructions modal instead of an alert
+                if (iosInstallModal) iosInstallModal.style.display = 'flex';
+            }
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            installCard.classList.remove('show');
+            if (installOverlay) installOverlay.classList.remove('show');
+            // sessionStorage.setItem('pwa-dismissed', 'true'); // Don't show again in this session
+        });
+    }
+}
+
+function showUpdateNotification(worker) {
+    const updateCard = document.getElementById('update-notification');
+    const updateBtn = document.getElementById('update-now-btn');
+    
+    if (updateCard && updateBtn) {
+        updateCard.classList.add('show');
+        updateBtn.addEventListener('click', () => {
+            worker.postMessage({ type: 'SKIP_WAITING' });
+        });
+    }
 }

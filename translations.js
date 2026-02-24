@@ -1,7 +1,7 @@
 // فەرهەنگی وشەکان بۆ کوردی و عەرەبی
 const translations = {
     ku: {
-        login_title: "بنکەی تۆمارکردنی 1207 | کوران1",
+        login_title: "بنکەی تۆماری کوران1",
         username_label: "ئیمەیڵ",
         username_placeholder: "ئیمەیڵەکەت بنووسە...",
         password_label: "وشەی تێپەڕ",
@@ -122,12 +122,19 @@ const translations = {
     no_employee_selected: "هیچ فەرمانبەرێک دیاری نەکراوە.",
     info_updated: "زانیارییەکان نوێکرانەوە",
     error_label: "هەڵە: ",
+    titleinstall:"دابەزاندنی ئەپڵیکەیشن",
+    paragraph:"بۆ ئەزموونێکی باشتر و خێراتر، ئەپەکە دابەزێنە ناو مۆبایلەکەت.",
+    install:"دابەزاندن",
+    labrdn:"دواتر",
+    update_available: "وەشانێکی نوێ بەردەستە",
+    update_desc: "گۆڕانکاری نوێ کراوە. تکایە نوێی بکەرەوە.",
+    update_now: "نوێکردنەوە",
 
   card_helpdesk: "HelpDisk",
         card_vacations: "Vacations"
     },
     ar: {
-        login_title: "مَرْکَزُ التَّسْجِیلِ 1207 | كُورَان1",
+        login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
         username_label: "البريد الإلكتروني",
         username_placeholder: "أدخل بريدك الإلكتروني...",
         password_label: "كلمة المرور",
@@ -246,6 +253,13 @@ const translations = {
     no_employee_selected: "لم يتم تحديد أي موظف.",
     info_updated: "تم تحديث المعلومات بنجاح",
     error_label: "خطأ: ",
+    titleinstall:"تثبيت التطبيق",
+    paragraph:"لتحصل على تجربة أفضل وأسرع، قم بتحميل التطبيق على هاتفك المحمول.",
+    install:"تثبيت",
+    labrdn:"لاحقاً",
+    update_available: "تحديث جديد متاح",
+    update_desc: "تتوفر نسخة جديدة. يرجى التحديث.",
+    update_now: "تحديث",
 
    card_helpdesk: "HelpDisk",
         card_vacations: "Vacations"
