@@ -203,6 +203,8 @@ const translations = {
         no_leave_document: "هیچ فایلێک بۆ ئەم مۆڵەتە بارنەکراوە",
         employee_name_not_found: "ناوی فەرمانبەر نییە",
         leaves_subtitle: "ڕۆژانە / کاتی / نەخۆشی",
+        btn_summary: "پوختە",
+        summary_modal_title: "پوختەی مۆڵەتەکان",
 
         // Receipts (Pswla) Translations - Kurdish
         receipts_page_title: "بەڕێوەبردنی پسوولەکان",
@@ -271,7 +273,22 @@ const translations = {
         asset_added_success: "کەرەستە زیادکرا",
         asset_updated_success: "کەرەستە نوێکرایەوە",
         asset_deleted_success: "کەرەستە سڕایەوە",
-        delete_confirmation_text_simple: "ئەم کردارە پاشگەزبوونەوەی نییە."
+        delete_confirmation_text_simple: "ئەم کردارە پاشگەزبوونەوەی نییە.",
+
+        // Reports Translations - Kurdish
+        reports_page_title: "ڕاپۆرتی گشتی",
+        filter_reports_title: "فلتەرکردنی ڕاپۆرت",
+        total_employees: "کۆی فەرمانبەران",
+        total_leaves: "کۆی مۆڵەتەکان",
+        total_letters: "کۆی نوسراوەکان",
+        total_receipts: "کۆی پسوولەکان",
+        total_assets: "کۆی کەرەستەکان",
+        leaves_chart_title: "دابەشبوونی جۆری مۆڵەت",
+        letters_chart_title: "نوسراوەکان (وەرگرتە vs دەرکردە)",
+        assets_chart_title: "دۆخی کەرەستەکان",
+        btn_summaryy: "پوختەی مۆڵەتەکان",
+        btn_summary: "پوختە"
+        
     },
     ar: {
         login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
@@ -474,6 +491,8 @@ const translations = {
         no_leave_document: "لا يوجد مستند مرفق لهذه الإجازة",
         employee_name_not_found: "اسم الموظف غير موجود",
         leaves_subtitle: "يومية / زمنیە / مرضية",
+        btn_summary: "ملخص",
+        summary_modal_title: "ملخص الإجازات",
 
         // Receipts (Pswla) Translations - Arabic
         receipts_page_title: "إدارة الوصولات",
@@ -542,7 +561,21 @@ const translations = {
         asset_added_success: "تم إضافة المادة",
         asset_updated_success: "تم تحديث المادة",
         asset_deleted_success: "تم حذف المادة",
-        delete_confirmation_text_simple: "هذا الإجراء لا يمكن التراجع عنه."
+        delete_confirmation_text_simple: "هذا الإجراء لا يمكن التراجع عنه.",
+
+        // Reports Translations - Arabic
+        reports_page_title: "التقرير العام",
+        filter_reports_title: "تصفية التقرير",
+        total_employees: "إجمالي الموظفين",
+        total_leaves: "إجمالي الإجازات",
+        total_letters: "إجمالي الكتب",
+        total_receipts: "إجمالي الوصولات",
+        total_assets: "إجمالي المواد",
+        leaves_chart_title: "توزيع أنواع الإجازات",
+        letters_chart_title: "الكتب (وارد vs صادر)",
+        assets_chart_title: "حالة المواد",
+        btn_summaryy: "ملخص الإجازات",
+        btn_summary: "ملخص"
     }
     
 };

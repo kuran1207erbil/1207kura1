@@ -171,7 +171,7 @@
 }
 
 .filter-btn {
-    width: 42px;
+    width: 42px; /* Default to icon-only on mobile */
     height: 42px;
     border-radius: 12px;
     border: 1px solid var(--input-border);
@@ -183,7 +183,8 @@
     justify-content: center;
     transition: all 0.3s;
     flex-shrink: 0;
-    padding: 0; /* لابردنی پادینگی بنەڕەت بۆ کۆنترۆڵی قەبارە */
+    padding: 0;
+    gap: 8px;
 }
 
 .filter-btn:hover {
@@ -197,20 +198,29 @@
 .filter-btn span {
     display: none; /* شاردنەوەی نووسین لەسەر مۆبایل */
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
-/* دیزاینی جیاواز بۆ لاپتۆپ */
+/* Show text on larger screens */
 @media (min-width: 769px) {
     .filter-btn {
         width: auto;
-        padding: 0 15px;
-        gap: 8px;
+        padding: 0 12px;
     }
     .filter-btn span {
         display: inline;
     }
 }
+
+/* Override for report page to always show text, even on mobile */
+.report-toolbar .filter-btn {
+    width: auto;
+    padding: 0 12px;
+}
+.report-toolbar .filter-btn span {
+    display: inline;
+}
+
 /* ستایلی مۆداڵ */
 #leave-modal .modal-content,
 #filter-modal .modal-content {
@@ -1108,4 +1118,147 @@ body.dark-mode #asset-dialog .dialog-subtitle {
     .dialog-grid-3 {
         grid-template-columns: 1fr;
     }
+}
+
+/* --- Improved Summary Modal Styles --- */
+#summary-modal .modal-content {
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    max-width: 800px;
+}
+
+#summary-modal .modal-header {
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
+    padding: 20px 25px;
+}
+
+#summary-modal .modal-header h3 {
+    color: white;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+#summary-modal .close-modal {
+    color: rgba(255, 255, 255, 0.8);
+}
+#summary-modal .close-modal:hover {
+    color: white;
+}
+
+#summary-modal .table-container {
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+/* --- Report Page Styles --- */
+.report-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    transition: transform 0.3s ease;
+    animation: fadeInUpSmall 0.5s ease-out backwards;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; border-right: 4px solid #2ecc71; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; border-right: 4px solid #f39c12; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; border-right: 4px solid #9b59b6; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; border-right: 4px solid #1abc9c; }
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.stat-card.employees .stat-icon { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+.stat-card.leaves .stat-icon { background: rgba(243, 156, 18, 0.1); color: #f39c12; }
+.stat-card.letters .stat-icon { background: rgba(155, 89, 182, 0.1); color: #9b59b6; }
+.stat-card.assets .stat-icon { background: rgba(26, 188, 156, 0.1); color: #1abc9c; }
+
+.stat-info h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.stat-info p {
+    margin: 0;
+    color: var(--text-color-light);
+    font-size: 0.8rem;
+}
+
+.report-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.chart-box {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    height: 320px; /* Increased height to fit chart properly */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-box h4 {
+    margin-bottom: 10px;
+    color: var(--text-color);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.chart-wrapper {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    min-height: 0;
+}
+/* --- Report Toolbar & Filter Styles --- */
+.report-toolbar {
+    display: flex;
+    justify-content: flex-start; /* Align items to the start */
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    background: var(--card-bg);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+}
+
+.report-toolbar .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }

@@ -9,7 +9,7 @@
     <!-- فایلی ستایلی تایبەت بە فەرمانبەران (بۆ بەکارهێنانی هەندێک ستایلی هاوبەش) -->
     <link rel="stylesheet" href="../farmanbar/farmanbar.css">
     <!-- فایلی ستایلی تایبەت بەم لاپەڕەیە -->
-    <link rel="stylesheet" href="molat.css">
+    <link rel="stylesheet" href="molat.css?v=58">
     <!-- کتێبخانەی ئایکۆنەکان -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="apple-touch-icon" href="../assests/icon.png">
@@ -23,10 +23,10 @@
                 <li><a href="../farmanbar/farmanbar.html"><i class="fas fa-users"></i><span data-lang-key="menu_staff">فەرمانبەرانی بنکە</span></a></li>
                 <li><a href="#" class="active"><i class="fas fa-calendar-minus"></i><span data-lang-key="menu_leaves">مۆڵەتەکان</span></a></li>
                 <li><a href="nwsraw.html"><i class="fas fa-file-alt"></i><span data-lang-key="menu_letters">نوسراوەکان</span></a></li>
-                <li><a href="../molat/pswla.html"><i class="fas fa-receipt"></i><span data-lang-key="menu_receipts">پسوولەکان</span></a></li>
-                <li><a href="../molat/pewist.html"><i class="fas fa-folder-open"></i><span data-lang-key="menu_files">فایلی پێویست</span></a></li>
-                <li><a href="#"><i class="fas fa-boxes"></i><span data-lang-key="menu_assets">کەرەستە بەردەستەکان</span></a></li>
-                <li><a href="#"><i class="fas fa-chart-pie"></i><span data-lang-key="menu_reports">ڕاپۆرتی گشتی</span></a></li>
+                <li><a href="pswla.html"><i class="fas fa-receipt"></i><span data-lang-key="menu_receipts">پسوولەکان</span></a></li>
+                <li><a href="pewist.html"><i class="fas fa-folder-open"></i><span data-lang-key="menu_files">فایلی پێویست</span></a></li>
+                <li><a href="karasta.html"><i class="fas fa-boxes"></i><span data-lang-key="menu_assets">کەرەستە بەردەستەکان</span></a></li>
+                <li><a href="report.html"><i class="fas fa-chart-pie"></i><span data-lang-key="menu_reports">ڕاپۆرتی گشتی</span></a></li>
                 <li class="sidebar-footer-item">
                     <a href="../settings.html"><i class="fas fa-cog"></i><span data-lang-key="settings_link">ڕێکخستنەکان</span></a>
                 </li>
@@ -115,6 +115,10 @@
                         <button class="filter-btn" id="open-filter-modal-btn" title="فلتەر">
                             <i class="fas fa-filter"></i>
                             <span data-lang-key="filter_btn">فلتەر</span>
+                        </button>
+                        <button class="filter-btn" id="open-summary-btn" title="پوختە">
+                            <i class="fas fa-table"></i>
+                            <span data-lang-key="btn_summary">پوختە</span>
                         </button>
                     </div>
                     <button class="add-btn" id="add-leave-btn">
@@ -262,6 +266,37 @@
                         <button type="submit" class="save-btn" data-lang-key="apply_filter">جێبەجێکردن</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- مۆداڵی پوختەی مۆڵەتەکان -->
+    <div id="summary-modal" class="modal custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-lang-key="summary_modal_title">پوختەی مۆڵەتەکان</h3>
+                <span class="close-modal" id="close-summary-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="table-container">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="employee_name_label">ناوی فەرمانبەر</th>
+                                <th class="text-center" data-lang-key="total_leaves">کۆی گشتی</th>
+                                <th class="text-center" data-lang-key="leave_type_daily">ڕۆژانە</th>
+                                <th class="text-center" data-lang-key="leave_type_hourly">کاتی</th>
+                                <th class="text-center" data-lang-key="leave_type_disease">نەخۆشی</th>
+                                <th class="text-center" data-lang-key="leave_type_motherhood">دایکایەتی</th>
+                                <th class="text-center" data-lang-key="leave_type_long_term">درێژخایەن</th>
+                                <th class="text-center" data-lang-key="leave_type_travel">گەشت</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-table-body">
+                            <!-- ڕیزەکان لێرە زیاد دەبن -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

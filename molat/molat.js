@@ -11,6 +11,9 @@ function getTrans(key) {
     return translations[lang][key] || key;
 }
 
+// گۆڕاوی گشتی بۆ هەڵگرتنی داتای مۆڵەتەکان
+let currentLeaves = [];
+
 // دڵنیابوونەوە لەوەی کە DOM بە تەواوی بارکراوە
 document.addEventListener('DOMContentLoaded', async () => {
     // پشکنینی دۆخی چوونەژوورەوەی بەکارهێنەر
@@ -39,6 +42,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const confirmDeleteModal = document.getElementById('confirm-delete-modal');
     const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
     const confirmDeleteActionBtn = document.getElementById('confirm-delete-action-btn');
+    // Summary Modal Elements
+    const openSummaryBtn = document.getElementById('open-summary-btn');
+    const summaryModal = document.getElementById('summary-modal');
+    const closeSummaryModalBtn = document.getElementById('close-summary-modal');
 
     // کردنەوەی مۆداڵ بۆ زیادکردنی مۆڵەت
     addLeaveBtn.addEventListener('click', () => {
@@ -65,6 +72,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (event.target === confirmDeleteModal) {
             confirmDeleteModal.style.display = 'none';
+        }
+        if (event.target === summaryModal) {
+            summaryModal.style.display = 'none';
         }
     });
 
@@ -137,6 +147,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     // داخستنی مۆداڵی سڕینەوە
     cancelDeleteBtn.addEventListener('click', () => {
         confirmDeleteModal.style.display = 'none';
+    });
+
+    // Summary Modal Events
+    openSummaryBtn.addEventListener('click', () => {
+        renderSummaryTable();
+        summaryModal.style.display = 'flex';
+    });
+    closeSummaryModalBtn.addEventListener('click', () => {
+        summaryModal.style.display = 'none';
     });
 });
 
@@ -302,6 +321,7 @@ async function fetchLeaves() {
         const { data: leaves, error } = await query;
 
         if (error) throw error;
+        currentLeaves = leaves; // هەڵگرتنی داتا بۆ بەکارهێنان لە خشتەی پوختە
 
         leavesGrid.innerHTML = ''; // پاککردنەوەی لۆدینگ
         if (leaves.length === 0) {
@@ -569,4 +589,42 @@ function updateFileName() {
     } else {
         fileNameDisplay.textContent = '';
     }
+}
+
+/**
+ * دروستکردن و پیشاندانی خشتەی پوختەی مۆڵەتەکان
+ */
+function renderSummaryTable() {
+    const tbody = document.getElementById('summary-table-body');
+    tbody.innerHTML = '';
+    
+    const summary = {};
+    
+    // کۆکردنەوەی داتا بەپێی فەرمانبەر
+    currentLeaves.forEach(leave => {
+        const name = leave.employees?.full_name || getTrans('employee_name_not_found');
+        if (!summary[name]) {
+            summary[name] = { total: 0, daily: 0, hourly: 0, disease: 0, motherhood: 0, 'long-term': 0, travel: 0 };
+        }
+        summary[name].total++;
+        if (summary[name][leave.leave_type] !== undefined) {
+            summary[name][leave.leave_type]++;
+        }
+    });
+
+    // دروستکردنی ڕیزەکان
+    Object.keys(summary).forEach(name => {
+        const data = summary[name];
+        const row = `<tr>
+            <td><strong>${name}</strong></td>
+            <td class="text-center"><span class="count-badge total">${data.total}</span></td>
+            <td class="text-center">${data.daily || '-'}</td>
+            <td class="text-center">${data.hourly || '-'}</td>
+            <td class="text-center">${data.disease || '-'}</td>
+            <td class="text-center">${data.motherhood || '-'}</td>
+            <td class="text-center">${data['long-term'] || '-'}</td>
+            <td class="text-center">${data.travel || '-'}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
 }
