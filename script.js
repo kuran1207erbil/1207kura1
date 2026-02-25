@@ -42,6 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
         newPasswordInput.addEventListener('input', checkPasswordStrength);
     }
 
+    // Add event listener for password strength checker (Settings Page)
+    const settingsNewPasswordInput = document.getElementById('settings-new-password');
+    if (settingsNewPasswordInput) {
+        settingsNewPasswordInput.addEventListener('input', checkSettingsPasswordStrength);
+    }
+
+    // Add event listener for password match checker (Settings Page)
+    const settingsConfirmPasswordInput = document.getElementById('settings-confirm-password');
+    if (settingsConfirmPasswordInput && settingsNewPasswordInput) {
+        settingsNewPasswordInput.addEventListener('input', checkSettingsPasswordMatch);
+        settingsConfirmPasswordInput.addEventListener('input', checkSettingsPasswordMatch);
+    }
+
     // Close dropdown when clicking outside
     window.addEventListener('click', (e) => {
         if (!e.target.closest('.custom-dropdown')) {
@@ -92,6 +105,7 @@ function loadSettings() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     const savedLang = localStorage.getItem('language') || 'ku';
     const savedNotifications = localStorage.getItem('notifications');
+    const savedAccent = localStorage.getItem('accent') || 'blue';
 
     // جێبەجێکردنی دۆخی تاریک
     if (savedTheme === 'dark') {
@@ -101,6 +115,9 @@ function loadSettings() {
     }
     updateThemeIcon(savedTheme === 'dark');
 
+    // جێبەجێکردنی ڕەنگی سەرەکی
+    setAccentColor(savedAccent, false);
+
     // جێبەجێکردنی زمان
     selectLanguage(savedLang, true); // Apply language settings immediately
 
@@ -109,6 +126,16 @@ function loadSettings() {
         const notifToggle = document.getElementById('notif-toggle');
         if (notifToggle) notifToggle.checked = true;
     }
+
+    // Update Settings Page User Info if on settings page
+    const settingsName = document.getElementById('settings-user-name');
+    if (settingsName) {
+        checkUserSession(); // This will update the global user info
+        // We need to update the settings specific elements inside checkUserSession or here
+    }
+
+    // Check MFA Status if on settings page
+    if (document.getElementById('mfa-toggle')) checkMFAStatus();
 }
 
 // فەنکشن بۆ گۆڕینی دەقەکان بەپێی زمان
@@ -136,6 +163,15 @@ function toggleTheme() {
     const isDark = document.body.classList.contains('dark-mode');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     updateThemeIcon(isDark);
+}
+
+// گۆڕینی ڕەنگی سەرەکی
+function setAccentColor(color, save = true) {
+    document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-orange');
+    if (color !== 'blue') {
+        document.body.classList.add(`theme-${color}`);
+    }
+    if (save) localStorage.setItem('accent', color);
 }
 
 function updateThemeIcon(isDark) {
@@ -177,6 +213,12 @@ function selectLanguage(lang, apply = true) {
     document.querySelectorAll('.sidebar-lang-btn').forEach(btn => btn.classList.remove('active'));
     const activeSidebarBtn = document.getElementById(`sidebar-lang-${lang}`);
     if (activeSidebarBtn) activeSidebarBtn.classList.add('active');
+
+    // Update Settings Page Dropdown
+    const settingsLangSelect = document.getElementById('language-select');
+    if (settingsLangSelect) {
+        settingsLangSelect.value = lang;
+    }
 
     localStorage.setItem('language', lang);
     if (apply) applyLanguage(lang);
@@ -221,7 +263,16 @@ async function handleLogin(event) {
 
         if (error) throw error;
 
-        window.location.href = "home.html"; // ڕۆیشتن بۆ لاپەڕەی سەرەکی
+        // Check if MFA is required (AAL2)
+        const { data: mfaData, error: mfaError } = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
+        
+        if (mfaData && mfaData.nextLevel === 'aal2' && mfaData.currentLevel === 'aal1') {
+            // Show MFA Login Modal
+            document.getElementById('mfa-login-modal').style.display = 'flex';
+            return; // Stop redirect
+        }
+
+        window.location.href = "home.html";
     } catch (error) {
         // پیشاندانی پەیامی هەڵە
         const currentLang = localStorage.getItem('language') || 'ku';
@@ -303,6 +354,151 @@ async function handleSendOtp(event) {
     }
 }
 
+// --- MFA (Two-Factor Authentication) Logic ---
+let mfaFactorId = null;
+
+async function checkMFAStatus() {
+    const toggle = document.getElementById('mfa-toggle');
+    const statusText = document.getElementById('mfa-status-text');
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    if (!toggle) return;
+
+    const { data, error } = await supabaseClient.auth.mfa.listFactors();
+    if (error) {
+        console.error("Error checking MFA:", error);
+        return;
+    }
+
+    // Check if there is any verified TOTP factor
+    const hasVerifiedFactor = data.totp.some(factor => factor.status === 'verified');
+    toggle.checked = hasVerifiedFactor;
+
+    // Update Status Text
+    if (hasVerifiedFactor) {
+        statusText.innerText = translations[currentLang].mfa_active;
+        statusText.className = 'mfa-status-badge active';
+    } else {
+        statusText.innerText = translations[currentLang].mfa_inactive;
+        statusText.className = 'mfa-status-badge inactive';
+    }
+}
+
+async function handleMFAToggle(toggle) {
+    const currentLang = localStorage.getItem('language') || 'ku';
+    
+    if (toggle.checked) {
+        // Enable MFA
+        try {
+            const { data, error } = await supabaseClient.auth.mfa.enroll({
+                factorType: 'totp'
+            });
+            
+            if (error) throw error;
+
+            mfaFactorId = data.id;
+            
+            // Show QR Code Modal
+            let qrCode = data.totp.qr_code;
+            const qrContainer = document.getElementById('mfa-qr-container');
+            
+            // Handle Supabase returning data URI with raw SVG (not base64) which breaks img tags
+            if (qrCode.startsWith('data:image/svg+xml;utf-8,')) {
+                qrCode = qrCode.replace('data:image/svg+xml;utf-8,', '');
+                // Try to decode if it's URI encoded (fixes issues with % characters)
+                try {
+                    qrCode = decodeURIComponent(qrCode);
+                } catch (e) {
+                    // Ignore error if not encoded
+                }
+            }
+            
+            if (qrCode.startsWith('data:')) {
+                qrContainer.innerHTML = `<img src="${qrCode}" alt="QR Code" style="width: 100%; height: auto;">`;
+            } else {
+                // Clean up SVG string to remove XML declaration if present
+                let cleanSvg = qrCode.replace(/<\?xml.*?\?>/, '');
+                // Force SVG to fit container by setting width/height to 100%
+                cleanSvg = cleanSvg.replace(/width=['"][^'"]*['"]/, 'width="100%"');
+                cleanSvg = cleanSvg.replace(/height=['"][^'"]*['"]/, 'height="100%"');
+                qrContainer.innerHTML = cleanSvg;
+            }
+            
+            document.getElementById('mfa-setup-modal').style.display = 'flex';
+            document.getElementById('mfa-verify-code').value = '';
+            document.getElementById('mfa-verify-code').focus();
+
+        } catch (error) {
+            toggle.checked = false;
+            showToast(translations[currentLang].error_occurred + error.message, 'error');
+        }
+    } else {
+        // Disable MFA
+        if (confirm(translations[currentLang].confirm_disable_mfa)) {
+            try {
+                const { data: factors } = await supabaseClient.auth.mfa.listFactors();
+                // Unenroll all verified factors (simplification)
+                const verifiedFactors = factors.totp.filter(f => f.status === 'verified');
+                
+                for (const factor of verifiedFactors) {
+                    await supabaseClient.auth.mfa.unenroll({ factorId: factor.id });
+                }
+                
+                showToast(translations[currentLang].mfa_disabled_success, 'success');
+                checkMFAStatus(); // Update UI status
+            } catch (error) {
+                toggle.checked = true; // Revert
+                showToast(translations[currentLang].error_occurred + error.message, 'error');
+            }
+        } else {
+            toggle.checked = true; // User cancelled
+        }
+    }
+}
+
+function closeMFASetupModal() {
+    document.getElementById('mfa-setup-modal').style.display = 'none';
+    // If closed without verifying, uncheck the toggle
+    checkMFAStatus(); 
+}
+
+async function verifyMFASetup() {
+    const code = document.getElementById('mfa-verify-code').value;
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    try {
+        const { data, error } = await supabaseClient.auth.mfa.challengeAndVerify({
+            factorId: mfaFactorId,
+            code: code
+        });
+
+        if (error) throw error;
+
+        showToast(translations[currentLang].mfa_enabled_success, 'success');
+        document.getElementById('mfa-setup-modal').style.display = 'none';
+        checkMFAStatus(); // Update UI status
+    } catch (error) {
+        showToast(translations[currentLang].invalid_code, 'error');
+    }
+}
+
+async function handleMFALogin(event) {
+    event.preventDefault();
+    const code = document.getElementById('mfa-login-code').value;
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    const { data, error } = await supabaseClient.auth.mfa.challengeAndVerify({
+        factorId: (await supabaseClient.auth.mfa.listFactors()).data.totp[0].id, // Use first factor
+        code: code
+    });
+
+    if (error) {
+        showToast(translations[currentLang].invalid_code, 'error');
+    } else {
+        window.location.href = "home.html";
+    }
+}
+
 function startOtpTimer() {
     let timeLeft = 60;
     const timerElement = document.getElementById('otp-timer');
@@ -381,9 +577,44 @@ async function handleUpdatePassword(event) {
 // Function to check password strength
 function checkPasswordStrength() {
     const password = document.getElementById('new-password').value;
-    const meterBars = document.querySelectorAll('#password-strength-meter .strength-bar');
+    const meterBars = document.querySelectorAll('#password-strength-meter .strength-bar'); 
     const strengthText = document.getElementById('password-strength-text');
     const currentLang = localStorage.getItem('language') || 'ku';
+    
+    evaluateStrength(password, meterBars, strengthText, currentLang);
+}
+
+function checkSettingsPasswordStrength() {
+    const password = document.getElementById('settings-new-password').value;
+    const meterBars = document.querySelectorAll('#settings-password-strength-meter .strength-bar');
+    const strengthText = document.getElementById('settings-password-strength-text');
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    evaluateStrength(password, meterBars, strengthText, currentLang);
+}
+
+function checkSettingsPasswordMatch() {
+    const password = document.getElementById('settings-new-password').value;
+    const confirm = document.getElementById('settings-confirm-password').value;
+    const indicator = document.getElementById('password-match-indicator');
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    if (!confirm) {
+        indicator.textContent = '';
+        indicator.className = 'match-indicator';
+        return;
+    }
+
+    if (password === confirm) {
+        indicator.innerHTML = `<i class="fas fa-check"></i> ${translations[currentLang].password_match}`;
+        indicator.className = 'match-indicator match';
+    } else {
+        indicator.innerHTML = `<i class="fas fa-times"></i> ${translations[currentLang].password_no_match}`;
+        indicator.className = 'match-indicator mismatch';
+    }
+}
+
+function evaluateStrength(password, meterBars, strengthText, currentLang) {
 
     let score = 0;
     const regex = {
@@ -460,14 +691,25 @@ function showToast(message, type = 'info') {
 // Fetch User Session and Display Email
 async function checkUserSession() {
     const { data: { user } } = await supabaseClient.auth.getUser();
-    const emailElement = document.getElementById('user-email');
     
-    if (user && emailElement) {
+    const emailElement = document.getElementById('user-email');
+    const settingsName = document.getElementById('settings-user-name');
+    const settingsEmail = document.getElementById('settings-user-email');
+    
+    if (user) {
         // Try to get name from metadata, otherwise use email username part
         const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
-        emailElement.innerText = displayName;
-    } else if (emailElement) {
-        emailElement.innerText = 'Guest';
+        if (emailElement) emailElement.innerText = displayName;
+
+        if (settingsName) settingsName.innerText = displayName;
+        if (settingsEmail) settingsEmail.innerText = user.email;
+        
+
+    } else {
+        // Handle logged out state
+        if (emailElement) emailElement.innerText = 'Guest';
+        if (settingsName) settingsName.innerText = 'Guest';
+        if (settingsEmail) settingsEmail.innerText = '';
     }
 }
 
@@ -621,6 +863,21 @@ function initPWA() {
     }
 }
 
+// --- Cache Management ---
+async function clearAppCache() {
+    if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+        
+        const currentLang = localStorage.getItem('language') || 'ku';
+        showToast(translations[currentLang].cache_cleared, 'success');
+        
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+    }
+}
+
 function showUpdateNotification(worker) {
     const updateCard = document.getElementById('update-notification');
     const updateBtn = document.getElementById('update-now-btn');
@@ -630,5 +887,174 @@ function showUpdateNotification(worker) {
         updateBtn.addEventListener('click', () => {
             worker.postMessage({ type: 'SKIP_WAITING' });
         });
+    }
+}
+
+// --- Settings Page Functions ---
+function openChangePasswordModal() {
+    const modal = document.getElementById('change-password-modal');
+    if (modal) {
+        document.getElementById('change-password-form').reset();
+        // Reset visual indicators
+        document.getElementById('password-match-indicator').textContent = '';
+        document.querySelectorAll('#settings-password-strength-meter .strength-bar').forEach(b => b.className = 'strength-bar');
+        document.getElementById('settings-password-strength-text').textContent = '';
+        
+        modal.style.display = 'flex';
+    }
+}
+
+function closeChangePasswordModal() {
+    const modal = document.getElementById('change-password-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+async function handleChangePasswordSubmit(event) {
+    event.preventDefault();
+    const oldPassword = document.getElementById('settings-old-password').value;
+    const newPassword = document.getElementById('settings-new-password').value;
+    const confirmPassword = document.getElementById('settings-confirm-password').value;
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    if (newPassword !== confirmPassword) {
+        showToast(translations[currentLang].password_mismatch, 'error');
+        return;
+    }
+
+    // دۆزینەوەی دوگمەکە: لەبەر ئەوەی دوگمەکە لە دەرەوەی فۆڕمەکەیە لە settings.html
+    let submitBtn = event.target.querySelector('button[type="submit"]');
+    if (!submitBtn && event.target.id) {
+        // گەڕان بەدوای دوگمەیەک کە attributeـی formـی هەبێت
+        submitBtn = document.querySelector(`button[type="submit"][form="${event.target.id}"]`);
+    }
+
+    const originalText = submitBtn.innerText;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        
+        // Verify old password
+        const { error: signInError } = await supabaseClient.auth.signInWithPassword({
+            email: user.email,
+            password: oldPassword
+        });
+
+        if (signInError) {
+            throw new Error(translations[currentLang].old_password_incorrect);
+        }
+
+        const { data, error } = await supabaseClient.auth.updateUser({ password: newPassword });
+        if (error) throw error;
+
+        showToast(translations[currentLang].password_change_success, 'success');
+        
+        // Clear form and indicators immediately
+        document.getElementById('change-password-form').reset();
+        document.getElementById('password-match-indicator').textContent = '';
+        document.querySelectorAll('#settings-password-strength-meter .strength-bar').forEach(b => b.className = 'strength-bar');
+        document.getElementById('settings-password-strength-text').textContent = '';
+        
+        closeChangePasswordModal();
+    } catch (error) {
+        const msg = error.message === "Invalid login credentials" ? translations[currentLang].old_password_incorrect : error.message;
+        showToast(msg, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+    }
+}
+
+async function handleSignOutAll() {
+    const currentLang = localStorage.getItem('language') || 'ku';
+    if (confirm(translations[currentLang].logout_all_confirm)) {
+        try {
+            const { error } = await supabaseClient.auth.signOut({ scope: 'others' });
+            if (error) throw error;
+            showToast(translations[currentLang].logout_all_success, 'success');
+        } catch (error) {
+            showToast(translations[currentLang].error_occurred + error.message, 'error');
+        }
+    }
+}
+
+async function handleSignOutAll() {
+    const currentLang = localStorage.getItem('language') || 'ku';
+    if (confirm(translations[currentLang].logout_all_confirm)) {
+        try {
+            const { error } = await supabaseClient.auth.signOut({ scope: 'others' });
+            if (error) throw error;
+            showToast(translations[currentLang].logout_all_success, 'success');
+        } catch (error) {
+            showToast(translations[currentLang].error_occurred + error.message, 'error');
+        }
+    }
+}
+
+// --- Edit Profile Functions ---
+async function openEditProfileModal() {
+    const modal = document.getElementById('edit-profile-modal');
+    if (!modal) return;
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) return;
+
+    // Populate form
+    document.getElementById('edit-full-name').value = user.user_metadata?.full_name || user.email.split('@')[0];
+    document.getElementById('edit-email').value = user.email;
+    document.getElementById('edit-profile-password').value = ''; // Clear password field
+
+    modal.style.display = 'flex';
+}
+
+function closeEditProfileModal() {
+    const modal = document.getElementById('edit-profile-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+async function handleProfileUpdate(event) {
+    event.preventDefault();
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    const newName = document.getElementById('edit-full-name').value;
+    const newEmail = document.getElementById('edit-email').value.trim();
+    const password = document.getElementById('edit-profile-password').value;
+
+    const submitBtn = document.querySelector('button[type="submit"][form="edit-profile-form"]');
+    const originalText = submitBtn.innerText;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) throw new Error("User not found");
+
+        // 1. Verify password first
+        const { error: signInError } = await supabaseClient.auth.signInWithPassword({ email: user.email, password: password });
+        if (signInError) throw new Error(translations[currentLang].old_password_incorrect);
+
+        // 2. Prepare and perform update
+        const updateData = {};
+        if (newName !== (user.user_metadata?.full_name || user.email.split('@')[0])) {
+            updateData.data = { full_name: newName };
+        }
+        if (newEmail.toLowerCase() !== user.email) {
+            updateData.email = newEmail;
+        }
+
+        if (Object.keys(updateData).length > 0) {
+            const { error: updateError } = await supabaseClient.auth.updateUser(updateData);
+            if (updateError) throw updateError;
+            showToast(translations[currentLang].profile_updated_success, 'success');
+            await checkUserSession();
+        }
+
+        closeEditProfileModal();
+    } catch (error) {
+        showToast(error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
     }
 }

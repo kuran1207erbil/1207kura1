@@ -123,6 +123,22 @@
         </div>
     </div>
 
+    <!-- MFA Login Modal -->
+    <div id="mfa-login-modal" class="modal">
+        <div class="card modal-content">
+            <h3 data-lang-key="mfa_login_title" class="modal-step-title">سەلماندنی دوو هەنگاوی</h3>
+            <p data-lang-key="enter_mfa_code">تکایە کۆدی بەرنامەکە بنووسە</p>
+            <form onsubmit="handleMFALogin(event)">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="mfa-login-code" placeholder="123456" required class="otp-input">
+                    </div>
+                </div>
+                <button type="submit" data-lang-key="verify_btn">پشکنین</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Notification Container -->
     <div id="toast-container"></div>
 

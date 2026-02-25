@@ -4,42 +4,379 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings | 1207</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <div class="card">
-            <h2 data-lang-key="settings_title">ڕێکخستنەکان</h2>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <ul class="nav-links">
+                <li>
+                    <a href="home.html">
+                        <i class="fas fa-th-large"></i>
+                        <span data-lang-key="menu_dashboard">داشبۆرد</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="farmanbar/farmanbar.html">
+                        <i class="fas fa-users"></i>
+                        <span data-lang-key="menu_staff">فەرمانبەرانی بنکە</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="molat/molat.html">
+                        <i class="fas fa-calendar-minus"></i>
+                        <span data-lang-key="menu_leaves">مۆڵەتەکان</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="molat/nwsraw.html">
+                        <i class="fas fa-file-alt"></i>
+                        <span data-lang-key="menu_letters">نوسراوەکان</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="molat/pswla.html">
+                        <i class="fas fa-receipt"></i>
+                        <span data-lang-key="menu_receipts">پسوولەکان</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="molat/pewist.html">
+                        <i class="fas fa-folder-open"></i>
+                        <span data-lang-key="menu_files">فایلی پێویست</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="molat/karasta.html">
+                        <i class="fas fa-boxes"></i>
+                        <span data-lang-key="menu_assets">کەرەستە بەردەستەکان</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="molat/report.html">
+                        <i class="fas fa-chart-pie"></i>
+                        <span data-lang-key="menu_reports">ڕاپۆرتی گشتی</span>
+                    </a>
+                </li>
 
-            <div class="setting-item">
-                <span id="theme-label" data-lang-key="dark_mode">دۆخی تاریک</span>
-                <label class="switch">
-                    <input type="checkbox" id="theme-toggle" onchange="toggleTheme()" aria-labelledby="theme-label">
-                    <span class="slider"></span>
-                </label>
+                <li class="sidebar-footer-item">
+                    <a href="#" class="active">
+                        <i class="fas fa-cog"></i>
+                        <span data-lang-key="settings_link">ڕێکخستنەکان</span>
+                    </a>
+                </li>
+                <!-- Mobile Language Selector -->
+                <li class="sidebar-lang-section">
+                    <div class="sidebar-lang-title">
+                        <i class="fas fa-globe"></i>
+                        <span data-lang-key="language">زمان</span>
+                    </div>
+                    <div class="sidebar-lang-grid">
+                        <button onclick="selectLanguage('ku')" class="sidebar-lang-btn" id="sidebar-lang-ku">
+                            <span class="flag-icon flag-ku"></span> کوردی
+                        </button>
+                        <button onclick="selectLanguage('ar')" class="sidebar-lang-btn" id="sidebar-lang-ar">
+                            <span class="flag-icon flag-ar"></span> عربي
+                        </button>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="index.html" class="logout-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span data-lang-key="logout">چوونە دەرەوە</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="sidebar-overlay"></div>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left-section">
+                    <button class="action-btn" id="sidebar-toggle" title="Open Sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <!-- Logo in Header -->
+                    <div class="header-logo-display">
+                        <img src="assests/icon.png" class="header-logo-img" alt="Logo">
+                        <h2 data-lang-key="login_title">1207 کوران1</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button class="action-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    
+                    <!-- Language Dropdown -->
+                    <div class="custom-dropdown">
+                        <button class="lang-btn dropdown-btn" onclick="toggleLanguageDropdown()">
+                            <span class="flag-icon flag-ku" id="current-flag"></span>
+                            <span id="current-lang-text">کوردی</span>
+                            <i class="fas fa-chevron-down chevron"></i>
+                        </button>
+                        <div class="dropdown-content header-lang-dropdown" id="dropdown-options">
+                            <div class="dropdown-item" onclick="selectLanguage('ku')">
+                                <span class="flag-icon flag-ku"></span> کوردی
+                            </div>
+                            <div class="dropdown-item" onclick="selectLanguage('ar')">
+                                <span class="flag-icon flag-ar"></span> عربي
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Profile Display -->
+                    <div class="user-profile-display">
+                        <div class="profile-icon-wrapper">
+                            <i class="fas fa-user-circle"></i>
+                            <span class="online-dot" id="online-indicator"></span>
+                        </div>
+                        <span class="user-email-text" id="user-email">...</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="settings-page-content">
+                <div class="settings-header">
+                    <h2 data-lang-key="settings_title">ڕێکخستنەکان</h2>
+                </div>
+
+                <div class="settings-content">
+                    <!-- Profile Section -->
+                    <div class="settings-section full-width">
+                        <div class="settings-card profile-card">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="settings-user-name">...</h3>
+                                <p id="settings-user-email">...</p>
+                            </div>
+                            <button class="profile-edit-btn" onclick="openEditProfileModal()" title="دەستکاری">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Section -->
+                    <div class="settings-section">
+                        <h4 class="section-title" data-lang-key="settings_appearance">ڕووکەش</h4>
+                        <div class="settings-card">
+                            <div class="setting-row">
+                                <div class="setting-icon"><i class="fas fa-moon"></i></div>
+                                <div class="setting-label" id="theme-label" data-lang-key="dark_mode">دۆخی تاریک</div>
+                                <label class="switch">
+                                    <input type="checkbox" id="theme-toggle" aria-labelledby="theme-label" onchange="toggleTheme()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-row">
+                                <div class="setting-icon"><i class="fas fa-palette"></i></div>
+                                <div class="setting-label" data-lang-key="accent_color">ڕەنگی سەرەکی</div>
+                                <div class="color-options">
+                                    <div class="color-circle blue" onclick="setAccentColor('blue')" title="Blue"></div>
+                                    <div class="color-circle green" onclick="setAccentColor('green')" title="Green"></div>
+                                    <div class="color-circle purple" onclick="setAccentColor('purple')" title="Purple"></div>
+                                    <div class="color-circle orange" onclick="setAccentColor('orange')" title="Orange"></div>
+                                </div>
+                            </div>
+
+                            <div class="setting-row">
+                                <div class="setting-icon"><i class="fas fa-globe"></i></div>
+                                <div class="setting-label" id="language-label" data-lang-key="language">زمان</div>
+                                <select id="language-select" aria-labelledby="language-label" onchange="selectLanguage(this.value)" class="settings-select">
+                                    <option value="ku">کوردی</option>
+                                    <option value="ar">عربي</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- General Section -->
+                    <div class="settings-section">
+                        <h4 class="section-title" data-lang-key="settings_general">گشتی</h4>
+                        <div class="settings-card">
+                            <div class="setting-row">
+                                <div class="setting-icon"><i class="fas fa-bell"></i></div>
+                                <div class="setting-label" id="notif-label" data-lang-key="notifications">وەرگرتنی ئاگادارکردنەوەکان</div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notif-toggle" aria-labelledby="notif-label" onchange="toggleNotifications()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row clickable" onclick="clearAppCache()">
+                                <div class="setting-icon"><i class="fas fa-broom"></i></div>
+                                <div class="setting-label" data-lang-key="clear_cache">پاککردنەوەی کاش</div>
+                                <i class="fas fa-chevron-left arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div class="settings-section">
+                        <h4 class="section-title" data-lang-key="settings_security">ئاسایش</h4>
+                        <div class="settings-card">
+                            <div class="setting-row clickable" onclick="openChangePasswordModal()">
+                                <div class="setting-icon"><i class="fas fa-lock"></i></div>
+                                <div class="setting-label" data-lang-key="change_password">گۆڕینی وشەی نهێنی</div>
+                                <i class="fas fa-chevron-left arrow-icon"></i>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-icon"><i class="fas fa-shield-alt"></i></div>
+                                <div class="setting-label" id="mfa-label" data-lang-key="two_factor_auth">سەلماندنی دوو هەنگاوی</div>
+                                <span id="mfa-status-text" class="mfa-status-badge"></span>
+                                <label class="switch">
+                                    <input type="checkbox" id="mfa-toggle" aria-labelledby="mfa-label" onchange="handleMFAToggle(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row clickable" onclick="handleSignOutAll()">
+                                <div class="setting-icon"><i class="fas fa-sign-out-alt"></i></div>
+                                <div class="setting-label" data-lang-key="logout_all_sessions">چوونەدەرەوە لە هەموو ئامێرەکان</div>
+                                <i class="fas fa-chevron-left arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- About Section -->
+                    <div class="settings-section">
+                        <h4 class="section-title" data-lang-key="settings_about">دەربارە</h4>
+                        <div class="settings-card">
+                            <div class="setting-row">
+                                <div class="setting-label" data-lang-key="app_version">وەشانی ئەپ</div>
+                                <div class="setting-value">v6.5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </main>
+    </div>
 
-            <div class="setting-item">
-                <label data-lang-key="language" for="language-select" style="margin-left: 10px;">زمان</label>
-                <select id="language-select" onchange="changeLanguage(this.value)" style="width: 120px;">
-                    <option value="ku">کوردی</option>
-                    <option value="ar">عەرەبی</option>
-                </select>
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" class="modal custom-modal">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <div class="dialog-icon-wrapper">
+                    <i class="fas fa-key" id="dialog-header-icon"></i>
+                </div>
+                <div class="dialog-header-text">
+                    <h3 data-lang-key="change_password">گۆڕینی وشەی نهێنی</h3>
+                    <span class="dialog-subtitle" data-lang-key="settings_security">ئاسایش</span>
+                </div>
+                <button class="dialog-close-btn" onclick="closeChangePasswordModal()" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-
-            <div class="setting-item">
-                <span id="notif-label" data-lang-key="notifications">وەرگرتنی ئاگادارکردنەوەکان</span>
-                <label class="switch">
-                    <input type="checkbox" id="notif-toggle" onchange="toggleNotifications()" aria-labelledby="notif-label">
-                    <span class="slider"></span>
-                </label>
+            <div class="dialog-body">
+                <form id="change-password-form" onsubmit="handleChangePasswordSubmit(event)">
+                    <div class="dialog-form-group">
+                        <label for="settings-old-password" data-lang-key="old_password_label"><i class="fas fa-lock"></i> وشەی نهێنی کۆن</label>
+                        <input type="password" id="settings-old-password" required>
+                    </div>
+                    <div class="dialog-form-group">
+                        <label for="settings-new-password" data-lang-key="new_password_label"><i class="fas fa-key"></i> وشەی نهێنی نوێ</label>
+                        <input type="password" id="settings-new-password" required minlength="6">
+                        <div id="settings-password-strength-meter">
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                        </div>
+                        <span id="settings-password-strength-text"></span>
+                    </div>
+                    <div class="dialog-form-group">
+                        <label for="settings-confirm-password" data-lang-key="confirm_password_label"><i class="fas fa-check-double"></i> دووپاتکردنەوەی وشەی نهێنی</label>
+                        <input type="password" id="settings-confirm-password" required minlength="6">
+                        <span id="password-match-indicator" class="match-indicator"></span>
+                    </div>
+                </form>
             </div>
-
-            <a href="index.html" class="link" data-lang-key="back_home">گەڕانەوە بۆ سەرەتا</a>
+            <div class="dialog-footer">
+                <button type="button" class="dialog-cancel-btn" onclick="closeChangePasswordModal()" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                <button type="submit" form="change-password-form" class="dialog-save-btn" data-lang-key="save_btn">تۆمارکردن</button>
+            </div>
         </div>
     </div>
 
+    <!-- MFA Setup Modal -->
+    <div id="mfa-setup-modal" class="modal custom-modal">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <div class="dialog-icon-wrapper">
+                    <i class="fas fa-qrcode" id="dialog-header-icon"></i>
+                </div>
+                <div class="dialog-header-text">
+                    <h3 data-lang-key="mfa_setup_title">سەلماندنی دوو هەنگاوی</h3>
+                    <span class="dialog-subtitle" data-lang-key="settings_security">ئاسایش</span>
+                </div>
+                <button class="dialog-close-btn" onclick="closeMFASetupModal()" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="dialog-body">
+                <p id="mfa-qr-desc" data-lang-key="scan_qr_desc">تکایە ئەم کۆدە سکان بکە...</p>
+                <div id="mfa-qr-container" class="qr-code-container"></div>
+                <div class="dialog-form-group">
+                    <input type="text" id="mfa-verify-code" placeholder="123456" maxlength="6">
+                </div>
+                <button type="button" class="dialog-save-btn" onclick="verifyMFASetup()" data-lang-key="verify_btn">پشکنین</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="modal custom-modal">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <div class="dialog-icon-wrapper">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <div class="dialog-header-text">
+                    <h3 data-lang-key="edit_profile">دەستکاریکردنی پرۆفایل</h3>
+                    <span class="dialog-subtitle" data-lang-key="personal_info">زانیاری کەسی</span>
+                </div>
+                <button class="dialog-close-btn" onclick="closeEditProfileModal()" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="dialog-body">
+                <form id="edit-profile-form" onsubmit="handleProfileUpdate(event)">
+                    <div class="dialog-form-group">
+                        <label for="edit-full-name" data-lang-key="full_name_label"><i class="fas fa-user"></i> ناوی تەواو</label>
+                        <input type="text" id="edit-full-name" required>
+                    </div>
+                    <div class="dialog-form-group">
+                        <label for="edit-email" data-lang-key="email_label"><i class="fas fa-envelope"></i> ئیمەیڵ</label>
+                        <input type="email" id="edit-email" required>
+                    </div>
+                    <div class="email-change-notice" data-lang-key="email_change_notice">
+                        ئەگەر ئیمەیڵ بگۆڕیت، لینکێکی پشتڕاستکردنەوە بۆ هەردوو ئیمەیڵە کۆن و نوێیەکە دەنێردرێت.
+                    </div>
+                    <hr class="form-divider">
+                    <div class="dialog-form-group">
+                        <label for="edit-profile-password" data-lang-key="confirm_password_for_changes"><i class="fas fa-key"></i> بۆ پشتڕاستکردنەوە، تکایە وشەی نهێنی ئێستات بنووسە</label>
+                        <input type="password" id="edit-profile-password" required>
+                    </div>
+                </form>
+            </div>
+            <div class="dialog-footer">
+                <button type="button" class="dialog-cancel-btn" onclick="closeEditProfileModal()" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                <button type="submit" form="edit-profile-form" class="dialog-save-btn" data-lang-key="save_btn">تۆمارکردن</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="translations.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

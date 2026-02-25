@@ -16,6 +16,11 @@
     --danger-color: #e74c3c;
 }
 
+/* Theme Colors */
+body.theme-green { --primary-color: #2ecc71; --primary-light: #eafaf1; }
+body.theme-purple { --primary-color: #9b59b6; --primary-light: #f4ecf7; }
+body.theme-orange { --primary-color: #e67e22; --primary-light: #fdf2e9; }
+
 body.dark-mode {
     /* --- Dark Mode --- */
     --bg-color: #010409;
@@ -30,6 +35,11 @@ body.dark-mode {
     --input-border: #30363d;
     --danger-color: #f85149;
 }
+
+/* Dark Mode Theme Colors */
+body.dark-mode.theme-green { --primary-color: #2ea043; --primary-light: rgba(46, 204, 113, 0.1); }
+body.dark-mode.theme-purple { --primary-color: #a371f7; --primary-light: rgba(155, 89, 182, 0.1); }
+body.dark-mode.theme-orange { --primary-color: #d29922; --primary-light: rgba(230, 126, 34, 0.1); }
 
 * {
     box-sizing: border-box;
@@ -367,22 +377,206 @@ button[type="submit"]:active {
 }
 
 /* --- Settings Page Styles --- */
-.setting-item {
+.settings-page-content {
+    width: 100%;
+    max-width: 100%; /* Full width as requested */
+    margin: 0;
+    padding: 20px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 12px;
-    transition: background-color 0.2s;
+    flex-direction: column;
 }
-.setting-item:hover {
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.settings-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+}
+
+.back-btn:hover {
+    transform: translateX(5px); /* Move right for RTL back */
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding-bottom: 40px;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: fadeInUpSmall 0.6s ease-out backwards;
+}
+
+.settings-section:nth-child(1) { animation-delay: 0.1s; }
+.settings-section:nth-child(2) { animation-delay: 0.2s; }
+.settings-section:nth-child(3) { animation-delay: 0.3s; }
+.settings-section:nth-child(4) { animation-delay: 0.4s; }
+.settings-section:nth-child(5) { animation-delay: 0.5s; }
+
+.settings-section.full-width {
+    grid-column: 1 / -1; /* Profile card spans full width */
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    padding-right: 10px;
+    opacity: 0.8;
+}
+
+.settings-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -10px rgba(0,0,0,0.1);
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
+    background: linear-gradient(135deg, var(--primary-color), #2c3e50);
+    color: white;
+    border: none;
+    position: relative; /* For absolute positioning of edit button */
+}
+
+.profile-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.profile-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+}
+
+.profile-info p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.profile-edit-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin: 0;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.profile-edit-btn:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    padding: 18px 25px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background-color 0.2s;
+    gap: 18px;
+}
+
+.setting-row:last-child {
+    border-bottom: none;
+}
+
+.setting-row.clickable {
+    cursor: pointer;
+}
+
+.setting-row.clickable:hover {
     background-color: var(--primary-light);
 }
 
-.setting-item span {
+.setting-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.setting-row:hover .setting-icon {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.setting-label {
+    flex: 1;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
+}
+
+.setting-value {
+    color: var(--text-color-light);
+    font-size: 0.9rem;
 }
 
 /* Toggle Switch */
@@ -429,6 +623,50 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(20px);
+}
+
+/* Color Picker */
+.color-options {
+    display: flex;
+    gap: 10px;
+}
+
+.color-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+}
+
+.color-circle:hover { transform: scale(1.1); }
+.color-circle.blue { background-color: #4a90e2; }
+.color-circle.green { background-color: #2ecc71; }
+.color-circle.purple { background-color: #9b59b6; }
+.color-circle.orange { background-color: #e67e22; }
+
+.settings-select {
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-family: inherit;
+}
+
+.arrow-icon {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    opacity: 0.7;
+}
+
+/* Mobile Responsive for Settings */
+@media (max-width: 768px) {
+    .settings-content {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 20px;
+    }
 }
 
 /* --- Responsive Design --- */
@@ -509,6 +747,60 @@ input:checked + .slider:before {
     color: var(--text-color);
 }
 
+/* --- Generic Custom Modal Styles (Shared) --- */
+.custom-modal .modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.custom-modal .modal-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.custom-modal .close-modal {
+    position: static;
+    color: rgba(255,255,255,0.8);
+    font-size: 1.5rem;
+}
+
+.custom-modal .close-modal:hover {
+    color: white;
+}
+
+.custom-modal .modal-body {
+    padding: 20px;
+}
+
+.custom-modal .modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: rgba(0,0,0,0.02);
+}
+
+.save-btn, .cancel-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 /* Toast Notifications */
 #toast-container {
     position: fixed;
@@ -585,7 +877,7 @@ body.dark-mode .toast {
 }
 
 /* Password Strength Meter */
-#password-strength-meter {
+#password-strength-meter, #settings-password-strength-meter {
     display: flex;
     gap: 5px;
     margin-top: 8px;
@@ -600,7 +892,7 @@ body.dark-mode .toast {
     transition: background-color 0.3s;
 }
 
-#password-strength-text {
+#password-strength-text, #settings-password-strength-text {
     display: block;
     text-align: right;
     font-size: 0.8rem;
@@ -616,10 +908,10 @@ body.dark-mode .toast {
 .strength-bar.strong { background-color: #2ecc71; }
 .strength-bar.very-strong { background-color: #27ae60; }
 
-#password-strength-text.weak { color: #e74c3c; }
-#password-strength-text.medium { color: #f1c40f; }
-#password-strength-text.strong { color: #2ecc71; }
-#password-strength-text.very-strong { color: #27ae60; }
+#password-strength-text.weak, #settings-password-strength-text.weak { color: #e74c3c; }
+#password-strength-text.medium, #settings-password-strength-text.medium { color: #f1c40f; }
+#password-strength-text.strong, #settings-password-strength-text.strong { color: #2ecc71; }
+#password-strength-text.very-strong, #settings-password-strength-text.very-strong { color: #27ae60; }
 
 /* Top Controls (Language & Theme) */
 .top-controls {
@@ -1776,4 +2068,377 @@ body.dark-mode .pwa-card {
     cursor: pointer;
     font-weight: 600;
     white-space: nowrap;
+}
+
+/* --- Modern Dialog Styles (Shared) --- */
+.dialog-content {
+    max-width: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+    background: var(--card-bg);
+    animation: modalFadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.dialog-header {
+    padding: 15px 20px 10px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.dialog-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    background: rgba(74, 144, 226, 0.1);
+    color: var(--primary-color);
+}
+
+.dialog-header-text h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+.dialog-subtitle {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(0,0,0,0.05);
+    color: var(--text-color-light);
+}
+
+body.dark-mode .dialog-subtitle {
+    background: rgba(255,255,255,0.1);
+}
+
+.dialog-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.dialog-close-btn:hover { color: var(--text-color); }
+
+.dialog-body {
+    padding: 10px 20px 20px 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.dialog-form-group {
+    margin-bottom: 15px;
+}
+
+.dialog-form-group label {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.dialog-form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    font-size: 0.95rem;
+    color: var(--text-color);
+    transition: border-color 0.2s;
+}
+
+.dialog-footer {
+    padding: 0 20px 20px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.dialog-cancel-btn, .dialog-save-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dialog-cancel-btn {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+}
+
+.dialog-save-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.dialog-save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+}
+
+.dialog-save-btn:active {
+    transform: scale(0.98);
+}
+
+/* Password Match Indicator */
+.match-indicator {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+    font-weight: 600;
+    height: 1.2em; /* Prevent layout shift */
+    transition: color 0.3s;
+}
+.match-indicator.match { color: #2ecc71; }
+.match-indicator.mismatch { color: #e74c3c; }
+
+/* Compact Form for Password Change */
+#change-password-form .dialog-form-group {
+    margin-bottom: 10px; /* Reduced margin for compact look */
+}
+#change-password-form input {
+    padding: 8px 12px; /* Slightly reduced padding */
+}
+
+.email-change-notice {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    background: var(--input-bg);
+    padding: 10px;
+    border-radius: 8px;
+    line-height: 1.5;
+    margin-top: -5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--input-border);
+    margin: 20px 0;
+}
+
+/* Compact Edit Profile Modal */
+#edit-profile-modal .dialog-content {
+    max-width: 320px;
+}
+
+#edit-profile-modal .dialog-header {
+    padding: 12px 15px 5px 15px;
+}
+
+#edit-profile-modal .dialog-header-text h3 {
+    font-size: 1rem;
+}
+
+#edit-profile-modal .dialog-body {
+    padding: 5px 15px 10px 15px;
+}
+
+#edit-profile-modal .dialog-form-group {
+    margin-bottom: 8px;
+}
+
+#edit-profile-modal .dialog-form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+}
+
+#edit-profile-modal input {
+    height: 36px;
+    padding: 4px 10px;
+    font-size: 0.9rem;
+}
+
+#edit-profile-modal .email-change-notice {
+    margin-bottom: 8px;
+    padding: 6px;
+    font-size: 0.7rem;
+    line-height: 1.3;
+}
+
+#edit-profile-modal .form-divider {
+    margin: 8px 0;
+}
+
+#edit-profile-modal .dialog-footer {
+    padding: 0 15px 15px 15px;
+}
+
+#edit-profile-modal .dialog-save-btn, 
+#edit-profile-modal .dialog-cancel-btn {
+    padding: 8px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+}
+
+/* QR Code Container */
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px; /* زیادکردنی بۆشایی بۆ ئەوەی کامێرا باشتر بیخوێنێتەوە */
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--input-border);
+    margin: 10px auto; /* هێنانە ناوەڕاست */
+    max-width: 280px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.qr-code-container svg {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+.qr-code-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.mfa-status-badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 10px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+.mfa-status-badge.active { color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+.mfa-status-badge.inactive { color: var(--text-color-light); background: rgba(0,0,0,0.05); }
+
+/* Compact MFA Login Modal */
+#mfa-login-modal .card {
+    padding: 20px 25px;
+    max-width: 320px;
+}
+
+#mfa-login-modal h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+#mfa-login-modal p {
+    font-size: 0.85rem;
+    margin-bottom: 15px !important;
+}
+
+#mfa-login-modal .otp-input {
+    height: 42px;
+    font-size: 1.1rem !important;
+    padding: 5px !important;
+}
+
+#mfa-login-modal button[type="submit"] {
+    padding: 10px;
+    font-size: 0.95rem;
+    margin-top: 5px;
+}
+
+#mfa-login-modal p {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--text-color-light);
+}
+
+/* Compact MFA Setup Modal (QR Code Card) */
+#mfa-setup-modal .dialog-content {
+    max-width: 340px;
+}
+
+#mfa-setup-modal .dialog-header {
+    padding: 15px 20px 5px 20px;
+}
+
+#mfa-setup-modal .dialog-header-text h3 {
+    font-size: 1.05rem;
+}
+
+#mfa-setup-modal .dialog-body {
+    padding: 5px 20px 20px 20px;
+}
+
+#mfa-setup-modal .qr-code-container {
+    padding: 5px;
+    width: 240px;
+    height: 240px;
+    max-width: 100%;
+    margin: 5px auto 15px auto;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mfa-setup-modal #mfa-qr-desc {
+    font-size: 0.85rem;
+    margin-bottom: 10px !important;
+    text-align: center;
+}
+
+#mfa-setup-modal .qr-code-container svg,
+#mfa-setup-modal .qr-code-container img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+
+#mfa-setup-modal .dialog-form-group {
+    margin-top: 10px !important;
+    margin-bottom: 15px;
+}
+
+#mfa-setup-modal input#mfa-verify-code {
+    height: 40px;
+    font-size: 1.1rem !important;
+    padding: 5px !important;
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+#mfa-setup-modal .dialog-save-btn {
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+#mfa-login-modal .otp-input {
+    text-align: center;
+    letter-spacing: 5px;
 }
