@@ -391,6 +391,7 @@ body.dark-mode #reset-filter-btn {
     text-align: center;
     padding: 50px 20px;
     color: var(--text-color-light);
+    display: none;
 }
 
 .no-data-message i {
@@ -745,7 +746,8 @@ body.dark-mode #reset-filter-btn {
 /* --- Letter & Receipt Dialog Styles (Rewritten) --- */
 #letter-dialog .dialog-content,
 #receipt-dialog .dialog-content,
-#file-dialog .dialog-content {
+#file-dialog .dialog-content,
+#asset-dialog .dialog-content {
     max-width: 360px; /* کەمکردنەوەی پانی بۆ کۆمپاکت بوون */
     max-height: 90vh; /* دیاریکردنی بەرزترین قەبارە بۆ ئەوەی لە شاشە دەرنەچێت */
     border-radius: 20px;
@@ -759,7 +761,8 @@ body.dark-mode #reset-filter-btn {
 
 #letter-dialog .dialog-header,
 #receipt-dialog .dialog-header,
-#file-dialog .dialog-header {
+#file-dialog .dialog-header,
+#asset-dialog .dialog-header {
     padding: 12px 15px 5px 15px; /* کەمکردنەوەی بۆشایی سەرەوە */
     display: flex;
     align-items: flex-start;
@@ -770,7 +773,8 @@ body.dark-mode #reset-filter-btn {
 
 #letter-dialog .dialog-icon-wrapper,
 #receipt-dialog .dialog-icon-wrapper,
-#file-dialog .dialog-icon-wrapper {
+#file-dialog .dialog-icon-wrapper,
+#asset-dialog .dialog-icon-wrapper {
     width: 36px; /* بچووککردنەوەی ئایکۆن */
     height: 36px;
     border-radius: 8px;
@@ -785,7 +789,8 @@ body.dark-mode #reset-filter-btn {
 
 #letter-dialog .dialog-header-text h3,
 #receipt-dialog .dialog-header-text h3,
-#file-dialog .dialog-header-text h3 {
+#file-dialog .dialog-header-text h3,
+#asset-dialog .dialog-header-text h3 {
     margin: 0 0 6px 0;
     font-size: 0.95rem;
     line-height: 1.4;
@@ -794,7 +799,8 @@ body.dark-mode #reset-filter-btn {
 
 #letter-dialog .dialog-subtitle,
 #receipt-dialog .dialog-subtitle,
-#file-dialog .dialog-subtitle {
+#file-dialog .dialog-subtitle,
+#asset-dialog .dialog-subtitle {
     display: inline-block;
     padding: 3px 8px;
     border-radius: 6px;
@@ -806,13 +812,15 @@ body.dark-mode #reset-filter-btn {
 
 body.dark-mode #letter-dialog .dialog-subtitle,
 body.dark-mode #receipt-dialog .dialog-subtitle,
-body.dark-mode #file-dialog .dialog-subtitle {
+body.dark-mode #file-dialog .dialog-subtitle,
+body.dark-mode #asset-dialog .dialog-subtitle {
     background: rgba(255,255,255,0.1);
 }
 
 #letter-dialog .dialog-close-btn,
 #receipt-dialog .dialog-close-btn,
-#file-dialog .dialog-close-btn {
+#file-dialog .dialog-close-btn,
+#asset-dialog .dialog-close-btn {
     background: transparent;
     border: none;
     color: var(--text-color-light);
@@ -827,11 +835,13 @@ body.dark-mode #file-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-close-btn:hover,
 #receipt-dialog .dialog-close-btn:hover,
-#file-dialog .dialog-close-btn:hover { color: var(--text-color); }
+#file-dialog .dialog-close-btn:hover,
+#asset-dialog .dialog-close-btn:hover { color: var(--text-color); }
 
 #letter-dialog .dialog-body,
 #receipt-dialog .dialog-body,
-#file-dialog .dialog-body {
+#file-dialog .dialog-body,
+#asset-dialog .dialog-body {
     padding: 5px 15px 10px 15px;
     overflow-y: auto; /* زیادکردنی سکڕۆڵ ئەگەر پێویست بوو */
     flex-grow: 1; /* ڕێگەدان بە گەورەبوونی بۆ پڕکردنەوەی بۆشایی */
@@ -839,7 +849,8 @@ body.dark-mode #file-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-grid-2,
 #receipt-dialog .dialog-grid-2,
-#file-dialog .dialog-grid-2 {
+#file-dialog .dialog-grid-2,
+#asset-dialog .dialog-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px; /* کەمکردنەوەی بۆشایی نێوان خانەکان */
@@ -848,13 +859,15 @@ body.dark-mode #file-dialog .dialog-subtitle {
 /* ستایلی تایبەت و کۆمپاکت بۆ خانەکانی فۆڕم */
 #letter-dialog .dialog-form-group,
 #receipt-dialog .dialog-form-group,
-#file-dialog .dialog-form-group {
+#file-dialog .dialog-form-group,
+#asset-dialog .dialog-form-group {
     margin-bottom: 8px;
 }
 
 #letter-dialog .dialog-form-group label,
 #receipt-dialog .dialog-form-group label,
-#file-dialog .dialog-form-group label {
+#file-dialog .dialog-form-group label,
+#asset-dialog .dialog-form-group label {
     font-size: 0.75rem;
     margin-bottom: 4px;
     display: flex;
@@ -872,7 +885,10 @@ body.dark-mode #file-dialog .dialog-subtitle {
 #receipt-dialog .dialog-form-group textarea,
 #file-dialog .dialog-form-group input,
 #file-dialog .dialog-form-group select,
-#file-dialog .dialog-form-group textarea {
+#file-dialog .dialog-form-group textarea,
+#asset-dialog .dialog-form-group input,
+#asset-dialog .dialog-form-group select,
+#asset-dialog .dialog-form-group textarea {
     width: 100%;
     padding: 8px 10px; /* کەمکردنەوەی پادینگی ناو خانەکان */
     border-radius: 8px;
@@ -885,7 +901,8 @@ body.dark-mode #file-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-form-group textarea,
 #receipt-dialog .dialog-form-group textarea,
-#file-dialog .dialog-form-group textarea {
+#file-dialog .dialog-form-group textarea,
+#asset-dialog .dialog-form-group textarea {
     min-height: 60px;
     resize: vertical;
 }
@@ -893,26 +910,30 @@ body.dark-mode #file-dialog .dialog-subtitle {
 /* بچووککردنەوەی بەشی فایل */
 #letter-dialog .file-upload-wrapper.compact,
 #receipt-dialog .file-upload-wrapper.compact,
-#file-dialog .file-upload-wrapper.compact {
+#file-dialog .file-upload-wrapper.compact,
+#asset-dialog .file-upload-wrapper.compact {
     padding: 10px;
 }
 
 #letter-dialog .file-upload-wrapper.compact .file-upload-box i,
 #receipt-dialog .file-upload-wrapper.compact .file-upload-box i,
-#file-dialog .file-upload-wrapper.compact .file-upload-box i {
+#file-dialog .file-upload-wrapper.compact .file-upload-box i,
+#asset-dialog .file-upload-wrapper.compact .file-upload-box i {
     font-size: 1.2rem;
     margin-bottom: 2px;
 }
 
 #letter-dialog .file-upload-wrapper.compact .file-upload-box p,
 #receipt-dialog .file-upload-wrapper.compact .file-upload-box p,
-#file-dialog .file-upload-wrapper.compact .file-upload-box p {
+#file-dialog .file-upload-wrapper.compact .file-upload-box p,
+#asset-dialog .file-upload-wrapper.compact .file-upload-box p {
     font-size: 0.75rem;
 }
 
 #letter-dialog .dialog-footer,
 #receipt-dialog .dialog-footer,
-#file-dialog .dialog-footer {
+#file-dialog .dialog-footer,
+#asset-dialog .dialog-footer {
     padding: 0 15px 12px 15px;
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -925,7 +946,9 @@ body.dark-mode #file-dialog .dialog-subtitle {
 #receipt-dialog .dialog-cancel-btn, 
 #receipt-dialog .dialog-save-btn,
 #file-dialog .dialog-cancel-btn, 
-#file-dialog .dialog-save-btn {
+#file-dialog .dialog-save-btn,
+#asset-dialog .dialog-cancel-btn, 
+#asset-dialog .dialog-save-btn {
     width: 100%;
     padding: 9px; /* کەمکردنەوەی بەرزی دوگمەکان */
     border-radius: 10px;
@@ -938,7 +961,8 @@ body.dark-mode #file-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-cancel-btn,
 #receipt-dialog .dialog-cancel-btn,
-#file-dialog .dialog-cancel-btn {
+#file-dialog .dialog-cancel-btn,
+#asset-dialog .dialog-cancel-btn {
     background: var(--input-bg);
     color: var(--text-color);
     border: 1px solid var(--input-border);
@@ -946,7 +970,8 @@ body.dark-mode #file-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-save-btn,
 #receipt-dialog .dialog-save-btn,
-#file-dialog .dialog-save-btn {
+#file-dialog .dialog-save-btn,
+#asset-dialog .dialog-save-btn {
     background: var(--primary-color);
     color: white;
     box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
@@ -954,14 +979,16 @@ body.dark-mode #file-dialog .dialog-subtitle {
 
 #letter-dialog .dialog-save-btn:hover,
 #receipt-dialog .dialog-save-btn:hover,
-#file-dialog .dialog-save-btn:hover {
+#file-dialog .dialog-save-btn:hover,
+#asset-dialog .dialog-save-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
 }
 
 #letter-dialog .dialog-save-btn:active,
 #receipt-dialog .dialog-save-btn:active,
-#file-dialog .dialog-save-btn:active {
+#file-dialog .dialog-save-btn:active,
+#asset-dialog .dialog-save-btn:active {
     transform: scale(0.98);
 }
 
@@ -969,7 +996,8 @@ body.dark-mode #file-dialog .dialog-subtitle {
 @media (max-width: 480px) {
     #letter-dialog .dialog-grid-2,
     #receipt-dialog .dialog-grid-2,
-    #file-dialog .dialog-grid-2 {
+    #file-dialog .dialog-grid-2,
+    #asset-dialog .dialog-grid-2 {
         grid-template-columns: 1fr; /* لەسەر مۆبایل دەبنە یەک ستوون */
     }
 }
@@ -990,3 +1018,94 @@ body.dark-mode #file-dialog .dialog-subtitle {
 .letter-status-line.word { background-color: #2980b9; }
 .letter-status-line.powerpoint { background-color: #c0392b; }
 .letter-status-line.pdf { background-color: #e74c3c; }
+
+/* --- Assets Table Styles --- */
+.table-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 10px; /* کەمکردنەوەی پادینگ */
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    animation: cardFadeIn 0.5s ease-out forwards;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px; /* Ensure it doesn't squish too much on mobile */
+}
+
+.modern-table th {
+    text-align: right; /* RTL */
+    padding: 10px 12px; /* کەمکردنەوەی پادینگ */
+    color: var(--text-color-light);
+    font-weight: 700;
+    font-size: 0.85rem; /* بچووککردنەوەی فۆنت */
+    border-bottom: 2px solid var(--input-border);
+    white-space: nowrap;
+}
+
+.modern-table td {
+    padding: 8px 12px; /* کەمکردنەوەی پادینگ بۆ ڕیزەکان */
+    color: var(--text-color);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.9rem; /* بچووککردنەوەی فۆنت */
+    vertical-align: middle;
+}
+
+.modern-table tr:last-child td {
+    border-bottom: none;
+}
+
+.modern-table tr:hover td {
+    background-color: rgba(0,0,0,0.02);
+}
+
+.text-center { text-align: center !important; }
+
+.count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px; /* بچووککردنەوەی باج */
+    height: 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 0 6px;
+}
+
+.count-badge.total { background: var(--primary-light); color: var(--primary-color); }
+.count-badge.active { background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+.count-badge.inactive { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.action-buttons .action-btn.edit-btn,
+.action-buttons .action-btn.delete-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+}
+.action-buttons .action-btn.edit-btn:hover { background: var(--primary-light); color: var(--primary-color); border-color: var(--primary-light); }
+.action-buttons .action-btn.delete-btn:hover { background: #fdedec; color: #e74c3c; border-color: #fdedec; }
+
+.dialog-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 480px) {
+    .dialog-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}

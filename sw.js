@@ -1,4 +1,4 @@
-const CACHE_NAME = '1207-app-v37'; // وەشانی کاشەکەمان بەرزکردەوە بۆ زامنکردنی نوێبوونەوە
+const CACHE_NAME = '1207-app-v42'; // وەشانی کاشەکەمان بەرزکردەوە بۆ زامنکردنی نوێبوونەوە
 const urlsToCache = [
   './',
   'home.html',
@@ -20,6 +20,8 @@ const urlsToCache = [
   'molat/pswla.js',
   'molat/pewist.html',
   'molat/pewist.js',
+  'molat/karasta.html',
+  'molat/karasta.js',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' // زیادکردنی فۆنتەکان بۆ ئۆفلاین
 ];
 

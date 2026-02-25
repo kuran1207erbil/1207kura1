@@ -252,6 +252,26 @@ const translations = {
         file_deleted_success: "فایل سڕایەوە",
         wargrtaradast: "وەرگرتن / ڕادەستکردن",
         mozaf: "ناو / ناونیشان / بەڵگەنامە",
+
+        // Assets (Karasta) Translations - Kurdish
+        assets_page_title: "کەرەستە بەردەستەکان",
+        search_assets_placeholder: "گەڕان بەدوای کەرەستە...",
+        add_asset_btn: "زیادکردنی کەرەستە",
+        no_assets_found: "هیچ کەرەستەیەک تۆمار نەکراوە.",
+        add_asset_title: "زیادکردنی کەرەستە",
+        edit_asset_title: "دەستکاریکردنی کەرەستە",
+        asset_form_subtitle: "فۆڕمی تۆمارکردن",
+        asset_name: "ناوی کەرەستە",
+        asset_spec: "تایبەتمەندی",
+        asset_total: "ژمارە",
+        asset_active: "کارا",
+        asset_inactive: "ناکارا",
+        asset_notes: "تێبینی",
+        actions: "کردارەکان",
+        asset_added_success: "کەرەستە زیادکرا",
+        asset_updated_success: "کەرەستە نوێکرایەوە",
+        asset_deleted_success: "کەرەستە سڕایەوە",
+        delete_confirmation_text_simple: "ئەم کردارە پاشگەزبوونەوەی نییە."
     },
     ar: {
         login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
@@ -502,6 +522,27 @@ const translations = {
         filter_files_title: "تصفية الملفات",
         file_added_success: "تم إضافة الملف",
         file_updated_success: "تم تحديث الملف",
-        file_deleted_success: "تم حذف الملف"
+        file_deleted_success: "تم حذف الملف",
+
+        // Assets (Karasta) Translations - Arabic
+        assets_page_title: "المواد المتوفرة",
+        search_assets_placeholder: "البحث عن مادة...",
+        add_asset_btn: "إضافة مادة",
+        no_assets_found: "لا توجد مواد مسجلة.",
+        add_asset_title: "إضافة مادة",
+        edit_asset_title: "تعديل المادة",
+        asset_form_subtitle: "نموذج التسجيل",
+        asset_name: "اسم المادة",
+        asset_spec: "المواصفات",
+        asset_total: "العدد الكلي",
+        asset_active: "فعال",
+        asset_inactive: "غير فعال",
+        asset_notes: "ملاحظات",
+        actions: "الإجراءات",
+        asset_added_success: "تم إضافة المادة",
+        asset_updated_success: "تم تحديث المادة",
+        asset_deleted_success: "تم حذف المادة",
+        delete_confirmation_text_simple: "هذا الإجراء لا يمكن التراجع عنه."
     }
+    
 };
