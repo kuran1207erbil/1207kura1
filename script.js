@@ -5,6 +5,12 @@ const supabaseUrl = 'https://zctlrchflhakuvcfdifv.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjdGxyY2hmbGhha3V2Y2ZkaWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2NjM1NzYsImV4cCI6MjA4NzIzOTU3Nn0.Uw_qLlsZqNRBO0BgxAT5r8ryeRJu4nSXviJ9UOocHRc';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+// Helper function to get translation
+function getTrans(key) {
+    const lang = localStorage.getItem('language') || 'ku';
+    return translations[lang] && translations[lang][key] ? translations[lang][key] : key;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
 
@@ -64,6 +70,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 content.classList.remove('show');
                 btn.classList.remove('active');
             }
+            
+            // Close settings dropdown as well
+            const settingsContent = document.getElementById('settings-dropdown-options');
+            if (settingsContent && settingsContent.classList.contains('show')) {
+                settingsContent.classList.remove('show');
+                settingsContent.previousElementSibling.classList.remove('active');
+            }
+
+            // Close generic custom dropdowns
+            document.querySelectorAll('.custom-dropdown .dropdown-content.show').forEach(content => {
+                content.classList.remove('show');
+                content.previousElementSibling.classList.remove('active');
+            });
         }
     });
 
@@ -94,6 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load User Info & Online Status
     checkUserSession();
+
+    // Setup new settings navigation if on settings page
+    if (document.querySelector('.settings-main-layout')) {
+        setupSettingsNavigation();
+    }
+
+    // If on settings page, load activity log
+    if (document.getElementById('activity-log-container')) {
+        loadActivityLog();
+    }
+
     setupOnlineStatus();
 
     // Initialize PWA Logic
@@ -167,11 +197,23 @@ function toggleTheme() {
 
 // گۆڕینی ڕەنگی سەرەکی
 function setAccentColor(color, save = true) {
-    document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-orange');
+    document.body.classList.remove(
+        'theme-blue', 'theme-green', 'theme-purple', 'theme-orange',
+        'theme-red', 'theme-pink', 'theme-teal', 'theme-cyan', 'theme-indigo', 'theme-yellow'
+    );
+    
     if (color !== 'blue') {
         document.body.classList.add(`theme-${color}`);
     }
     if (save) localStorage.setItem('accent', color);
+
+    // Update active state in modal if open
+    document.querySelectorAll('.color-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.classList.contains(color)) {
+            item.classList.add('active');
+        }
+    });
 }
 
 function updateThemeIcon(isDark) {
@@ -214,10 +256,18 @@ function selectLanguage(lang, apply = true) {
     const activeSidebarBtn = document.getElementById(`sidebar-lang-${lang}`);
     if (activeSidebarBtn) activeSidebarBtn.classList.add('active');
 
-    // Update Settings Page Dropdown
-    const settingsLangSelect = document.getElementById('language-select');
-    if (settingsLangSelect) {
-        settingsLangSelect.value = lang;
+    // Update Settings Page Custom Dropdown
+    const settingsFlag = document.getElementById('settings-current-flag');
+    const settingsText = document.getElementById('settings-current-lang-text');
+    
+    if (settingsFlag && settingsText) {
+        if (lang === 'ku') {
+            settingsText.innerText = 'کوردی';
+            settingsFlag.className = 'flag-icon flag-ku';
+        } else {
+            settingsText.innerText = 'عربي';
+            settingsFlag.className = 'flag-icon flag-ar';
+        }
     }
 
     localStorage.setItem('language', lang);
@@ -226,6 +276,10 @@ function selectLanguage(lang, apply = true) {
     // Close dropdown if open
     const content = document.getElementById('dropdown-options');
     if (content) content.classList.remove('show');
+    
+    // Close settings dropdown if open
+    const settingsContent = document.getElementById('settings-dropdown-options');
+    if (settingsContent) settingsContent.classList.remove('show');
 }
 
 function toggleLanguageDropdown() {
@@ -233,6 +287,61 @@ function toggleLanguageDropdown() {
     const btn = document.querySelector('.dropdown-btn');
     content.classList.toggle('show');
     btn.classList.toggle('active');
+}
+
+function toggleSettingsLanguageDropdown() {
+    const content = document.getElementById('settings-dropdown-options');
+    const btn = content.previousElementSibling; // The button
+    content.classList.toggle('show');
+    btn.classList.toggle('active');
+}
+
+// Generic function for custom dropdowns
+function toggleCustomDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const content = dropdown.querySelector('.dropdown-content');
+    const btn = dropdown.querySelector('.dropdown-btn');
+    
+    // Close other dropdowns first
+    document.querySelectorAll('.dropdown-content.show').forEach(d => {
+        if (d !== content) {
+            d.classList.remove('show');
+            d.previousElementSibling.classList.remove('active');
+        }
+    });
+
+    content.classList.toggle('show');
+    btn.classList.toggle('active');
+
+    // Handle z-index for parent card to prevent clipping by next card
+    const parentCard = dropdown.closest('.settings-card, .data-card');
+    if (parentCard) {
+        if (content.classList.contains('show')) {
+            parentCard.style.zIndex = '100';
+        } else {
+            setTimeout(() => { parentCard.style.zIndex = ''; }, 200); // Delay reset
+        }
+    }
+}
+
+function selectCustomOption(inputId, value, langKey, dropdownId, rawText = null) {
+    // Update hidden input
+    document.getElementById(inputId).value = value;
+    
+    // Update display text
+    const dropdown = document.getElementById(dropdownId);
+    const displaySpan = dropdown.querySelector('.dropdown-btn span');
+    
+    if (langKey) {
+        displaySpan.setAttribute('data-lang-key', langKey);
+        displaySpan.textContent = getTrans(langKey);
+    } else if (rawText) {
+        displaySpan.removeAttribute('data-lang-key');
+        displaySpan.textContent = rawText;
+    }
+
+    // Close dropdown
+    toggleCustomDropdown(dropdownId);
 }
 
 // گۆڕینی ئاگادارکردنەوە
@@ -434,26 +543,125 @@ async function handleMFAToggle(toggle) {
         }
     } else {
         // Disable MFA
-        if (confirm(translations[currentLang].confirm_disable_mfa)) {
-            try {
-                const { data: factors } = await supabaseClient.auth.mfa.listFactors();
-                // Unenroll all verified factors (simplification)
-                const verifiedFactors = factors.totp.filter(f => f.status === 'verified');
-                
-                for (const factor of verifiedFactors) {
-                    await supabaseClient.auth.mfa.unenroll({ factorId: factor.id });
+        openDisableMFAConfirm();
+    }
+}
+
+function openDisableMFAConfirm() {
+    const modal = document.getElementById('confirm-disable-mfa-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function cancelDisableMFA() {
+    const modal = document.getElementById('confirm-disable-mfa-modal');
+    if (modal) modal.style.display = 'none';
+    document.getElementById('mfa-toggle').checked = true; // Revert toggle
+}
+
+async function confirmDisableMFA() {
+    const currentLang = localStorage.getItem('language') || 'ku';
+    document.getElementById('confirm-disable-mfa-modal').style.display = 'none';
+    
+    try {
+        const { data: factors } = await supabaseClient.auth.mfa.listFactors();
+        // Unenroll all verified factors
+        const verifiedFactors = factors.totp.filter(f => f.status === 'verified');
+        
+        for (const factor of verifiedFactors) {
+            await supabaseClient.auth.mfa.unenroll({ factorId: factor.id });
+        }
+        
+        showToast(translations[currentLang].mfa_disabled_success, 'success');
+        checkMFAStatus(); // Update UI status
+    } catch (error) {
+        document.getElementById('mfa-toggle').checked = true; // Revert
+        showToast(translations[currentLang].error_occurred + error.message, 'error');
+    }
+}
+
+function setupSettingsNavigation() {
+    const navContainer = document.querySelector('.settings-nav');
+    const navHeader = document.querySelector('.settings-nav-header');
+    const navTitle = document.getElementById('settings-nav-title');
+    const navList = navContainer?.querySelector('ul');
+    const navLinks = document.querySelectorAll('.settings-nav a');
+    const panels = document.querySelectorAll('.settings-panel');
+    const panelsContainer = document.querySelector('.settings-panels');
+
+    if (!navContainer || !navList || !panelsContainer || !navLinks.length || !panels.length) return;
+
+    // Mobile Dropdown Toggle
+    if (navHeader) {
+        navHeader.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the document click listener from closing it immediately
+            const isOpen = navContainer.classList.toggle('open');
+
+            if (window.innerWidth <= 992) {
+                if (isOpen) {
+                    // If opening, calculate height and push content down
+                    const listHeight = navList.offsetHeight;
+                    panelsContainer.style.marginTop = `${listHeight + 10}px`; // +10 for some gap
+                } else {
+                    // If closing, reset margin
+                    panelsContainer.style.marginTop = '0px';
                 }
-                
-                showToast(translations[currentLang].mfa_disabled_success, 'success');
-                checkMFAStatus(); // Update UI status
-            } catch (error) {
-                toggle.checked = true; // Revert
-                showToast(translations[currentLang].error_occurred + error.message, 'error');
             }
-        } else {
-            toggle.checked = true; // User cancelled
+        });
+    }
+
+    // Panel Switching Logic
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            // Get target panel ID
+            const targetId = link.getAttribute('data-target');
+            const targetPanel = document.getElementById(targetId);
+
+            // Remove active classes
+            navLinks.forEach(l => l.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+
+            // Add active classes
+            link.classList.add('active');
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+
+            // Update mobile dropdown title
+            if (navTitle) {
+                const linkTextSpan = link.querySelector('span');
+                const linkIcon = link.querySelector('i');
+                if (linkTextSpan && linkIcon) {
+                    navTitle.innerHTML = `${linkIcon.outerHTML} ${linkTextSpan.textContent}`;
+                }
+            }
+
+            // Close dropdown on mobile
+            navContainer.classList.remove('open');
+            if (window.innerWidth <= 992) panelsContainer.style.marginTop = '0px';
+        });
+    });
+
+    // Set initial title for dropdown
+    const initialActiveLink = document.querySelector('.settings-nav a.active');
+    if (navTitle && initialActiveLink) {
+        const linkTextSpan = initialActiveLink.querySelector('span');
+        const linkIcon = initialActiveLink.querySelector('i');
+        if (linkTextSpan && linkIcon) {
+            navTitle.innerHTML = `${linkIcon.outerHTML} ${linkTextSpan.textContent}`;
         }
     }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (navContainer && !navContainer.contains(e.target) && navContainer.classList.contains('open')) {
+            navContainer.classList.remove('open');
+            if (window.innerWidth <= 992) {
+                panelsContainer.style.marginTop = '0px';
+            }
+        }
+    });
 }
 
 function closeMFASetupModal() {
@@ -704,6 +912,18 @@ async function checkUserSession() {
         if (settingsName) settingsName.innerText = displayName;
         if (settingsEmail) settingsEmail.innerText = user.email;
         
+        // Check for new device login (only once per session)
+        if (!sessionStorage.getItem('device_checked')) {
+            await checkNewDeviceLogin(user);
+            sessionStorage.setItem('device_checked', 'true');
+        }
+
+        // Log user login activity
+        logUserActivity('user_login', {
+            ip: 'not_tracked', // For privacy, or use a server-side function to get it
+            user_agent: navigator.userAgent
+        });
+
 
     } else {
         // Handle logged out state
@@ -966,29 +1186,279 @@ async function handleChangePasswordSubmit(event) {
     }
 }
 
-async function handleSignOutAll() {
-    const currentLang = localStorage.getItem('language') || 'ku';
-    if (confirm(translations[currentLang].logout_all_confirm)) {
-        try {
-            const { error } = await supabaseClient.auth.signOut({ scope: 'others' });
-            if (error) throw error;
-            showToast(translations[currentLang].logout_all_success, 'success');
-        } catch (error) {
-            showToast(translations[currentLang].error_occurred + error.message, 'error');
-        }
+// --- Activity Log Functions ---
+
+function parseUserAgent(ua) {
+    if (!ua) return 'Unknown Device';
+
+    let browser = 'Unknown Browser';
+    let os = 'Unknown OS';
+
+    // OS Detection
+    if (/windows/i.test(ua)) os = 'Windows';
+    else if (/macintosh|mac os x/i.test(ua)) os = 'macOS';
+    else if (/android/i.test(ua)) os = 'Android';
+    else if (/linux/i.test(ua)) os = 'Linux';
+    else if (/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+
+    // Browser Detection
+    if (/firefox/i.test(ua)) browser = 'Firefox';
+    else if (/chrome/i.test(ua) && !/edge|edg/i.test(ua)) browser = 'Chrome';
+    else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
+    else if (/edge|edg/i.test(ua)) browser = 'Edge';
+    else if (/msie|trident/i.test(ua)) browser = 'Internet Explorer';
+    
+    return `${browser} on ${os}`;
+}
+
+async function logUserActivity(action, details = {}) {
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) return;
+
+        const { error } = await supabaseClient.from('activity_logs').insert({
+            user_id: user.id,
+            user_email: user.email,
+            action: action,
+            details: details
+        });
+
+        if (error) throw error;
+    } catch (error) {
+        console.error('Error logging activity:', error.message);
     }
 }
 
-async function handleSignOutAll() {
-    const currentLang = localStorage.getItem('language') || 'ku';
-    if (confirm(translations[currentLang].logout_all_confirm)) {
-        try {
-            const { error } = await supabaseClient.auth.signOut({ scope: 'others' });
-            if (error) throw error;
-            showToast(translations[currentLang].logout_all_success, 'success');
-        } catch (error) {
-            showToast(translations[currentLang].error_occurred + error.message, 'error');
+async function checkNewDeviceLogin(user) {
+    try {
+        const currentUA = navigator.userAgent;
+        
+        // Check if this UA exists in previous logs
+        const { data, error } = await supabaseClient
+            .from('activity_logs')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('action', 'user_login')
+            .contains('details', { user_agent: currentUA })
+            .limit(1);
+
+        if (error) throw error;
+
+        // If no data found, it means this UA hasn't been seen before
+        if (!data || data.length === 0) {
+             showToast(getTrans('new_device_login'), 'info');
         }
+    } catch (err) {
+        console.error("Error checking device:", err);
+    }
+}
+
+async function loadActivityLog() {
+    const container = document.getElementById('activity-log-container');
+    if (!container) return;
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('activity_logs')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(10); // Get latest 10 activities
+
+        if (error) throw error;
+
+        container.innerHTML = ''; // Clear loader
+
+        if (data.length === 0) {
+            container.innerHTML = `<div class="no-data-message" style="display:block; padding: 30px 0;"><p>${getTrans('no_activities')}</p></div>`;
+            return;
+        }
+
+        data.forEach(log => {
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            
+            const timeAgo = new Date(log.created_at).toLocaleString(); // Simple time format
+
+            let actionText = getTrans(log.action) || log.action.replace(/_/g, ' ');
+
+            // If it's a login action, add device info
+            if (log.action === 'user_login' && log.details && log.details.user_agent) {
+                const deviceName = parseUserAgent(log.details.user_agent);
+                actionText = `${actionText} <span class="device-info">(${getTrans('login_from_device')} ${deviceName})</span>`;
+            }
+
+            item.innerHTML = `
+                <div class="activity-icon"><i class="fas fa-history"></i></div>
+                <div class="activity-details">
+                    <p>${actionText}</p>
+                    <span class="activity-time">${timeAgo}</span>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+
+    } catch (error) {
+        container.innerHTML = `<div class="no-data-message" style="display:block; padding: 30px 0;"><p>${getTrans('error_occurred')}</p></div>`;
+        console.error('Error loading activity log:', error.message);
+    }
+}
+
+// --- Danger Zone Functions ---
+
+function openClearCacheConfirm() {
+    const confirmModal = document.getElementById('confirm-cache-clear-modal');
+    if (confirmModal) {
+        confirmModal.style.display = 'flex';
+    }
+}
+
+function closeClearCacheConfirm() {
+    const confirmModal = document.getElementById('confirm-cache-clear-modal');
+    if (confirmModal) {
+        confirmModal.style.display = 'none';
+    }
+}
+
+function openColorModal() {
+    const modal = document.getElementById('color-picker-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeColorModal() {
+    const modal = document.getElementById('color-picker-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+// --- Data Management Functions ---
+async function handleExportData(event) {
+    event.preventDefault();
+    const tableName = document.getElementById('export-table-select').value;
+    const format = document.getElementById('export-format-select').value;
+    const button = event.target.querySelector('button[type="submit"]');
+    const originalText = button.innerHTML;
+
+    if (!tableName) {
+        showToast(getTrans('no_section_selected'), 'error');
+        return;
+    }
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    try {
+        const { data, error } = await supabaseClient.from(tableName).select('*');
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            showToast(getTrans('no_data_found'), 'info');
+            return;
+        }
+
+        // Remove supabase-specific columns if they exist
+        const cleanedData = data.map(row => {
+            delete row.created_at;
+            return row;
+        });
+
+        const ws = XLSX.utils.json_to_sheet(cleanedData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, tableName);
+        XLSX.writeFile(wb, `${tableName}_${new Date().toISOString().split('T')[0]}.${format}`);
+
+        showToast(getTrans('data_exported_success'), 'success');
+
+    } catch (error) {
+        showToast(getTrans('error_occurred') + error.message, 'error');
+    } finally {
+        button.disabled = false;
+        button.innerHTML = originalText;
+    }
+}
+
+async function handleImportData(event) {
+    event.preventDefault();
+    const tableName = document.getElementById('import-table-select').value;
+    const fileInput = document.getElementById('import-file-input');
+    const file = fileInput.files[0];
+    const button = event.target.querySelector('button[type="submit"]');
+    const originalText = button.innerHTML;
+
+    if (!tableName) {
+        showToast(getTrans('no_section_selected'), 'error');
+        return;
+    }
+    if (!file) {
+        showToast(getTrans('no_file_selected'), 'error');
+        return;
+    }
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        try {
+            const data = e.target.result;
+            const workbook = XLSX.read(data, { type: 'binary' });
+            const sheetName = workbook.SheetNames[0];
+            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+            if (jsonData.length === 0) throw new Error('File is empty or format is incorrect.');
+
+            const { error } = await supabaseClient.from(tableName).upsert(jsonData);
+            if (error) throw error;
+
+            showToast(getTrans('data_imported_success'), 'success');
+            fileInput.value = ''; // Reset file input
+        } catch (readError) {
+            showToast(getTrans('error_occurred') + readError.message, 'error');
+        } finally {
+            button.disabled = false;
+            button.innerHTML = originalText;
+        }
+    };
+    
+    reader.onerror = () => {
+        showToast(getTrans('error_occurred') + 'Could not read the file.', 'error');
+        button.disabled = false;
+        button.innerHTML = originalText;
+    };
+
+    reader.readAsBinaryString(file);
+}
+
+function updateImportFileName(input) {
+    const fileNameSpan = document.getElementById('import-file-name');
+    if (input.files && input.files.length > 0) {
+        fileNameSpan.textContent = input.files[0].name;
+        fileNameSpan.style.color = 'var(--text-color)';
+    } else {
+        fileNameSpan.textContent = getTrans('select_file_to_import');
+        fileNameSpan.style.color = 'var(--text-color-light)';
+    }
+}
+
+function handleSignOutAll() {
+    const modal = document.getElementById('confirm-logout-all-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeLogoutAllConfirm() {
+    const modal = document.getElementById('confirm-logout-all-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+async function confirmSignOutAll() {
+    const currentLang = localStorage.getItem('language') || 'ku';
+    closeLogoutAllConfirm();
+    try {
+        const { error } = await supabaseClient.auth.signOut({ scope: 'others' });
+        if (error) throw error;
+        showToast(translations[currentLang].logout_all_success, 'success');
+    } catch (error) {
+        showToast(translations[currentLang].error_occurred + error.message, 'error');
     }
 }
 
