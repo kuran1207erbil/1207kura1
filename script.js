@@ -957,13 +957,6 @@ async function checkUserSession() {
     // ------------------------------------------------
 
     // User is logged in
-    
-    // Redirect to home if on login page (Auto-login)
-    if (isLoginPage) {
-        window.location.href = 'home.html';
-        return;
-    }
-
     // If user is logged in but session_start is missing (e.g. old session), set it now
     if (user && !sessionStart) {
         localStorage.setItem('session_start', Date.now());
