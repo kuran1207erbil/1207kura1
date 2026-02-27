@@ -6,17 +6,16 @@
     <title data-lang-key="reports_page_title">ڕاپۆرتی گشتی</title>
     <!-- فایلی ستایلی گشتی -->
     <link rel="stylesheet" href="../style.css">
-    <!-- فایلی ستایلی تایبەت بە فەرمانبەران -->
+    <!-- فایلی ستایلی تایبەت بە فەرمانبەران (بۆ بەکارهێنانی هەندێک ستایلی هاوبەش) -->
     <link rel="stylesheet" href="../farmanbar/farmanbar.css">
-    <!-- فایلی ستایلی تایبەت بەم بەشە -->
+    <!-- فایلی ستایلی تایبەت بەم لاپەڕەیە -->
     <link rel="stylesheet" href="molat.css?v=59">
     <!-- کتێبخانەی ئایکۆنەکان -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- کتێبخانەی Chart.js بۆ چارتەکان -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="apple-touch-icon" href="../assests/icon.png">
 </head>
 <body>
+    <!-- ئەمە پێکهاتەی سەرەکی داشبۆردەکەیە -->
     <div class="dashboard-wrapper">
         <aside class="sidebar" id="sidebar">
             <ul class="nav-links">
@@ -31,6 +30,7 @@
                 <li class="sidebar-footer-item">
                     <a href="../settings.html"><i class="fas fa-cog"></i><span data-lang-key="settings_link">ڕێکخستنەکان</span></a>
                 </li>
+                <!-- Mobile Language Selector -->
                 <li class="sidebar-lang-section">
                     <div class="sidebar-lang-title">
                         <i class="fas fa-globe"></i>
@@ -53,7 +53,9 @@
 
         <div class="sidebar-overlay"></div>
 
+        <!-- ناوەڕۆکی سەرەکی -->
         <main class="main-content">
+            <!-- سەروتار (Header) -->
             <header class="top-header">
                 <div class="header-left-section">
                     <button class="action-btn" id="sidebar-toggle" title="Open Sidebar">
@@ -64,11 +66,8 @@
                         <h2 data-lang-key="login_title">1207 کوران1</h2>
                     </div>
                 </div>
-
                 <div class="header-actions">
-                    <button class="action-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
-                        <i class="fas fa-sun"></i>
-                    </button>
+                    <button class="action-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme"><i class="fas fa-sun"></i></button>
                     <div class="custom-dropdown">
                         <button class="lang-btn dropdown-btn" onclick="toggleLanguageDropdown()">
                             <span class="flag-icon flag-ku" id="current-flag"></span>
@@ -76,12 +75,8 @@
                             <i class="fas fa-chevron-down chevron"></i>
                         </button>
                         <div class="dropdown-content header-lang-dropdown" id="dropdown-options">
-                            <div class="dropdown-item" onclick="selectLanguage('ku')">
-                                <span class="flag-icon flag-ku"></span> کوردی
-                            </div>
-                            <div class="dropdown-item" onclick="selectLanguage('ar')">
-                                <span class="flag-icon flag-ar"></span> عربي
-                            </div>
+                            <div class="dropdown-item" onclick="selectLanguage('ku')"><span class="flag-icon flag-ku"></span> کوردی</div>
+                            <div class="dropdown-item" onclick="selectLanguage('ar')"><span class="flag-icon flag-ar"></span> عربي</div>
                         </div>
                     </div>
                     <div class="user-profile-display">
@@ -94,21 +89,24 @@
                 </div>
             </header>
 
+            <!-- بەشی ناوەڕۆکی لاپەڕەی ڕاپۆرتەکان -->
             <div class="leaves-page-content">
-                <!-- Toolbar for Date Filter -->
-                <div class="page-toolbar report-toolbar">
+                <!-- تووڵامرازی سەرەوە (Toolbar) -->
+                <div class="report-toolbar">
                     <div class="toolbar-left">
-                        <button class="filter-btn" id="open-filter-modal-btn">
-                            <i class="fas fa-filter"></i>
-                            <span data-lang-key="filter_btn">فلتەر</span>
-                        </button>
-                        <button class="filter-btn" id="open-summary-btn" title="پوختە">
-                            <i class="fas fa-table"></i>
-                            <span data-lang-key="btn_summaryy">پوختەی مۆڵەتەکان</span>
-                        </button>
+                        <h3 class="page-title" data-lang-key="reports_page_title">ڕاپۆرتی گشتی</h3>
                     </div>
+                    <button class="filter-btn" id="open-filter-modal-btn" title="فلتەر">
+                        <i class="fas fa-filter"></i>
+                        <span data-lang-key="filter_btn">فلتەر</span>
+                    </button>
+                    <button class="filter-btn" id="open-summary-btn" title="پوختە">
+                        <i class="fas fa-table"></i>
+                        <span data-lang-key="btn_summaryy">پوختەی مۆڵەتەکان</span>
+                    </button>
                 </div>
 
+                <!-- کارتی ئامارەکان -->
                 <div class="report-summary-grid">
                     <div class="stat-card employees">
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
@@ -140,26 +138,41 @@
                     </div>
                 </div>
 
-                <!-- Charts Section -->
+                <!-- سلایدەری چارتەکان -->
                 <div class="report-charts-grid">
-                    <div class="chart-box">
-                        <h4 data-lang-key="leaves_chart_title">دابەشبوونی جۆری مۆڵەت</h4>
-                        <div class="chart-wrapper">
-                            <canvas id="leavesChart"></canvas>
+                    <div class="charts-wrapper">
+                        <div class="chart-box">
+                            <h4 data-lang-key="leaves_chart_title">دابەشبوونی جۆری مۆڵەت</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="leavesChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4 data-lang-key="assets_chart_title">دۆخی کەرەستەکان</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="assetsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4 data-lang-key="receipts_chart_title">دابەشبوونی جۆری پسوولە</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="receiptsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4 data-lang-key="letters_chart_title">نوسراوەکان (وەرگرتە vs دەرکردە)</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="lettersChart"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="chart-box">
-                        <h4 data-lang-key="assets_chart_title">دۆخی کەرەستەکان</h4>
-                        <div class="chart-wrapper">
-                            <canvas id="assetsChart"></canvas>
-                        </div>
-                    </div>
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Filter Modal -->
+    <!-- مۆداڵی فلتەرکردن -->
     <div id="filter-modal" class="modal custom-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -172,7 +185,6 @@
                         <div class="input-group"><label for="report-start-date" data-lang-key="filter_start_date">لەم بەروارەوە</label><input type="date" id="report-start-date"></div>
                         <div class="input-group"><label for="report-end-date" data-lang-key="filter_end_date">تا ئەم بەروارە</label><input type="date" id="report-end-date"></div>
                     </div>
-                    
                     <div class="modal-footer">
                         <button type="button" class="cancel-btn" id="reset-report-filter" data-lang-key="reset_filter">سڕینەوەی فلتەر</button>
                         <button type="submit" class="save-btn" data-lang-key="apply_filter">جێبەجێکردن</button>
@@ -204,17 +216,23 @@
                                 <th class="text-center" data-lang-key="leave_type_travel">گەشت</th>
                             </tr>
                         </thead>
-                        <tbody id="summary-table-body">
-                            <!-- ڕیزەکان لێرە زیاد دەبن -->
-                        </tbody>
+                        <tbody id="summary-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- شوێنی پیشاندانی پەیامەکان (Toast) -->
+    <div id="toast-container"></div>
+
+    <!-- کتێبخانەی Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- کتێبخانەی سوپابەیس -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- فایلی سکریپتی گشتی -->
     <script src="../script.js"></script>
+    <!-- فایلی سکریپتی تایبەت بەم لاپەڕەیە -->
     <script src="report.js"></script>
     <script src="../translations.js"></script>
 </body>

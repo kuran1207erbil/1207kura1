@@ -126,7 +126,7 @@ const translations = {
     paragraph:"بۆ ئەزموونێکی باشتر و خێراتر، ئەپەکە دابەزێنە ناو مۆبایلەکەت.",
     install:"دابەزاندن",
     labrdn:"دواتر",
-    update_available: "وەشانێکی نوێ بەردەستە",
+    update_available: "وەشانی نوێ بەردەستە",
     update_desc: "گۆڕانکاری نوێ کراوە. تکایە نوێی بکەرەوە.",
     update_now: "نوێکردنەوە",
 
@@ -285,6 +285,7 @@ const translations = {
         total_assets: "کۆی کەرەستەکان",
         leaves_chart_title: "دابەشبوونی جۆری مۆڵەت",
         letters_chart_title: "نوسراوەکان (وەرگرتە vs دەرکردە)",
+        receipts_chart_title: "دابەشبوونی جۆری پسوولە",
         assets_chart_title: "دۆخی کەرەستەکان",
         btn_summaryy: "پوختەی مۆڵەتەکان",
         btn_summary: "پوختە",
@@ -356,8 +357,12 @@ const translations = {
         no_section_selected: "تکایە بەشێک هەڵبژێرە.",
         no_file_selected: "تکایە فایلێک هەڵبژێرە.",
         no_data_found: "هیچ داتایەک نەدۆزرایەوە بۆ دەرکردن.",
-        select_color_title: "هەڵبژاردنی ڕەنگ"
-        
+        select_color_title: "هەڵبژاردنی ڕەنگ",
+        activity_log: "تۆمارکردنی چالاکی",
+        no_activity_found: "هیچ چالاکییەک تۆمار نەکراوە.",
+        activity_type_login: "چوونەژوورەوە",
+        danger_zone: "ناوچەی ترسناك",
+        danger_zone_desc: "ئەو کردارەی خوارەوە دەبێت بە ئاگاداری بەکار ببرێت، چونکە گونجاوی ئەنجامدانیان زۆر گەورەیە.",
     },
     ar: {
         login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
@@ -642,6 +647,7 @@ const translations = {
         total_assets: "إجمالي المواد",
         leaves_chart_title: "توزيع أنواع الإجازات",
         letters_chart_title: "الكتب (وارد vs صادر)",
+        receipts_chart_title: "توزيع أنواع الوصولات",
         assets_chart_title: "حالة المواد",
         btn_summaryy: "ملخص الإجازات",
         btn_summary: "ملخص",
@@ -714,7 +720,12 @@ const translations = {
         no_section_selected: "الرجاء اختيار قسم.",
         no_file_selected: "الرجاء اختيار ملف.",
         no_data_found: "لم يتم العثور على بيانات للتصدير.",
-        select_color_title: "اختر لوناً"
+        select_color_title: "اختر لوناً",
+        activity_log: "سجل النشاطات",
+        no_activity_found: "لا توجد نشاطات مسجلة.",
+        activity_type_login: "تسجيل الدخول",
+        danger_zone: "المنطقة الخطرة",
+        danger_zone_desc: "يجب استخدام الإجراءات أدناه بحذر، لأنها قد يكون لها عواقب كبيرة.",
 
     }
     

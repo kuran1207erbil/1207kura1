@@ -54,13 +54,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         summaryModal.style.display = 'none';
     });
 
-    fetchReportData(); // Initial load
+    await fetchReportData(); // Initial load
+    setupChartSwiper(); // Set up the swiper after data is loaded
 });
 
 async function fetchReportData(startDate, endDate) {
     // Clear existing charts to prevent them from stacking on re-render
     const leavesChartCanvas = document.getElementById('leavesChart');
     const assetsChartCanvas = document.getElementById('assetsChart');
+    const receiptsChartCanvas = document.getElementById('receiptsChart');
+    const lettersChartCanvas = document.getElementById('lettersChart');
     
     // Destroy existing charts if they exist
     const existingLeavesChart = Chart.getChart(leavesChartCanvas);
@@ -71,11 +74,20 @@ async function fetchReportData(startDate, endDate) {
     if (existingAssetsChart) {
         existingAssetsChart.destroy();
     }
+    const existingReceiptsChart = Chart.getChart(receiptsChartCanvas);
+    if (existingReceiptsChart) {
+        existingReceiptsChart.destroy();
+    }
+    const existingLettersChart = Chart.getChart(lettersChartCanvas);
+    if (existingLettersChart) {
+        existingLettersChart.destroy();
+    }
 
     try {
         // Build queries
         let leavesQuery = supabaseClient.from('leaves').select('leave_type, leave_date, employees(full_name)');
-        let lettersQuery = supabaseClient.from('letters').select('id', { count: 'exact', head: true });
+        let lettersQuery = supabaseClient.from('letters').select('letter_type, letter_date');
+        let receiptsQuery = supabaseClient.from('receipts').select('receipt_type, receipt_date');
         
         // Employees and Assets are not date-dependent in this context, so their queries remain the same.
         const employeesQuery = supabaseClient.from('employees').select('id', { count: 'exact', head: true });
@@ -85,14 +97,16 @@ async function fetchReportData(startDate, endDate) {
         if (startDate) {
             leavesQuery = leavesQuery.gte('leave_date', startDate);
             lettersQuery = lettersQuery.gte('letter_date', startDate);
+            receiptsQuery = receiptsQuery.gte('receipt_date', startDate);
         }
         if (endDate) {
             leavesQuery = leavesQuery.lte('leave_date', endDate);
             lettersQuery = lettersQuery.lte('letter_date', endDate);
+            receiptsQuery = receiptsQuery.lte('receipt_date', endDate);
         }
 
-        const [employees, leaves, letters, assets] = await Promise.all([
-            employeesQuery, leavesQuery, lettersQuery, assetsQuery
+        const [employees, leaves, letters, assets, receipts] = await Promise.all([
+            employeesQuery, leavesQuery, lettersQuery, assetsQuery, receiptsQuery
         ]);
 
         // Store leaves data for summary table
@@ -101,12 +115,14 @@ async function fetchReportData(startDate, endDate) {
         // Update Summary Cards
         animateValue('count-employees', 0, employees.count || 0, 1000);
         animateValue('count-leaves', 0, leaves.data.length || 0, 1000);
-        animateValue('count-letters', 0, letters.count || 0, 1000);
+        animateValue('count-letters', 0, letters.data.length || 0, 1000);
         animateValue('count-assets', 0, assets.data.reduce((acc, curr) => acc + curr.active_count + curr.inactive_count, 0), 1000);
 
         // Prepare Data for Charts
         renderLeavesChart(leaves.data);
         renderAssetsChart(assets.data);
+        renderReceiptsChart(receipts.data);
+        renderLettersChart(letters.data);
 
     } catch (error) {
         console.error('Error fetching report data:', error);
@@ -184,6 +200,136 @@ function renderLeavesChart(leavesData) {
             }
         }
     });
+}
+
+function renderReceiptsChart(receiptsData) {
+    const ctx = document.getElementById('receiptsChart').getContext('2d');
+    
+    const counts = { receiving: 0, handover: 0 };
+    receiptsData.forEach(r => {
+        if (r.receipt_type === 'receiving') counts.receiving++;
+        else if (r.receipt_type === 'handover') counts.handover++;
+    });
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [getTrans('receipt_type_receiving'), getTrans('receipt_type_handover')],
+            datasets: [{
+                data: [counts.receiving, counts.handover],
+                backgroundColor: [
+                    '#2ecc71', // Receiving - Green
+                    '#e74c3c'  // Handover - Red
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'left',
+                    labels: {
+                        font: { family: 'Noto Kufi Arabic' },
+                        color: getComputedStyle(document.body).getPropertyValue('--text-color'),
+                        boxWidth: 12,
+                        padding: 10
+                    }
+                }
+            }
+        }
+    });
+}
+
+function renderLettersChart(lettersData) {
+    const ctx = document.getElementById('lettersChart').getContext('2d');
+    
+    const counts = { incoming: 0, outgoing: 0 };
+    lettersData.forEach(l => {
+        if (l.letter_type === 'incoming') counts.incoming++;
+        else if (l.letter_type === 'outgoing') counts.outgoing++;
+    });
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [getTrans('letter_type_incoming'), getTrans('letter_type_outgoing')],
+            datasets: [{
+                data: [counts.incoming, counts.outgoing],
+                backgroundColor: [
+                    '#2ecc71', // Incoming - Green
+                    '#e74c3c'  // Outgoing - Red
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'left',
+                    labels: {
+                        font: { family: 'Noto Kufi Arabic' },
+                        color: getComputedStyle(document.body).getPropertyValue('--text-color'),
+                        boxWidth: 12,
+                        padding: 10
+                    }
+                }
+            }
+        }
+    });
+}
+
+function setupChartSwiper() {
+    const container = document.querySelector('.report-charts-grid');
+    if (!container) return;
+
+    const wrapper = container.querySelector('.charts-wrapper');
+    const paginationContainer = container.querySelector('.swiper-pagination');
+    
+    if (!wrapper || !paginationContainer) return;
+    
+    const slides = wrapper.querySelectorAll('.chart-box');
+    const totalSlides = slides.length;
+    if (totalSlides < 2) return;
+
+    let currentIndex = 0;
+    const isRTL = document.documentElement.dir === 'rtl';
+
+    // --- Create pagination numbers ---
+    paginationContainer.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+        const numBtn = document.createElement('button');
+        numBtn.classList.add('swiper-pagination-dot'); // Reuse class for styling
+        numBtn.textContent = i + 1;
+        numBtn.addEventListener('click', () => {
+            goToSlide(i);
+        });
+        paginationContainer.appendChild(numBtn);
+    }
+    const numberButtons = paginationContainer.querySelectorAll('.swiper-pagination-dot');
+
+    // --- Core Functions ---
+    function updatePagination() {
+        numberButtons.forEach((btn, index) => {
+            btn.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return; // Boundary check
+        
+        currentIndex = index;
+        
+        const transformX = isRTL ? (currentIndex * 100) : (-currentIndex * 100);
+        wrapper.style.transform = `translateX(${transformX}%)`;
+        updatePagination();
+    }
+
+    // Initial UI setup
+    goToSlide(0);
 }
 
 /**
