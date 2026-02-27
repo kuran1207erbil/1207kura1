@@ -153,6 +153,16 @@ function renderLeavesChart(leavesData) {
         counts[l.leave_type] = (counts[l.leave_type] || 0) + 1;
     });
 
+    // Define colors matching CSS
+    const leaveColors = {
+        'daily': '#f39c12',
+        'hourly': '#3498db',
+        'disease': '#e74c3c',
+        'motherhood': '#9b59b6',
+        'long-term': '#34495e',
+        'travel': '#1abc9c'
+    };
+
     const labels = Object.keys(counts).map(key => {
         // Map keys to translated labels
         const mapping = {
@@ -167,6 +177,7 @@ function renderLeavesChart(leavesData) {
     });
 
     const data = Object.values(counts);
+    const backgroundColors = Object.keys(counts).map(key => leaveColors[key] || '#95a5a6');
 
     new Chart(ctx, {
         type: 'doughnut',
@@ -174,14 +185,7 @@ function renderLeavesChart(leavesData) {
             labels: labels,
             datasets: [{
                 data: data,
-                backgroundColor: [
-                    '#f39c12', // Daily - Orange
-                    '#3498db', // Hourly - Blue
-                    '#e74c3c', // Disease - Red
-                    '#9b59b6', // Motherhood - Purple
-                    '#34495e', // Long-term - Dark Blue
-                    '#1abc9c'  // Travel - Teal
-                ],
+                backgroundColor: backgroundColors,
                 borderWidth: 0
             }]
         },
