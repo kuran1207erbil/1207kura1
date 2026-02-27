@@ -48,7 +48,7 @@ const translations = {
         menu_letters: "نوسراوەکان",
         menu_receipts: "پسوولەکان",
         menu_files: "فایلی پێویست",
-        menu_assets: "کەرەستەی بەردەست",
+        menu_assets: "کەرەستەکان",
         menu_reports: "ڕاپۆرتی گشتی",
         // farmanbar page
         search_employee: "گەڕان بەدوای فەرمانبەر...",
