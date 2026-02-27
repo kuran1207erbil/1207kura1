@@ -499,8 +499,20 @@ async function handleMFAToggle(toggle) {
     if (toggle.checked) {
         // Enable MFA
         try {
+            // FIX: Unenroll ALL existing TOTP factors (verified or unverified)
+            // This ensures we don't hit "factor already exists" limits or name collisions.
+            const { data: factorsData, error: factorsError } = await supabaseClient.auth.mfa.listFactors();
+            if (factorsError) throw factorsError;
+
+            if (factorsData && factorsData.totp) {
+                for (const factor of factorsData.totp) {
+                    await supabaseClient.auth.mfa.unenroll({ factorId: factor.id });
+                }
+            }
+
             const { data, error } = await supabaseClient.auth.mfa.enroll({
-                factorType: 'totp'
+                factorType: 'totp',
+                friendlyName: '1207 App'
             });
             
             if (error) throw error;
@@ -1403,9 +1415,19 @@ async function handleImportData(event) {
             const data = e.target.result;
             const workbook = XLSX.read(data, { type: 'binary' });
             const sheetName = workbook.SheetNames[0];
-            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            let jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
             if (jsonData.length === 0) throw new Error('File is empty or format is incorrect.');
+
+            // FIX: If importing to 'assets', ensure count columns have a default value of 0
+            // to prevent "violates not-null constraint" error.
+            if (tableName === 'assets') {
+                jsonData = jsonData.map(row => ({
+                    ...row,
+                    active_count: row.active_count ?? 0,
+                    inactive_count: row.inactive_count ?? 0,
+                }));
+            }
 
             const { error } = await supabaseClient.from(tableName).upsert(jsonData);
             if (error) throw error;
