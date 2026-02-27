@@ -116,6 +116,7 @@ async function fetchReportData(startDate, endDate) {
         animateValue('count-employees', 0, employees.count || 0, 1000);
         animateValue('count-leaves', 0, leaves.data.length || 0, 1000);
         animateValue('count-letters', 0, letters.data.length || 0, 1000);
+        animateValue('count-receipts', 0, receipts.data.length || 0, 1000);
         animateValue('count-assets', 0, assets.data.reduce((acc, curr) => acc + curr.active_count + curr.inactive_count, 0), 1000);
 
         // Prepare Data for Charts
