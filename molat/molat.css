@@ -228,6 +228,7 @@
     border-radius: 16px;
     overflow: hidden;
     animation: modalFadeIn 0.3s ease-out;
+    border: none;
 }
 
 #leave-modal .modal-header,
