@@ -916,33 +916,48 @@ async function checkUserSession() {
     const settingsName = document.getElementById('settings-user-name');
     const settingsEmail = document.getElementById('settings-user-email');
     
-    if (user) {
-        // Try to get name from metadata, otherwise use email username part
-        const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
-        if (emailElement) emailElement.innerText = displayName;
+    // --- Security Check: Redirect if not logged in ---
+    const path = window.location.pathname;
+    const page = path.split("/").pop();
+    // Check if we are on the login page (index.html or root)
+    const isLoginPage = page === 'index.html' || (page === '' && !path.includes('/molat/') && !path.includes('/farmanbar/'));
 
-        if (settingsName) settingsName.innerText = displayName;
-        if (settingsEmail) settingsEmail.innerText = user.email;
-        
-        // Check for new device login (only once per session)
-        if (!sessionStorage.getItem('device_checked')) {
-            await checkNewDeviceLogin(user);
-            sessionStorage.setItem('device_checked', 'true');
+    if (!user) {
+        // If user is NOT logged in and NOT on the login page, redirect immediately
+        if (!isLoginPage) {
+            if (path.includes('/molat/') || path.includes('/farmanbar/')) {
+                window.location.href = '../index.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+            return;
         }
 
-        // Log user login activity
-        logUserActivity('user_login', {
-            ip: 'not_tracked', // For privacy, or use a server-side function to get it
-            user_agent: navigator.userAgent
-        });
-
-
-    } else {
-        // Handle logged out state
+        // Handle logged out state UI (only on login page)
         if (emailElement) emailElement.innerText = 'Guest';
         if (settingsName) settingsName.innerText = 'Guest';
         if (settingsEmail) settingsEmail.innerText = '';
+        return;
     }
+    // ------------------------------------------------
+
+    // User is logged in
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
+    if (emailElement) emailElement.innerText = displayName;
+    if (settingsName) settingsName.innerText = displayName;
+    if (settingsEmail) settingsEmail.innerText = user.email;
+    
+    // Check for new device login (only once per session)
+    if (!sessionStorage.getItem('device_checked')) {
+        await checkNewDeviceLogin(user);
+        sessionStorage.setItem('device_checked', 'true');
+    }
+
+    // Log user login activity
+    logUserActivity('user_login', {
+        ip: 'not_tracked', // For privacy, or use a server-side function to get it
+        user_agent: navigator.userAgent
+    });
 }
 
 // Handle Online/Offline Status
