@@ -381,6 +381,9 @@ async function handleLogin(event) {
             return; // Stop redirect
         }
 
+        // Set session start time (24 hours)
+        localStorage.setItem('session_start', Date.now());
+
         window.location.href = "home.html";
     } catch (error) {
         // پیشاندانی پەیامی هەڵە
@@ -715,6 +718,8 @@ async function handleMFALogin(event) {
     if (error) {
         showToast(translations[currentLang].invalid_code, 'error');
     } else {
+        // Set session start time (24 hours)
+        localStorage.setItem('session_start', Date.now());
         window.location.href = "home.html";
     }
 }
@@ -784,6 +789,7 @@ async function handleUpdatePassword(event) {
         
         // Sign out the user so they have to login with new password
         const { error: signOutError } = await supabaseClient.auth.signOut();
+        localStorage.removeItem('session_start'); // Clear session timer
         if (signOutError) console.error("Error signing out:", signOutError);
         
         setTimeout(() => {
@@ -910,6 +916,15 @@ function showToast(message, type = 'info') {
 
 // Fetch User Session and Display Email
 async function checkUserSession() {
+    // --- Session Timeout Check (24 Hours) ---
+    const sessionStart = localStorage.getItem('session_start');
+    const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    if (sessionStart && (Date.now() - parseInt(sessionStart) > SESSION_TIMEOUT)) {
+        await supabaseClient.auth.signOut();
+        localStorage.removeItem('session_start');
+    }
+
     const { data: { user } } = await supabaseClient.auth.getUser();
     
     const emailElement = document.getElementById('user-email');
@@ -942,6 +957,18 @@ async function checkUserSession() {
     // ------------------------------------------------
 
     // User is logged in
+    
+    // Redirect to home if on login page (Auto-login)
+    if (isLoginPage) {
+        window.location.href = 'home.html';
+        return;
+    }
+
+    // If user is logged in but session_start is missing (e.g. old session), set it now
+    if (user && !sessionStart) {
+        localStorage.setItem('session_start', Date.now());
+    }
+
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
     if (emailElement) emailElement.innerText = displayName;
     if (settingsName) settingsName.innerText = displayName;
