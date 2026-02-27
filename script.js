@@ -246,7 +246,7 @@ function selectLanguage(lang, apply = true) {
             currentText.innerText = 'کوردی';
             currentFlag.className = 'flag-icon flag-ku';
         } else {
-            currentText.innerText = 'عربي';
+            currentText.innerText = 'العربية';
             currentFlag.className = 'flag-icon flag-ar';
         }
     }
@@ -265,7 +265,7 @@ function selectLanguage(lang, apply = true) {
             settingsText.innerText = 'کوردی';
             settingsFlag.className = 'flag-icon flag-ku';
         } else {
-            settingsText.innerText = 'عربي';
+            settingsText.innerText = 'العربية';
             settingsFlag.className = 'flag-icon flag-ar';
         }
     }

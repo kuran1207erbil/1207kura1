@@ -48,7 +48,7 @@ const translations = {
         menu_letters: "نوسراوەکان",
         menu_receipts: "پسوولەکان",
         menu_files: "فایلی پێویست",
-        menu_assets: "کەرەستە بەردەستەکان",
+        menu_assets: "کەرەستەی بەردەست",
         menu_reports: "ڕاپۆرتی گشتی",
         // farmanbar page
         search_employee: "گەڕان بەدوای فەرمانبەر...",
@@ -58,7 +58,7 @@ const translations = {
   contact_info: "پەیوەندی و ناونیشان",
   documents_pdf: "بەڵگەنامەکان (PDF)",
   kurdish: "کوردی",
-  arabic: "عربی",
+  arabic: "العربية",
   raqamnaxb: "ژمارەی دەنگدەر",
   // validation
   required_field: "ئەم خانەیە پێویستە",
@@ -419,8 +419,6 @@ const translations = {
        add_employee: "إضافة موظف",
    contact_info: "معلومات الاتصال",
    documents_pdf: "المستندات (PDF)",
-   kurdish: "الكردية",
-   arabic: "عربي",
    raqamnaxb: "رقم الناخب",
    // validation
    required_field: "هذا الحقل مطلوب",
