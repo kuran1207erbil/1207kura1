@@ -15,6 +15,89 @@
             opacity: 0;
             animation: fadeInUpSmall 0.6s ease-out forwards;
         }
+
+        /* زیادکراوە بۆ گونجاندنی شێوەی کاردەکان لەسەر مۆبایل */
+        @media (max-width: 768px) {
+            .employee-card {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                grid-template-areas:
+                    "image name"
+                    "image role"
+                    "details details";
+                gap: 5px 15px;
+                padding: 15px;
+                align-items: center;
+            }
+
+            .card-img-wrapper {
+                grid-area: image;
+                width: 70px;
+                height: 70px;
+                margin: 0;
+                border-radius: 50%;
+                border: none;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+
+            .card-img-wrapper img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .card-info {
+                display: contents;
+            }
+
+            .card-info h3 {
+                grid-area: name;
+                font-size: 1.05rem;
+                font-weight: 700;
+                margin: 0;
+                align-self: end;
+                color: var(--text-color);
+            }
+
+            .card-info .role {
+                grid-area: role;
+                font-size: 0.85rem;
+                color: var(--text-color-light);
+                margin: 0;
+                align-self: start;
+            }
+
+            .card-info .card-details {
+                grid-area: details;
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid var(--input-border);
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .card-details span {
+                font-size: 0.9rem;
+                background: var(--input-bg);
+                padding: 8px 12px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex: 1;
+                justify-content: center;
+                font-weight: 500;
+                color: var(--text-color);
+            }
+            
+            .card-details span i {
+                color: var(--primary-color);
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -303,6 +386,7 @@
                 const { data, error } = await supabaseClient
                     .from('employees')
                     .select('*')
+                    .order('sort_order', { ascending: true })
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
