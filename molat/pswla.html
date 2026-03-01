@@ -157,8 +157,7 @@
                     <div class="dialog-form-group">
                         <label for="receiver-name"><i class="fas fa-user"></i> <span data-lang-key="receiver_handover_label">وەرگر یان ڕادەستکەر</span></label>
                         <select id="receiver-name" required>
-                            <option value="چەتۆ حسن حسین عزیز">چەتۆ حسن حسین عزیز</option>
-                            <option value="مەبەست وریا قادر صابر">مەبەست وریا قادر صابر</option>
+                            <option value="" disabled selected data-lang-key="select_employee_placeholder">فەرمانبەرێک هەڵبژێرە...</option>
                         </select>
                     </div>
 
@@ -294,5 +293,30 @@
     <script src="../script.js"></script>
     <script src="pswla.js"></script>
     <script src="../translations.js"></script>
+    <script>
+        // Fetch employees for the receiver dropdown
+        document.addEventListener('DOMContentLoaded', async () => {
+            const receiverSelect = document.getElementById('receiver-name');
+            if(receiverSelect) {
+                try {
+                    const { data: employees, error } = await supabaseClient
+                        .from('employees')
+                        .select('full_name')
+                        .order('full_name');
+                    
+                    if (error) throw error;
+
+                    employees.forEach(emp => {
+                        const option = document.createElement('option');
+                        option.value = emp.full_name;
+                        option.textContent = emp.full_name;
+                        receiverSelect.appendChild(option);
+                    });
+                } catch (err) {
+                    console.error('Error fetching employees:', err);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

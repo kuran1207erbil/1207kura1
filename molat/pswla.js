@@ -203,8 +203,8 @@ function createReceiptCard(receipt) {
     card.dataset.id = receipt.id;
 
     const typeConfig = {
-        'receiving': { text: getTrans('receipt_type_receiving'), icon: 'fa-arrow-down', class: 'incoming' },
-        'handover': { text: getTrans('receipt_type_handover'), icon: 'fa-arrow-up', class: 'outgoing' }
+        'receiving': { text: getTrans('receipt_type_receiving'), icon: 'fa-receipt', class: 'incoming' },
+        'handover': { text: getTrans('receipt_type_handover'), icon: 'fa-file-invoice', class: 'outgoing' }
     };
     const config = typeConfig[receipt.receipt_type] || { text: 'نادیار', icon: 'fa-question', class: '' };
     const relatedText = getTrans(`related_to_${receipt.related_to}`) || receipt.related_to;
@@ -253,7 +253,7 @@ function openReceiptViewModal(receipt) {
     const isReceiving = receipt.receipt_type === 'receiving';
     const typeClass = isReceiving ? 'incoming' : 'outgoing';
     const typeText = isReceiving ? getTrans('receipt_type_receiving') : getTrans('receipt_type_handover');
-    const iconClass = isReceiving ? 'fa-arrow-down' : 'fa-arrow-up';
+    const iconClass = isReceiving ? 'fa-receipt' : 'fa-file-invoice';
 
     // Header
     const iconWrapper = document.getElementById('view-receipt-icon-wrapper');

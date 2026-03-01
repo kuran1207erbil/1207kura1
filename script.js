@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup new settings navigation if on settings page
     if (document.querySelector('.settings-main-layout')) {
         setupSettingsNavigation();
+        displayAppVersion(); // Load app version
     }
 
     // If on settings page, load activity log
@@ -591,6 +592,32 @@ async function confirmDisableMFA() {
     } catch (error) {
         document.getElementById('mfa-toggle').checked = true; // Revert
         showToast(translations[currentLang].error_occurred + error.message, 'error');
+    }
+}
+
+// --- App Version Display ---
+async function displayAppVersion() {
+    const versionElement = document.getElementById('app-version-display');
+    if (!versionElement) return;
+
+    try {
+        // Fetch the service worker file as text. Add timestamp to bypass cache.
+        const response = await fetch('sw.js?t=' + new Date().getTime());
+        if (!response.ok) {
+            versionElement.textContent = 'N/A';
+            return;
+        }
+        const swContent = await response.text();
+        const match = swContent.match(/const CACHE_NAME = '.*?-(v[0-9.]+)'/);
+        
+        if (match && match[1]) {
+            versionElement.textContent = match[1];
+        } else {
+            versionElement.textContent = 'N/A';
+        }
+    } catch (error) {
+        console.error('Error fetching app version:', error);
+        versionElement.textContent = 'Error';
     }
 }
 
