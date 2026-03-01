@@ -598,7 +598,8 @@ async function confirmDisableMFA() {
 // --- App Version Display ---
 async function displayAppVersion() {
     const versionElement = document.getElementById('app-version-display');
-    if (!versionElement) return;
+    const aboutVersionElement = document.getElementById('about-version-display');
+    if (!versionElement && !aboutVersionElement) return;
 
     try {
         // Fetch the service worker file as text. Add timestamp to bypass cache.
@@ -611,13 +612,16 @@ async function displayAppVersion() {
         const match = swContent.match(/const CACHE_NAME = '.*?-(v[0-9.]+)'/);
         
         if (match && match[1]) {
-            versionElement.textContent = match[1];
+            if(versionElement) versionElement.textContent = match[1];
+            if(aboutVersionElement) aboutVersionElement.textContent = match[1];
         } else {
-            versionElement.textContent = 'N/A';
+            if(versionElement) versionElement.textContent = 'N/A';
+            if(aboutVersionElement) aboutVersionElement.textContent = 'N/A';
         }
     } catch (error) {
         console.error('Error fetching app version:', error);
-        versionElement.textContent = 'Error';
+        if(versionElement) versionElement.textContent = 'Error';
+        if(aboutVersionElement) aboutVersionElement.textContent = 'Error';
     }
 }
 

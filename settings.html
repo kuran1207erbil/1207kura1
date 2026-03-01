@@ -6,6 +6,119 @@
     <title>Settings | 1207</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* About Section Styles */
+        .about-hero {
+            text-align: right;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), #2c3e50);
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.1), transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(0,0,0,0.2), transparent 60%);
+            z-index: 0;
+        }
+
+        .about-logo {
+            width: 80px; height: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            padding: 10px;
+            margin-bottom: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative; z-index: 2;
+            transform: rotate(0deg);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            flex-shrink: 0;
+        }
+        
+        .about-hero:hover .about-logo {
+            transform: rotate(5deg) scale(1.05);
+        }
+
+        .about-logo img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .about-info {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .about-hero h2 { 
+            margin: 0; 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .version-badge { 
+            background: rgba(0,0,0,0.25); 
+            padding: 4px 12px; 
+            border-radius: 50px; 
+            font-size: 0.8rem; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: none;
+        }
+        
+        .version-badge::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #2ecc71;
+        }
+
+        .about-card { padding: 0 !important; overflow: hidden; border: none !important; }
+        .about-content { padding: 25px; }
+        .about-section h4 { color: var(--primary-color); margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .about-section p { color: var(--text-color); line-height: 1.7; font-size: 0.95rem; opacity: 0.9; text-align: justify; }
+        .dev-card {
+            background: var(--input-bg); border-radius: 16px; padding: 15px;
+            display: flex; align-items: center; gap: 15px; margin-top: 25px;
+            border: 1px solid var(--input-border); transition: transform 0.3s;
+        }
+        .dev-card:hover { transform: translateY(-3px); border-color: var(--primary-color); }
+        .dev-avatar {
+            width: 55px; height: 55px; background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        .dev-info h5 { margin: 0 0 4px; font-size: 1.05rem; color: var(--text-color); font-weight: 700; }
+        .made-with { font-size: 0.8rem; color: var(--text-color-light); display: flex; align-items: center; gap: 5px; }
+        .made-with i { color: #e74c3c; animation: heartbeat 1.5s infinite; }
+        @keyframes heartbeat { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .about-footer {
+            background: var(--input-bg); padding: 15px; text-align: center;
+            border-top: 1px solid var(--input-border); font-size: 0.8rem; color: var(--text-color-light);
+        }
+    </style>
 </head>
 <body>
 
@@ -173,6 +286,7 @@
                                 <li><a href="#" data-target="panel-appearance"><i class="fas fa-paint-brush"></i><span data-lang-key="settings_appearance">ڕووکەش</span></a></li>
                                 <li><a href="#" data-target="panel-data"><i class="fas fa-database"></i><span data-lang-key="data_management">بەڕێوەبردنی داتا</span></a></li>
                                 <li><a href="#" data-target="panel-activity"><i class="fas fa-history"></i><span data-lang-key="activity_log">تۆماری چالاکی</span></a></li>
+                                <li><a href="#" data-target="panel-about"><i class="fas fa-info-circle"></i><span data-lang-key="menu_about">دەربارە</span></a></li>
                                 <li><a href="#" data-target="panel-danger"><i class="fas fa-exclamation-triangle"></i><span data-lang-key="danger_zone">ناوچەی مەترسیدار</span></a></li>
                             </ul>
                         </nav>
@@ -187,11 +301,6 @@
                                         <div class="setting-icon"><i class="fas fa-user-edit"></i></div>
                                         <div class="setting-label" data-lang-key="edit_profile">دەستکاریکردنی پرۆفایل</div>
                                         <i class="fas fa-chevron-left arrow-icon"></i>
-                                    </div>
-                                    <div class="setting-row">
-                                        <div class="setting-icon"><i class="fas fa-info-circle"></i></div>
-                                        <div class="setting-label" data-lang-key="app_version">وەشانی ئەپ</div>
-                                        <div class="setting-value"><span class="setting-value" id="app-version-display"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -371,6 +480,41 @@
                                 <div class="settings-card">
                                     <div id="activity-log-container" class="activity-log-container">
                                         <div class="content-loader"><div class="spinner"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- About Panel (New) -->
+                            <div id="panel-about" class="settings-panel">
+                                <h3 class="panel-title" data-lang-key="menu_about">دەربارە</h3>
+                                
+                                <div class="about-hero">
+                                    <div class="about-logo">
+                                        <img src="assests/icon.png" alt="Logo">
+                                    </div>
+                                    <div class="about-info">
+                                        <h2 data-lang-key="login_title">1207 کوران1</h2>
+                                        <span class="version-badge" id="about-version-display">...</span>
+                                    </div>
+                                </div>
+
+                                <div class="settings-card about-card">
+                                    <div class="about-content">
+                                        <div class="about-section">
+                                            <h4 data-lang-key="about_app_goal"><i class="fas fa-bullseye"></i> ئامانجی ئەپڵیکەیشن</h4>
+                                            <p data-lang-key="about_app_desc">...</p>
+                                        </div>
+                                        
+                                        <div class="dev-card">
+                                            <div class="dev-avatar"><i class="fas fa-code"></i></div>
+                                            <div class="dev-info">
+                                                <h5 data-lang-key="developer">...</h5>
+                                                <span class="made-with"><span>Mabast Wrya</span> <i class="fas fa-heart"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="about-footer">
+                                        <p data-lang-key="rights_reserved">هەموو مافێکی پارێزراوە © 2026</p>
                                     </div>
                                 </div>
                             </div>

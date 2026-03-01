@@ -1,7 +1,7 @@
 // فەرهەنگی وشەکان بۆ کوردی و عەرەبی
 const translations = {
     ku: {
-        login_title: "بنکەی تۆماری کوران1",
+        login_title: "بنکەی تۆماری کوران1 | 1207",
         username_label: "ئیمەیڵ",
         username_placeholder: "ئیمەیڵەکەت بنووسە...",
         password_label: "وشەی تێپەڕ",
@@ -87,9 +87,9 @@ const translations = {
   mastar: "ماستەر",
   doctor: "دکتۆرا",
   nawnishani_farmanbar: "ناونیشانی فەرمانبەری",
-  farmanbar: "فەرمانبەر",
+  farmanbar: "فەرمانبەری بنکە",
   yaridadar: "یاریدەدەری بەڕێوەبەری بنکە",
-  barewabar: "بەڕێوەبەری بنکە",
+  barewabar: "بەڕێوەبەری بنکەی تۆمار",
   balganamayfarmi: "بەڵگەنامە فەرمییەکان",
   darchwn: "بەرواری دەرچوون",
   basarchwn: "بەرواری بەسەرچوون",
@@ -363,9 +363,15 @@ const translations = {
         activity_type_login: "چوونەژوورەوە",
         danger_zone: "ناوچەی ترسناك",
         danger_zone_desc: "ئەو کردارەی خوارەوە دەبێت بە ئاگاداری بەکار ببرێت، چونکە گونجاوی ئەنجامدانیان زۆر گەورەیە.",
+        developer: "پەرەپێدەر",
+        menu_about: "دەربارە",
+        about_app_goal: "ئامانجی ئەپڵیکەیشن",
+        about_app_desc: "ئەم سیستەمە دروستکراوە بۆ بەڕێوەبردنی کاروبارەکانی بنکەی 1207 بە شێوەیەکی دیجیتاڵی و پێشکەوتوو، بە ئامانجی ئاسانکاری و خێراکردنی ڕایی کردنی مامەڵەکان و پاراستنی داتاکان.",
+        rights_reserved: "هەموو مافێکی پارێزراوە © 2024",
+        made_with_love: "دروستکراوە بە خۆشەویستییەوە لە کوردستان",
     },
     ar: {
-        login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
+        login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1 ",
         username_label: "البريد الإلكتروني",
         username_placeholder: "أدخل بريدك الإلكتروني...",
         password_label: "كلمة المرور",
@@ -447,9 +453,9 @@ const translations = {
     mastar: "ماجستير",
     doctor: "دكتوراه",
     nawnishani_farmanbar: "عنوان الوظيفي",
-    farmanbar: "موظف",
+    farmanbar: "موظف المركز",
     yaridadar: "معاون مدير مرکز",
-    barewabar: "مدير مرکز",
+    barewabar: "مدير مرکز التسجيل",
     balganamayfarmi: "الوثائق الرسمية",
     darchwn: "تاريخ الإصدار",
     basarchwn: "تاريخ الانتهاء",
@@ -724,6 +730,12 @@ const translations = {
         activity_type_login: "تسجيل الدخول",
         danger_zone: "المنطقة الخطرة",
         danger_zone_desc: "يجب استخدام الإجراءات أدناه بحذر، لأنها قد يكون لها عواقب كبيرة.",
+        developer: "المطور",
+        menu_about: "حول التطبيق",
+        about_app_goal: "هدف التطبيق",
+        about_app_desc: "تم إنشاء هذا النظام لإدارة أعمال مركز 1207 بشكل رقمي ومتقدم، بهدف تسهيل وتسريع إنجاز المعاملات وحماية البيانات.",
+        rights_reserved: "جميع الحقوق محفوظة © 2024",
+        made_with_love: "صنع بكل حب في كردستان",
 
     }
     
