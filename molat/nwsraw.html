@@ -153,10 +153,17 @@
                         </div>
                         <div class="dialog-form-group">
                             <label for="letter-type"><i class="fas fa-info-circle"></i> <span data-lang-key="letter_type_label">جۆری نوسراو</span></label>
-                            <select id="letter-type" required>
-                                <option value="incoming" data-lang-key="letter_type_incoming">وەرگرتە</option>
-                                <option value="outgoing" data-lang-key="letter_type_outgoing">دەرکردە</option>
-                            </select>
+                            <div class="custom-dropdown full-width" id="letter-type-dropdown">
+                                <input type="hidden" id="letter-type" required value="incoming">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('letter-type-dropdown')">
+                                    <span id="letter-type-display" data-lang-key="letter_type_incoming">وەرگرتە</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('letter-type', 'incoming', 'letter_type_incoming', 'letter-type-dropdown')"><span data-lang-key="letter_type_incoming">وەرگرتە</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('letter-type', 'outgoing', 'letter_type_outgoing', 'letter-type-dropdown')"><span data-lang-key="letter_type_outgoing">دەرکردە</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -204,11 +211,18 @@
                         <!-- جۆری نوسراو -->
                         <div class="input-group span-full">
                             <label for="filter-letter-type" data-lang-key="letter_type_label">جۆری نوسراو</label>
-                            <select id="filter-letter-type">
-                                <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
-                                <option value="incoming" data-lang-key="letter_type_incoming">وەرگرتە</option>
-                                <option value="outgoing" data-lang-key="letter_type_outgoing">دەرکردە</option>
-                            </select>
+                            <div class="custom-dropdown full-width" id="filter-letter-type-dropdown">
+                                <input type="hidden" id="filter-letter-type">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('filter-letter-type-dropdown')">
+                                    <span id="filter-letter-type-display" data-lang-key="filter_all_types">هەموو جۆرەکان</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-letter-type', '', 'filter_all_types', 'filter-letter-type-dropdown')"><span data-lang-key="filter_all_types">هەموو جۆرەکان</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-letter-type', 'incoming', 'letter_type_incoming', 'filter-letter-type-dropdown')"><span data-lang-key="letter_type_incoming">وەرگرتە</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-letter-type', 'outgoing', 'letter_type_outgoing', 'filter-letter-type-dropdown')"><span data-lang-key="letter_type_outgoing">دەرکردە</span></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- بەرواری دەستپێک -->

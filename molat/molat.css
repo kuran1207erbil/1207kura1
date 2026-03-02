@@ -38,132 +38,131 @@
 
 .leave-card {
     background: var(--card-bg);
-    border-radius: 10px;
-    padding: 8px;
-    padding-top: 30px; /* بۆ ئەوەی شوێن بۆ جۆری مۆڵەتەکە بکاتەوە لە سەرەوە */
+    border-radius: 16px;
+    padding: 0;
     box-shadow: var(--shadow);
-    border: 1.5px solid var(--input-border);
+    border: 1px solid var(--card-border);
     display: flex;
-    flex-direction: column;
-    align-items: center; /* ناوەڕۆکی کارتەکە لە ناوەڕاست دادەنێت */
-    gap: 4px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    justify-content: space-between;
+    align-items: stretch;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    opacity: 0; /* سەرەتا شاردنەوەی کاردەکان */
-    animation: cardFadeIn 0.5s ease-out forwards; /* ئەنیمەیشنی هاتن */
-    cursor: pointer; /* کردنی کاردەکە بە دوگمە */
+    animation: cardFadeIn 0.5s ease-out forwards;
+    cursor: pointer;
+    min-height: 80px;
 }
 
-@media (hover: hover) {
-    .leave-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.15); /* سێبەرێکی تۆختر بۆ جوانی */
-    }
+.leave-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
-.leave-card:active {
-    transform: scale(0.96);
-    filter: brightness(0.9);
+/* Colored strip on the right (RTL) */
+.leave-card::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background-color: #ccc; /* Default */
 }
 
-.card-header {
+.leave-card.type-daily::before { background-color: #f39c12; }
+.leave-card.type-hourly::before { background-color: #3498db; }
+.leave-card.type-disease::before { background-color: #e74c3c; }
+.leave-card.type-motherhood::before { background-color: #9b59b6; }
+.leave-card.type-long-term::before { background-color: #34495e; }
+.leave-card.type-travel::before { background-color: #1abc9c; }
+
+.leave-content {
+    flex: 1;
+    padding: 15px 20px 15px 15px; /* Extra padding on right for strip */
     display: flex;
-    justify-content: center; /* ناوی فەرمانبەر لە ناوەڕاست دادەنێت */
     align-items: center;
-    border-bottom: none; /* سڕینەوەی هێڵی ژێرەوە */
-    padding-bottom: 0; /* سڕینەوەی بۆشایی ژێرەوە */
-    margin-bottom: 2px; /* بۆشایی کەم لە ژێر ناوی فەرمانبەر */
 }
 
-.card-header h3 {
+.leave-main {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.leave-main h3 {
     margin: 0;
-    font-size: 0.9rem; /* قەبارەی فۆنتەکە کەمێک بچووک کرایەوە بۆ ئەوەی ناوی درێژ جێگای بێتەوە */
+    font-size: 1rem;
     color: var(--text-color);
     font-weight: 700;
 }
 
-.leave-card .card-header + .leave-type {
-    margin-top: 0; /* دڵنیابوونەوە لەوەی بۆشایی زیادە نییە */
-}
-
-.leave-type {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: white;
-    position: absolute; /* دانانی لە شوێنێکی دیاریکراو */
-    top: 5px; /* دووری لە سەرەوەی کارتەکە */
-    left: 5px; /* دووری لە لای چەپی کارتەکە (بۆ RTL) */
-    padding: 2px 8px; /* کەمکردنەوەی پادینگ بۆ شێوەی باج */
-    border-radius: 15px; /* خڕکردنەوەی زیاتر */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* سێبەرێکی بچووک */
-    display: flex; /* بۆ ڕێکخستنی ئایکۆن و دەق */
-    align-items: center;
-    gap: 4px; /* بۆشایی نێوان ئایکۆن و دەق */
-}
-
-.leave-type.daily {
-    background-color: #f39c12; /* شین بۆ ڕۆژانە */
-}
-
-.leave-type.hourly {
-    background-color: #3498db; /* پرتەقاڵی بۆ کاتی */
-}
-
-.leave-type.disease {
-    background-color: #e74c3c; /* سوور بۆ نەخۆشی */
-}
-
-.leave-type.motherhood {
-    background-color: #9b59b6; /* مۆر بۆ دایکایەتی */
-}
-
-.leave-type.long-term {
-    background-color: #34495e; /* شینی تۆخ بۆ درێژخایەن */
-}
-
-.leave-type.travel {
-    background-color: #1abc9c; /* فیروزەیی بۆ گەشت */
-}
-
-.card-body p {
-    margin: 0;
-    color: var(--text-color-light);
-    font-weight: 500;
+.leave-details {
     display: flex;
-    justify-content: center; /* مێژووەکە لە ناوەڕاست دادەنێت */
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.leave-date {
+    font-size: 0.85rem;
+    color: var(--text-color-light);
+    display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.card-actions {
+.leave-badge {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
     display: flex;
-    gap: 8px; /* کەمکردنەوەی بۆشایی نێوان دوگمەکان */
-    justify-content: center; /* دانانی دوگمەکان لە ناوەڕاست */
-    margin-top: 5px; /* بۆشایی لە سەرەوەی دوگمەکان */
+    align-items: center;
+    gap: 5px;
 }
 
-.card-actions .action-btn {
-    border: none;
-    width: 28px;
-    height: 28px;
+/* Badge colors matching the strip but lighter background */
+.type-daily .leave-badge { background: rgba(243, 156, 18, 0.15); color: #f39c12; }
+.type-hourly .leave-badge { background: rgba(52, 152, 219, 0.15); color: #3498db; }
+.type-disease .leave-badge { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+.type-motherhood .leave-badge { background: rgba(155, 89, 182, 0.15); color: #9b59b6; }
+.type-long-term .leave-badge { background: rgba(52, 73, 94, 0.15); color: #34495e; }
+.type-travel .leave-badge { background: rgba(26, 188, 156, 0.15); color: #1abc9c; }
+
+.leave-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    border-right: 1px solid var(--input-border); /* Separator */
+    background: rgba(0,0,0,0.02);
+    gap: 5px;
+}
+
+.leave-actions .action-btn {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-color-light);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.2s; /* گۆڕانکاری خێرا */
-    font-size: 0.8rem;
+    transition: all 0.2s;
 }
 
-.action-btn.view-btn { background: #e8f4fd; color: #3498db; }
-.action-btn.view-btn:hover { background: #3498db; color: white; }
+.leave-actions .action-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+}
 
-.action-btn.edit-btn { background: #eafaf1; color: #2ecc71; }
-.action-btn.edit-btn:hover { background: #2ecc71; color: white; }
-
-.action-btn.delete-btn { background: #fdedec; color: #e74c3c; }
-.action-btn.delete-btn:hover { background: #e74c3c; color: white; }
+.leave-actions .action-btn.delete-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+}
 
 .leave-card.fading-out {
     /* گرنگە بۆ ئەوەی بەسەر ئەنیمەیشنی هاتندا زاڵ بێت */
@@ -220,6 +219,12 @@
 .report-toolbar .filter-btn span {
     display: inline;
 }
+
+/* Custom Dropdown Z-index fix for modals */
+.modal .dropdown-content {
+    z-index: 2001; /* Ensure it's above the modal backdrop and content */
+}
+
 
 /* ستایلی مۆداڵ */
 #leave-modal .modal-content,

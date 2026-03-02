@@ -141,6 +141,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     resetFilterBtn.addEventListener('click', () => {
         filterForm.reset();
+        // Reset custom dropdown displays
+        const filterEmployeeDisplay = document.getElementById('filter-employee-display');
+        if (filterEmployeeDisplay) {
+            filterEmployeeDisplay.textContent = getTrans('filter_all_employees');
+            filterEmployeeDisplay.setAttribute('data-lang-key', 'filter_all_employees');
+        }
+        const filterLeaveTypeDisplay = document.getElementById('filter-leave-type-display');
+        filterLeaveTypeDisplay.textContent = getTrans('filter_all_types');
+        filterLeaveTypeDisplay.setAttribute('data-lang-key', 'filter_all_types');
+
         fetchLeaves(); // Re-fetch with no filters
     });
 
@@ -197,9 +207,18 @@ function setupRealtimeSubscription() {
 function openModalForAdd() {
     const modal = document.getElementById('leave-modal');
     document.getElementById('leave-form').reset(); // پاککردنەوەی فۆڕمەکە
+
+    // Reset custom dropdown displays
+    const employeeDisplay = document.getElementById('employee-display');
+    employeeDisplay.textContent = getTrans('select_employee_placeholder');
+    employeeDisplay.setAttribute('data-lang-key', 'select_employee_placeholder');
+    const leaveTypeDisplay = document.getElementById('leave-type-display');
+    leaveTypeDisplay.textContent = getTrans('leave_type_daily');
+    leaveTypeDisplay.setAttribute('data-lang-key', 'leave_type_daily');
+    document.getElementById('leave-type-input').value = 'daily';
+
     document.getElementById('modal-title').innerText = getTrans('add_leave_title');
     document.getElementById('leave-id').value = ''; // دڵنیابوونەوە لەوەی ID بەتاڵە
-    document.getElementById('file-name-display').textContent = '';
     document.getElementById('current-file-link').style.display = 'none';
     document.getElementById('save-leave-btn').innerText = getTrans('save_btn');
     modal.style.display = 'flex';
@@ -216,9 +235,17 @@ async function openModalForEdit(leave) {
     
     // پڕکردنەوەی فۆڕمەکە بە داتای مۆڵەتەکە
     document.getElementById('leave-id').value = leave.id;
-    document.getElementById('employee-select').value = leave.employee_id;
-    document.getElementById('leave-type-select').value = leave.leave_type;
     document.getElementById('leave-date').value = leave.leave_date;
+
+    // Set custom dropdown values
+    document.getElementById('employee-select-input').value = leave.employee_id;
+    const employeeDisplay = document.getElementById('employee-display');
+    employeeDisplay.textContent = leave.employees.full_name || getTrans('employee_name_not_found');
+    employeeDisplay.removeAttribute('data-lang-key');
+
+    document.getElementById('leave-type-input').value = leave.leave_type;
+    const leaveTypeLangKey = `leave_type_${leave.leave_type.replace('-', '_')}`;
+    selectCustomOption('leave-type-input', leave.leave_type, leaveTypeLangKey, 'leave-type-dropdown');
     
     // پیشاندانی لینکی فایلی ئێستا
     const currentFileLink = document.getElementById('current-file-link');
@@ -242,8 +269,8 @@ async function openModalForEdit(leave) {
  * هێنانی لیستی فەرمانبەران لە Supabase بۆ پڕکردنەوەی dropdown
  */
 async function fetchEmployees() {
-    const employeeSelect = document.getElementById('employee-select');
-    const filterEmployeeSelect = document.getElementById('filter-employee-select');
+    const employeeOptionsContainer = document.getElementById('employee-options');
+    const filterEmployeeOptionsContainer = document.getElementById('filter-employee-options');
     try {
         // وا دادەنێین کە خشتەیەک هەیە بە ناوی 'employees' و ستوونی 'full_name' و 'id'ی تێدایە 
         const { data: employees, error } = await supabaseClient
@@ -253,16 +280,15 @@ async function fetchEmployees() {
         if (error) throw error;
 
         // پاککردنەوەی لیستەکە پێش پڕکردنەوە
-        employeeSelect.innerHTML = `<option value="" disabled selected>${getTrans('select_employee_placeholder')}</option>`;
-        filterEmployeeSelect.innerHTML = `<option value="">${getTrans('filter_all_employees')}</option>`;
+        employeeOptionsContainer.innerHTML = '';
+        filterEmployeeOptionsContainer.innerHTML = `<div class="dropdown-item" onclick="selectCustomOption('filter-employee-input', '', 'filter_all_employees', 'filter-employee-dropdown')"><span data-lang-key="filter_all_employees">${getTrans('filter_all_employees')}</span></div>`;
         
         employees.forEach(emp => {
-            const option = document.createElement('option');
-            option.value = emp.id;
-            option.textContent = emp.full_name;
-            // زیادکردنی بۆ هەردوو درۆپداونەکە
-            employeeSelect.appendChild(option.cloneNode(true));
-            filterEmployeeSelect.appendChild(option.cloneNode(true));
+            const itemHTML = `<div class="dropdown-item" onclick="selectCustomOption('employee-select-input', '${emp.id}', null, 'employee-dropdown', '${emp.full_name.replace(/'/g, "\\'")}')">${emp.full_name}</div>`;
+            employeeOptionsContainer.innerHTML += itemHTML;
+
+            const filterItemHTML = `<div class="dropdown-item" onclick="selectCustomOption('filter-employee-input', '${emp.id}', null, 'filter-employee-dropdown', '${emp.full_name.replace(/'/g, "\\'")}')">${emp.full_name}</div>`;
+            filterEmployeeOptionsContainer.innerHTML += filterItemHTML;
         });
 
     } catch (error) {
@@ -298,8 +324,8 @@ async function fetchLeaves() {
             .order('leave_date', { ascending: false });
 
         // وەرگرتنی نرخەکانی فلتەر
-        const employeeId = document.getElementById('filter-employee-select').value;
-        const leaveType = document.getElementById('filter-leave-type-select').value;
+        const employeeId = document.getElementById('filter-employee-input').value;
+        const leaveType = document.getElementById('filter-leave-type-input').value;
         const startDate = document.getElementById('filter-start-date').value;
         const endDate = document.getElementById('filter-end-date').value;
 
@@ -354,7 +380,7 @@ async function fetchLeaves() {
  */
 function createLeaveCard(leave) {
     const card = document.createElement('div');
-    card.className = 'leave-card';
+    card.className = `leave-card type-${leave.leave_type}`;
     card.dataset.id = leave.id;
 
     // پێناسەکردنی ئایکۆن و دەق بۆ هەر جۆرە مۆڵەتێک
@@ -370,15 +396,17 @@ function createLeaveCard(leave) {
     const config = leaveConfig[leave.leave_type] || { text: 'نادیار', icon: 'fa-question-circle' };
 
     card.innerHTML = `
-        <div class="card-header">
-            <h3>${leave.employees.full_name || getTrans('employee_name_not_found')}</h3>
+        <div class="leave-content">
+            <div class="leave-main">
+                <h3>${leave.employees.full_name || getTrans('employee_name_not_found')}</h3>
+                <div class="leave-details">
+                    <span class="leave-date"><i class="far fa-calendar-alt"></i> ${leave.leave_date}</span>
+                    <span class="leave-badge"><i class="fas ${config.icon}"></i> ${config.text}</span>
+                </div>
+            </div>
         </div>
-        <span class="leave-type ${leave.leave_type}"><i class="fas ${config.icon}"></i> ${config.text}</span>
-        <div class="card-body">
-            <p><i class="fas fa-calendar-alt"></i> ${leave.leave_date}</p>
-        </div>
-        <div class="card-actions">
-            <button class="action-btn edit-btn" title="دەستکاری"><i class="fas fa-edit"></i></button>
+        <div class="leave-actions">
+            <button class="action-btn edit-btn" title="دەستکاری"><i class="fas fa-pen"></i></button>
             <button class="action-btn delete-btn" title="سڕینەوە"><i class="fas fa-trash"></i></button>
         </div>
     `;
@@ -420,8 +448,8 @@ async function handleFormSubmit(e) {
     try {
         // کۆکردنەوەی داتاکان لە فۆڕمەکە
         const leaveData = {
-            employee_id: document.getElementById('employee-select').value,
-            leave_type: document.getElementById('leave-type-select').value,
+            employee_id: document.getElementById('employee-select-input').value,
+            leave_type: document.getElementById('leave-type-input').value,
             leave_date: document.getElementById('leave-date').value,
         };
 

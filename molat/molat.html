@@ -171,24 +171,37 @@
                     <div class="compact-grid">
                         <!-- ناوی فەرمانبەر - هەموو پانییەکە دەگرێت -->
                         <div class="input-group span-full">
-                            <label for="employee-select" data-lang-key="employee_name_label">ناوی فەرمانبەر</label>
-                            <select id="employee-select" required>
-                                <option value="" disabled selected data-lang-key="select_employee_placeholder">فەرمانبەرێک هەڵبژێرە...</option>
-                                <!-- ناوی فەرمانبەران لێرە لە داتابەیسەوە پڕ دەکرێتەوە -->
-                            </select>
+                            <label for="employee-select-input" data-lang-key="employee_name_label">ناوی فەرمانبەر</label>
+                            <div class="custom-dropdown full-width" id="employee-dropdown">
+                                <input type="hidden" id="employee-select-input" required>
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('employee-dropdown')">
+                                    <span id="employee-display" data-lang-key="select_employee_placeholder">فەرمانبەرێک هەڵبژێرە...</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content" id="employee-options">
+                                    <!-- Options will be populated by JS -->
+                                </div>
+                            </div>
                         </div>
 
                         <!-- جۆری مۆڵەت -->
                         <div class="input-group">
                             <label for="leave-type-select" data-lang-key="leave_type_label">جۆری مۆڵەت</label>
-                            <select id="leave-type-select" required>
-                                <option value="daily" data-lang-key="leave_type_daily">ڕۆژانە</option>
-                                <option value="hourly" data-lang-key="leave_type_hourly">کاتی</option>
-                                <option value="disease" data-lang-key="leave_type_disease">نەخۆشیی</option>
-                                <option value="motherhood" data-lang-key="leave_type_motherhood">دایکایەتی</option>
-                                <option value="long-term" data-lang-key="leave_type_long_term">درێژخایەن</option>
-                                <option value="travel" data-lang-key="leave_type_travel">گەشت</option>
-                            </select>
+                            <div class="custom-dropdown full-width" id="leave-type-dropdown">
+                                <input type="hidden" id="leave-type-input" required value="daily"> <!-- Default value -->
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('leave-type-dropdown')">
+                                    <span id="leave-type-display" data-lang-key="leave_type_daily">ڕۆژانە</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('leave-type-input', 'daily', 'leave_type_daily', 'leave-type-dropdown')"><span data-lang-key="leave_type_daily">ڕۆژانە</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('leave-type-input', 'hourly', 'leave_type_hourly', 'leave-type-dropdown')"><span data-lang-key="leave_type_hourly">کاتی</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('leave-type-input', 'disease', 'leave_type_disease', 'leave-type-dropdown')"><span data-lang-key="leave_type_disease">نەخۆشی</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('leave-type-input', 'motherhood', 'leave_type_motherhood', 'leave-type-dropdown')"><span data-lang-key="leave_type_motherhood">دایکایەتی</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('leave-type-input', 'long-term', 'leave_type_long_term', 'leave-type-dropdown')"><span data-lang-key="leave_type_long_term">درێژخایەن</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('leave-type-input', 'travel', 'leave_type_travel', 'leave-type-dropdown')"><span data-lang-key="leave_type_travel">گەشت</span></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- مێژووی مۆڵەت -->
@@ -234,25 +247,38 @@
                     <div class="compact-grid">
                         <!-- ناوی فەرمانبەر -->
                         <div class="input-group span-full">
-                            <label for="filter-employee-select" data-lang-key="employee_name_label">ناوی فەرمانبەر</label>
-                            <select id="filter-employee-select">
-                                <option value="" data-lang-key="filter_all_employees">هەموو فەرمانبەران</option>
-                                <!-- لێرە بە داینامیکی پڕ دەکرێتەوە -->
-                            </select>
+                            <label for="filter-employee-input" data-lang-key="employee_name_label">ناوی فەرمانبەر</label>
+                            <div class="custom-dropdown full-width" id="filter-employee-dropdown">
+                                <input type="hidden" id="filter-employee-input">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('filter-employee-dropdown')">
+                                    <span id="filter-employee-display" data-lang-key="filter_all_employees">هەموو فەرمانبەران</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content" id="filter-employee-options">
+                                    <!-- Options will be populated by JS -->
+                                </div>
+                            </div>
                         </div>
 
                         <!-- جۆری مۆڵەت -->
                         <div class="input-group span-full">
-                            <label for="filter-leave-type-select" data-lang-key="leave_type_label">جۆری مۆڵەت</label>
-                            <select id="filter-leave-type-select">
-                                <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
-                                <option value="daily" data-lang-key="leave_type_daily">ڕۆژانە</option>
-                                <option value="hourly" data-lang-key="leave_type_hourly">کاتی</option>
-                                <option value="disease" data-lang-key="leave_type_disease">نەخۆشیی</option>
-                                <option value="motherhood" data-lang-key="leave_type_motherhood">دایکایەتی</option>
-                                <option value="long-term" data-lang-key="leave_type_long_term">درێژخایەن</option>
-                                <option value="travel" data-lang-key="leave_type_travel">گەشت</option>
-                            </select>
+                            <label for="filter-leave-type-input" data-lang-key="leave_type_label">جۆری مۆڵەت</label>
+                            <div class="custom-dropdown full-width" id="filter-leave-type-dropdown">
+                                <input type="hidden" id="filter-leave-type-input">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('filter-leave-type-dropdown')">
+                                    <span id="filter-leave-type-display" data-lang-key="filter_all_types">هەموو جۆرەکان</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', '', 'filter_all_types', 'filter-leave-type-dropdown')"><span data-lang-key="filter_all_types">هەموو جۆرەکان</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', 'daily', 'leave_type_daily', 'filter-leave-type-dropdown')"><span data-lang-key="leave_type_daily">ڕۆژانە</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', 'hourly', 'leave_type_hourly', 'filter-leave-type-dropdown')"><span data-lang-key="leave_type_hourly">کاتی</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', 'disease', 'leave_type_disease', 'filter-leave-type-dropdown')"><span data-lang-key="leave_type_disease">نەخۆشی</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', 'motherhood', 'leave_type_motherhood', 'filter-leave-type-dropdown')"><span data-lang-key="leave_type_motherhood">دایکایەتی</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', 'long-term', 'leave_type_long_term', 'filter-leave-type-dropdown')"><span data-lang-key="leave_type_long_term">درێژخایەن</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-leave-type-input', 'travel', 'leave_type_travel', 'filter-leave-type-dropdown')"><span data-lang-key="leave_type_travel">گەشت</span></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- بەرواری دەستپێک -->

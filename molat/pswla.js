@@ -98,6 +98,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     resetFilterBtn.addEventListener('click', () => {
         filterForm.reset();
+        // Reset Dropdown UI
+        const filterTypeDisplay = document.getElementById('filter-receipt-type-display');
+        filterTypeDisplay.setAttribute('data-lang-key', 'filter_all_types');
+        filterTypeDisplay.textContent = getTrans('filter_all_types');
         fetchReceipts();
     });
 
@@ -122,6 +126,24 @@ function openModalForAdd() {
     document.getElementById('receipt-dialog-form').reset();
     document.getElementById('dialog-title').innerText = getTrans('add_receipt_title');
     document.getElementById('receipt-id').value = '';
+    
+    // Reset Dropdowns
+    // Receipt Type
+    document.getElementById('receipt-type').value = 'receiving';
+    const typeDisplay = document.getElementById('receipt-type-display');
+    typeDisplay.setAttribute('data-lang-key', 'receipt_type_receiving');
+    typeDisplay.textContent = getTrans('receipt_type_receiving');
+    // Receiver Name
+    document.getElementById('receiver-name').value = '';
+    const receiverDisplay = document.getElementById('receiver-name-display');
+    receiverDisplay.setAttribute('data-lang-key', 'select_employee_placeholder');
+    receiverDisplay.textContent = getTrans('select_employee_placeholder');
+    // Related To
+    document.getElementById('related-to').value = 'biometric';
+    const relatedDisplay = document.getElementById('related-to-display');
+    relatedDisplay.setAttribute('data-lang-key', 'related_to_biometric');
+    relatedDisplay.textContent = getTrans('related_to_biometric');
+
     document.getElementById('dialog-header-icon').className = 'fas fa-plus';
     document.getElementById('file-name-display').textContent = '';
     document.getElementById('current-file-link').style.display = 'none';
@@ -137,11 +159,17 @@ function openModalForEdit(receipt) {
     document.getElementById('dialog-header-icon').className = 'fas fa-pen';
     
     document.getElementById('receipt-id').value = receipt.id;
-    document.getElementById('receipt-type').value = receipt.receipt_type;
     document.getElementById('receipt-date').value = receipt.receipt_date;
-    document.getElementById('receiver-name').value = receipt.receiver_name;
-    document.getElementById('related-to').value = receipt.related_to;
     document.getElementById('receipt-notes').value = receipt.notes || '';
+
+    // Set Dropdown Values
+    const typeLangKey = `receipt_type_${receipt.receipt_type}`;
+    selectCustomOption('receipt-type', receipt.receipt_type, typeLangKey, 'receipt-type-dropdown');
+
+    selectCustomOption('receiver-name', receipt.receiver_name, null, 'receiver-name-dropdown', receipt.receiver_name);
+
+    const relatedLangKey = `related_to_${receipt.related_to}`;
+    selectCustomOption('related-to', receipt.related_to, relatedLangKey, 'related-to-dropdown');
     
     const currentFileLink = document.getElementById('current-file-link');
     if (receipt.document_gdrive_id) {

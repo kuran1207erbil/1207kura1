@@ -143,10 +143,17 @@
                     <div class="dialog-grid-2">
                         <div class="dialog-form-group">
                             <label for="receipt-type"><i class="fas fa-info-circle"></i> <span data-lang-key="receipt_type_label">جۆری پسوولە</span></label>
-                            <select id="receipt-type" required>
-                                <option value="receiving" data-lang-key="receipt_type_receiving">وەرگرتن</option>
-                                <option value="handover" data-lang-key="receipt_type_handover">ڕادەستکردن</option>
-                            </select>
+                            <div class="custom-dropdown full-width" id="receipt-type-dropdown">
+                                <input type="hidden" id="receipt-type" required value="receiving">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('receipt-type-dropdown')">
+                                    <span id="receipt-type-display" data-lang-key="receipt_type_receiving">وەرگرتن</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('receipt-type', 'receiving', 'receipt_type_receiving', 'receipt-type-dropdown')"><span data-lang-key="receipt_type_receiving">وەرگرتن</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('receipt-type', 'handover', 'receipt_type_handover', 'receipt-type-dropdown')"><span data-lang-key="receipt_type_handover">ڕادەستکردن</span></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="dialog-form-group">
                             <label for="receipt-date"><i class="far fa-calendar-alt"></i> <span data-lang-key="receipt_date_label">مێژووی پسوولە</span></label>
@@ -156,20 +163,34 @@
 
                     <div class="dialog-form-group">
                         <label for="receiver-name"><i class="fas fa-user"></i> <span data-lang-key="receiver_handover_label">وەرگر یان ڕادەستکەر</span></label>
-                        <select id="receiver-name" required>
-                            <option value="" disabled selected data-lang-key="select_employee_placeholder">فەرمانبەرێک هەڵبژێرە...</option>
-                        </select>
+                        <div class="custom-dropdown full-width" id="receiver-name-dropdown">
+                            <input type="hidden" id="receiver-name" required>
+                            <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('receiver-name-dropdown')">
+                                <span id="receiver-name-display" data-lang-key="select_employee_placeholder">فەرمانبەرێک هەڵبژێرە...</span>
+                                <i class="fas fa-chevron-down chevron"></i>
+                            </button>
+                            <div class="dropdown-content full-width-content" id="receiver-name-options">
+                                <!-- Options will be populated by JS -->
+                            </div>
+                        </div>
                     </div>
 
                     <div class="dialog-form-group">
                         <label for="related-to"><i class="fas fa-building"></i> <span data-lang-key="related_to_label">پسوولەی تایبەت بە</span></label>
-                        <select id="related-to" required>
-                            <option value="biometric" data-lang-key="related_to_biometric">کۆگای بایۆمەتری</option>
-                            <option value="silo" data-lang-key="related_to_silo">کۆگای سایلۆ</option>
-                            <option value="office" data-lang-key="related_to_office">کۆگای ئۆفیس</option>
-                            <option value="it" data-lang-key="related_to_it">هۆبەی IT</option>
-                            <option value="finance" data-lang-key="related_to_finance">هۆبەی دارایی</option>
-                        </select>
+                        <div class="custom-dropdown full-width" id="related-to-dropdown">
+                            <input type="hidden" id="related-to" required value="biometric">
+                            <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('related-to-dropdown')">
+                                <span id="related-to-display" data-lang-key="related_to_biometric">کۆگای بایۆمەتری</span>
+                                <i class="fas fa-chevron-down chevron"></i>
+                            </button>
+                            <div class="dropdown-content full-width-content">
+                                <div class="dropdown-item" onclick="selectCustomOption('related-to', 'biometric', 'related_to_biometric', 'related-to-dropdown')"><span data-lang-key="related_to_biometric">کۆگای بایۆمەتری</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('related-to', 'silo', 'related_to_silo', 'related-to-dropdown')"><span data-lang-key="related_to_silo">کۆگای سایلۆ</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('related-to', 'office', 'related_to_office', 'related-to-dropdown')"><span data-lang-key="related_to_office">کۆگای ئۆفیس</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('related-to', 'it', 'related_to_it', 'related-to-dropdown')"><span data-lang-key="related_to_it">هۆبەی IT</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('related-to', 'finance', 'related_to_finance', 'related-to-dropdown')"><span data-lang-key="related_to_finance">هۆبەی دارایی</span></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="dialog-form-group">
@@ -248,11 +269,18 @@
                         <!-- جۆری پسوولە -->
                         <div class="input-group span-full">
                             <label for="filter-receipt-type" data-lang-key="receipt_type_label">جۆری پسوولە</label>
-                            <select id="filter-receipt-type">
-                                <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
-                                <option value="receiving" data-lang-key="receipt_type_receiving">وەرگرتن</option>
-                                <option value="handover" data-lang-key="receipt_type_handover">ڕادەستکردن</option>
-                            </select>
+                            <div class="custom-dropdown full-width" id="filter-receipt-type-dropdown">
+                                <input type="hidden" id="filter-receipt-type">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('filter-receipt-type-dropdown')">
+                                    <span id="filter-receipt-type-display" data-lang-key="filter_all_types">هەموو جۆرەکان</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-receipt-type', '', 'filter_all_types', 'filter-receipt-type-dropdown')"><span data-lang-key="filter_all_types">هەموو جۆرەکان</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-receipt-type', 'receiving', 'receipt_type_receiving', 'filter-receipt-type-dropdown')"><span data-lang-key="receipt_type_receiving">وەرگرتن</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-receipt-type', 'handover', 'receipt_type_handover', 'filter-receipt-type-dropdown')"><span data-lang-key="receipt_type_handover">ڕادەستکردن</span></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- بەرواری دەستپێک -->
@@ -296,8 +324,8 @@
     <script>
         // Fetch employees for the receiver dropdown
         document.addEventListener('DOMContentLoaded', async () => {
-            const receiverSelect = document.getElementById('receiver-name');
-            if(receiverSelect) {
+            const receiverOptionsContainer = document.getElementById('receiver-name-options');
+            if(receiverOptionsContainer) {
                 try {
                     const { data: employees, error } = await supabaseClient
                         .from('employees')
@@ -306,11 +334,10 @@
                     
                     if (error) throw error;
 
+                    receiverOptionsContainer.innerHTML = ''; // Clear existing
                     employees.forEach(emp => {
-                        const option = document.createElement('option');
-                        option.value = emp.full_name;
-                        option.textContent = emp.full_name;
-                        receiverSelect.appendChild(option);
+                        const itemHTML = `<div class="dropdown-item" onclick="selectCustomOption('receiver-name', '${emp.full_name.replace(/'/g, "\\'")}', null, 'receiver-name-dropdown', '${emp.full_name.replace(/'/g, "\\'")}')">${emp.full_name}</div>`;
+                        receiverOptionsContainer.innerHTML += itemHTML;
                     });
                 } catch (err) {
                     console.error('Error fetching employees:', err);

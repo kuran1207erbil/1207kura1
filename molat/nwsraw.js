@@ -109,6 +109,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     resetFilterBtn.addEventListener('click', () => {
         filterForm.reset();
+        // Reset Dropdown UI
+        const filterTypeDisplay = document.getElementById('filter-letter-type-display');
+        filterTypeDisplay.setAttribute('data-lang-key', 'filter_all_types');
+        filterTypeDisplay.textContent = getTrans('filter_all_types');
         fetchLetters();
     });
 
@@ -136,6 +140,13 @@ function openModalForAdd() {
     document.getElementById('letter-dialog-form').reset();
     document.getElementById('dialog-title').innerText = getTrans('add_letter_title');
     document.getElementById('letter-id').value = '';
+    
+    // Reset Dropdown
+    document.getElementById('letter-type').value = 'incoming';
+    const typeDisplay = document.getElementById('letter-type-display');
+    typeDisplay.setAttribute('data-lang-key', 'letter_type_incoming');
+    typeDisplay.textContent = getTrans('letter_type_incoming');
+
     document.getElementById('dialog-header-icon').className = 'fas fa-plus';
     document.getElementById('file-name-display').textContent = '';
     document.getElementById('current-file-link').style.display = 'none';
@@ -154,9 +165,12 @@ function openModalForEdit(letter) {
     document.getElementById('letter-id').value = letter.id;
     document.getElementById('letter-title').value = letter.title;
     document.getElementById('letter-number').value = letter.letter_number;
-    document.getElementById('letter-type').value = letter.letter_type;
     document.getElementById('letter-date').value = letter.letter_date;
     document.getElementById('letter-notes').value = letter.notes || '';
+
+    // Set Dropdown Value
+    const typeLangKey = `letter_type_${letter.letter_type}`;
+    selectCustomOption('letter-type', letter.letter_type, typeLangKey, 'letter-type-dropdown');
     
     const currentFileLink = document.getElementById('current-file-link');
     if (letter.document_gdrive_id) {

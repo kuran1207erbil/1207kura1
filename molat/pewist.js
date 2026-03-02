@@ -90,6 +90,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     resetFilterBtn.addEventListener('click', () => {
         filterForm.reset();
+        // Reset Dropdown UI
+        const filterTypeDisplay = document.getElementById('filter-file-type-display');
+        filterTypeDisplay.setAttribute('data-lang-key', 'filter_all_types');
+        filterTypeDisplay.textContent = getTrans('filter_all_types');
         fetchFiles();
     });
 
@@ -114,6 +118,13 @@ function openModalForAdd() {
     document.getElementById('file-dialog-form').reset();
     document.getElementById('dialog-title').innerText = getTrans('add_file_title');
     document.getElementById('file-id').value = '';
+
+    // Reset Dropdown
+    document.getElementById('file-type').value = 'excel';
+    const typeDisplay = document.getElementById('file-type-display');
+    typeDisplay.setAttribute('data-lang-key', 'file_type_excel');
+    typeDisplay.textContent = getTrans('file_type_excel');
+
     document.getElementById('dialog-header-icon').className = 'fas fa-plus';
     document.getElementById('file-name-display').textContent = '';
     document.getElementById('current-file-link').style.display = 'none';
@@ -130,7 +141,10 @@ function openModalForEdit(file) {
     
     document.getElementById('file-id').value = file.id;
     document.getElementById('file-title').value = file.title;
-    document.getElementById('file-type').value = file.file_type;
+    
+    // Set Dropdown Value
+    const typeLangKey = `file_type_${file.file_type}`;
+    selectCustomOption('file-type', file.file_type, typeLangKey, 'file-type-dropdown');
     
     const currentFileLink = document.getElementById('current-file-link');
     if (file.document_gdrive_id) {

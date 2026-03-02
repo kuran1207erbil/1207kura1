@@ -147,12 +147,19 @@
 
                     <div class="dialog-form-group">
                         <label for="file-type"><i class="fas fa-info-circle"></i> <span data-lang-key="file_type_label">جۆری فایل</span></label>
-                        <select id="file-type" required>
-                            <option value="excel" data-lang-key="file_type_excel">Excel</option>
-                            <option value="powerpoint" data-lang-key="file_type_powerpoint">PowerPoint</option>
-                            <option value="pdf" data-lang-key="file_type_pdf">PDF</option>
-                            <option value="word" data-lang-key="file_type_word">Word</option>
-                        </select>
+                        <div class="custom-dropdown full-width" id="file-type-dropdown">
+                            <input type="hidden" id="file-type" required value="excel">
+                            <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('file-type-dropdown')">
+                                <span id="file-type-display" data-lang-key="file_type_excel">Excel</span>
+                                <i class="fas fa-chevron-down chevron"></i>
+                            </button>
+                            <div class="dropdown-content full-width-content">
+                                <div class="dropdown-item" onclick="selectCustomOption('file-type', 'excel', 'file_type_excel', 'file-type-dropdown')"><span data-lang-key="file_type_excel">Excel</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('file-type', 'powerpoint', 'file_type_powerpoint', 'file-type-dropdown')"><span data-lang-key="file_type_powerpoint">PowerPoint</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('file-type', 'pdf', 'file_type_pdf', 'file-type-dropdown')"><span data-lang-key="file_type_pdf">PDF</span></div>
+                                <div class="dropdown-item" onclick="selectCustomOption('file-type', 'word', 'file_type_word', 'file-type-dropdown')"><span data-lang-key="file_type_word">Word</span></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="dialog-form-group">
@@ -189,13 +196,20 @@
                         <!-- جۆری فایل -->
                         <div class="input-group span-full">
                             <label for="filter-file-type" data-lang-key="file_type_label">جۆری فایل</label>
-                            <select id="filter-file-type">
-                                <option value="" data-lang-key="filter_all_types">هەموو جۆرەکان</option>
-                                <option value="excel" data-lang-key="file_type_excel">Excel</option>
-                                <option value="powerpoint" data-lang-key="file_type_powerpoint">PowerPoint</option>
-                                <option value="pdf" data-lang-key="file_type_pdf">PDF</option>
-                                <option value="word" data-lang-key="file_type_word">Word</option>
-                            </select>
+                            <div class="custom-dropdown full-width" id="filter-file-type-dropdown">
+                                <input type="hidden" id="filter-file-type">
+                                <button type="button" class="lang-btn dropdown-btn full-width-btn" onclick="toggleCustomDropdown('filter-file-type-dropdown')">
+                                    <span id="filter-file-type-display" data-lang-key="filter_all_types">هەموو جۆرەکان</span>
+                                    <i class="fas fa-chevron-down chevron"></i>
+                                </button>
+                                <div class="dropdown-content full-width-content">
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-file-type', '', 'filter_all_types', 'filter-file-type-dropdown')"><span data-lang-key="filter_all_types">هەموو جۆرەکان</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-file-type', 'excel', 'file_type_excel', 'filter-file-type-dropdown')"><span data-lang-key="file_type_excel">Excel</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-file-type', 'powerpoint', 'file_type_powerpoint', 'filter-file-type-dropdown')"><span data-lang-key="file_type_powerpoint">PowerPoint</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-file-type', 'pdf', 'file_type_pdf', 'filter-file-type-dropdown')"><span data-lang-key="file_type_pdf">PDF</span></div>
+                                    <div class="dropdown-item" onclick="selectCustomOption('filter-file-type', 'word', 'file_type_word', 'filter-file-type-dropdown')"><span data-lang-key="file_type_word">Word</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
