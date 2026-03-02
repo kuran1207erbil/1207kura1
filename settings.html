@@ -118,6 +118,12 @@
             background: var(--input-bg); padding: 15px; text-align: center;
             border-top: 1px solid var(--input-border); font-size: 0.8rem; color: var(--text-color-light);
         }
+
+        @media (max-width: 768px) {
+            .about-hero h2 {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -257,21 +263,7 @@
 
             <div class="settings-page-content">
                 <div class="settings-content modern-layout">
-                    <!-- Profile Section -->
-                    <div class="settings-section full-width">
-                        <div class="settings-card profile-card">
-                            <div class="profile-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="profile-info">
-                                <h3 id="settings-user-name">...</h3>
-                                <p id="settings-user-email">...</p>
-                            </div>
-                            <button class="profile-edit-btn" onclick="openEditProfileModal()" title="دەستکاری">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                        </div>
-                    </div>
+                   
 
                     <div class="settings-main-layout">
                         <!-- Left Navigation -->
@@ -296,6 +288,22 @@
                             <!-- Account Panel -->
                             <div id="panel-account" class="settings-panel active">
                                 <h3 class="panel-title" data-lang-key="settings_account">هەژمار</h3>
+
+                                 <!-- Profile Section -->
+                    <div class="settings-section full-width">
+                        <div class="settings-card profile-card">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="settings-user-name">...</h3>
+                                <p id="settings-user-email">...</p>
+                            </div>
+                            <button class="profile-edit-btn" onclick="openEditProfileModal()" title="دەستکاری">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </div>
+                    </div>
                                 <div class="settings-card">
                                     <div class="setting-row clickable" onclick="openEditProfileModal()">
                                         <div class="setting-icon"><i class="fas fa-user-edit"></i></div>
@@ -374,7 +382,6 @@
                             <!-- Data Panel -->
                             <div id="panel-data" class="settings-panel">
                                 <h3 class="panel-title" data-lang-key="data_management">بەڕێوەبردنی داتا</h3>
-                                <p class="panel-description" data-lang-key="data_management_desc">دەرکردن و هێنانی داتای ئەپڵیکەیشن.</p>
                                 
                                 <div class="data-management-grid">
                                     <!-- Export Card -->
