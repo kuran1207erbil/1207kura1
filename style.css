@@ -1208,7 +1208,8 @@ input:checked + .slider:before {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start; /* Align to the start (right in RTL) */
+    gap: 15px; /* Add space between icon and text */
     animation: slideDown 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
     border-right: 5px solid var(--primary-color);
     font-weight: 600;
@@ -1226,7 +1227,7 @@ body.dark-mode .toast {
 .toast.success { border-right-color: #2ecc71; }
 .toast.error { border-right-color: #e74c3c; }
 
-.toast i { margin-left: 10px; font-size: 1.2rem; }
+.toast i { font-size: 1.2rem; }
 
 @keyframes slideDown {
     from { transform: translateY(-50px); opacity: 0; }

@@ -127,7 +127,7 @@ const translations = {
     install:"دابەزاندن",
     labrdn:"دواتر",
     update_available: "وەشانی نوێ بەردەستە",
-    update_desc: "گۆڕانکاری نوێ کراوە. تکایە نوێی بکەرەوە.",
+    update_desc: "گۆڕانکاری کراوە. تکایە نوێی بکەرەوە.",
     update_now: "نوێکردنەوە",
 
   card_helpdesk: "HelpDisk",
