@@ -311,6 +311,11 @@
                                         <div class="setting-label" data-lang-key="edit_profile">دەستکاریکردنی پرۆفایل</div>
                                         <i class="fas fa-chevron-left arrow-icon"></i>
                                     </div>
+                                    <div class="setting-row clickable" onclick="openManageUsersModal()">
+                                        <div class="setting-icon"><i class="fas fa-users-cog"></i></div>
+                                        <div class="setting-label" data-lang-key="manage_users">بەڕێوەبردنی بەکارهێنەران</div>
+                                        <i class="fas fa-chevron-left arrow-icon"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -656,6 +661,61 @@
             <div class="dialog-footer">
                 <button type="button" class="dialog-cancel-btn" onclick="closeEditProfileModal()" data-lang-key="cancel">پاشگەزبوونەوە</button>
                 <button type="submit" form="edit-profile-form" class="dialog-save-btn" data-lang-key="save_btn">تۆمارکردن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Users Modal -->
+    <div id="manage-users-modal" class="modal custom-modal">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <div class="dialog-icon-wrapper">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <div class="dialog-header-text">
+                    <h3 data-lang-key="manage_users">بەڕێوەبردنی بەکارهێنەران</h3>
+                    <span class="dialog-subtitle" data-lang-key="settings_account">هەژمار</span>
+                </div>
+                <button class="dialog-close-btn" onclick="closeManageUsersModal()" aria-label="داخستن">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="dialog-body">
+                <div id="users-view-mode">
+                    <div class="users-list-toolbar">
+                        <button class="add-user-btn" onclick="openAddUserForm()">
+                            <i class="fas fa-user-plus"></i> <span data-lang-key="add_user">زیادکردنی بەکارهێنەر</span>
+                        </button>
+                    </div>
+                    <div id="users-list-container" class="users-list">
+                        <div class="content-loader"><div class="spinner"></div></div>
+                    </div>
+                </div>
+                
+                <div id="add-user-form-container">
+                    <h4 data-lang-key="new_user_details">زانیاری بەکارهێنەری نوێ</h4>
+                    <form id="add-user-form" onsubmit="handleCreateUser(event)">
+                        <div class="dialog-form-group"><label for="new-user-name" data-lang-key="full_name_label">ناوی تەواو</label><input type="text" id="new-user-name" required></div>
+                        <div class="dialog-form-group"><label for="new-user-email" data-lang-key="email_label">ئیمەیڵ</label><input type="email" id="new-user-email" required></div>
+                        <div class="dialog-form-group"><label for="new-user-password" data-lang-key="password_label">وشەی تێپەڕ</label><input type="password" id="new-user-password" required minlength="6"></div>
+                        <div class="dialog-footer add-user-footer"><button type="button" class="dialog-cancel-btn" onclick="cancelAddUser()" data-lang-key="cancel">پاشگەزبوونەوە</button><button type="submit" class="dialog-save-btn" data-lang-key="save_btn">دروستکردن</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete User Modal -->
+    <div id="confirm-delete-user-modal" class="modal custom-modal">
+        <div class="dialog-content">
+            <div class="dialog-body centered">
+                <i class="fas fa-exclamation-triangle warning-icon danger-icon"></i>
+                <h3 data-lang-key="delete_confirmation_title">دڵنیایت لە سڕینەوە؟</h3>
+                <p class="confirm-text" data-lang-key="delete_confirmation_text_simple">ئەم کردارە پاشگەزبوونەوەی نییە.</p>
+            </div>
+            <div class="dialog-footer centered">
+                <button type="button" class="dialog-cancel-btn" onclick="closeDeleteUserConfirm()" data-lang-key="cancel">پاشگەزبوونەوە</button>
+                <button type="button" class="dialog-save-btn danger" onclick="executeDeleteUser()" data-lang-key="delete_button">بیسڕەوە</button>
             </div>
         </div>
     </div>

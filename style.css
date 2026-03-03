@@ -2876,3 +2876,67 @@ body.dark-mode .dialog-subtitle {
 #confirm-logout-all-modal .warning-icon {
     color: var(--primary-color);
 }
+
+/* User Management Styles */
+.users-list-toolbar {
+    margin-bottom: 15px;
+}
+
+.add-user-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--input-bg);
+    border: 1px dashed var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s;
+}
+
+.add-user-btn:hover {
+    background: var(--primary-light);
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--input-bg);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 1px solid var(--input-border);
+}
+
+.user-item-info h4 { margin: 0 0 4px 0; font-size: 0.95rem; }
+.user-item-info p { margin: 0; font-size: 0.8rem; color: var(--text-color-light); }
+
+.delete-user-btn {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+}
+.delete-user-btn:hover { background: #e74c3c; color: white; }
+
+/* Add User Form Styles */
+#add-user-form-container {
+    display: none;
+}
+
+#add-user-form-container h4 {
+    margin-bottom: 15px;
+}
+
+.add-user-footer {
+    padding: 0 !important;
+    margin-top: 15px;
+}
+
+.warning-icon.danger-icon {
+    color: var(--danger-color);
+}

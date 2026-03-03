@@ -1616,3 +1616,132 @@ async function handleProfileUpdate(event) {
         submitBtn.innerText = originalText;
     }
 }
+
+// --- User Management Functions ---
+function openManageUsersModal() {
+    const modal = document.getElementById('manage-users-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        fetchUsersList();
+    }
+}
+
+function closeManageUsersModal() {
+    const modal = document.getElementById('manage-users-modal');
+    if (modal) modal.style.display = 'none';
+    cancelAddUser(); // Reset view
+}
+
+function openAddUserForm() {
+    document.getElementById('users-view-mode').style.display = 'none';
+    document.getElementById('add-user-form-container').style.display = 'block';
+}
+
+function cancelAddUser() {
+    document.getElementById('add-user-form-container').style.display = 'none';
+    document.getElementById('users-view-mode').style.display = 'block';
+    document.getElementById('add-user-form').reset();
+}
+
+async function fetchUsersList() {
+    const container = document.getElementById('users-list-container');
+    const currentLang = localStorage.getItem('language') || 'ku';
+    
+    try {
+        // Note: Listing all users usually requires admin rights or a specific public table.
+        // Here we assume a 'profiles' table exists in public schema.
+        const { data: users, error } = await supabaseClient
+            .from('profiles') // Assuming you have a profiles table linked to auth
+            .select('*');
+
+        if (error) throw error;
+
+        container.innerHTML = '';
+        if (!users || users.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:var(--text-color-light);">هیچ بەکارهێنەرێک نەدۆزرایەوە</p>';
+            return;
+        }
+
+        users.forEach(user => {
+            const div = document.createElement('div');
+            div.className = 'user-item';
+            div.innerHTML = `
+                <div class="user-item-info">
+                    <h4>${user.full_name || 'No Name'}</h4>
+                    <p>${user.email || ''}</p>
+                </div>
+                <button class="delete-user-btn" onclick="deleteUser('${user.id}')"><i class="fas fa-trash"></i></button>
+            `;
+            container.appendChild(div);
+        });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        container.innerHTML = '<p style="text-align:center; color:red;">هەڵە لە هێنانی بەکارهێنەران. دڵنیابەرەوە خشتەی profiles بوونی هەیە.</p>';
+    }
+}
+
+async function handleCreateUser(event) {
+    event.preventDefault();
+    const name = document.getElementById('new-user-name').value;
+    const email = document.getElementById('new-user-email').value;
+    const password = document.getElementById('new-user-password').value;
+    const currentLang = localStorage.getItem('language') || 'ku';
+
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: { full_name: name }
+            }
+        });
+
+        if (error) throw error;
+
+        showToast(translations[currentLang].user_created_success, 'success');
+        cancelAddUser();
+        fetchUsersList();
+    } catch (error) {
+        showToast(error.message, 'error');
+    }
+}
+
+let userToDeleteId = null;
+
+function deleteUser(userId) {
+    userToDeleteId = userId;
+    const modal = document.getElementById('confirm-delete-user-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeDeleteUserConfirm() {
+    const modal = document.getElementById('confirm-delete-user-modal');
+    if (modal) modal.style.display = 'none';
+    userToDeleteId = null;
+}
+
+async function executeDeleteUser() {
+    if (!userToDeleteId) return;
+    
+    const modal = document.getElementById('confirm-delete-user-modal');
+    const confirmBtn = modal.querySelector('.dialog-save-btn');
+    const originalText = confirmBtn.innerText;
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    
+    const currentLang = localStorage.getItem('language') || 'ku';
+    try {
+        const { error } = await supabaseClient.from('profiles').delete().eq('id', userToDeleteId);
+        if (error) throw error;
+        
+        showToast(translations[currentLang].user_deleted_success, 'success');
+        fetchUsersList();
+        closeDeleteUserConfirm();
+    } catch (error) {
+        showToast(getTrans('error_occurred') + error.message, 'error');
+        console.error(error);
+    } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.innerText = originalText;
+    }
+}
