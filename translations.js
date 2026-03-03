@@ -1,7 +1,7 @@
 // فەرهەنگی وشەکان بۆ کوردی و عەرەبی
 const translations = {
     ku: {
-        login_title: "بنکەی تۆماری کوران1 | 1207",
+        login_title: "بنکەی تۆماری کوران1",
         username_label: "ئیمەیڵ",
         username_placeholder: "ئیمەیڵەکەت بنووسە...",
         password_label: "وشەی تێپەڕ",
@@ -371,7 +371,7 @@ const translations = {
         made_with_love: "دروستکراوە بە خۆشەویستییەوە لە کوردستان",
     },
     ar: {
-        login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1 | 1207",
+        login_title: "مَرْکَزُ التَّسْجِیلِ كُورَان1",
         username_label: "البريد الإلكتروني",
         username_placeholder: "أدخل بريدك الإلكتروني...",
         password_label: "كلمة المرور",
