@@ -1,8 +1,8 @@
 name: Supabase Keep Alive Auto
 
 on:
-  schedule:
-    - cron: '0 12 */3 * *'
+ schedule:
+    - cron: '0 0 * * *' # هەموو ڕۆژێک جارێک لە کاتژمێر 12ی شەودا کار دەکات
   workflow_dispatch:
 
 jobs:
